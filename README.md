@@ -201,3 +201,8 @@ Look-alike diseases ruled out:
 This transparency demonstrates that the AI understands agriculture, not just pattern-matches images — critical for hackathon evaluation.
 
 \---
+### 6\. 📱 QR Code Report Sharing
+
+Each report generates a dynamic QR code pointing to its URL. Any device on the same network can scan it to access the full diagnosis without any manual link sharing.
+
+\---
