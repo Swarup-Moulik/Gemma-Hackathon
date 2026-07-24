@@ -26,3 +26,17 @@ UPLOAD_DIR = os.path.join(os.path.dirname(__file__), "uploads")
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 
+# MongoDB client initialization
+MONGO_URI = os.environ.get("MONGO_URI", "mongodb://localhost:27017")
+client = AsyncIOMotorClient(MONGO_URI)
+db = client.agrirescue
+reports_collection = db.reports
+
+# Helper to serialize MongoDB documents to JSON
+def serialize_doc(doc):
+    if not doc:
+        return None
+    doc["id"] = str(doc["_id"])
+    del doc["_id"]
+    return doc
+
