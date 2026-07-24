@@ -19,9 +19,9 @@ function Landing() {
             Google Build with Gemma Hackathon
           </div>
           
-          <h1 className="text-5xl sm:text-7xl font-bold tracking-tight text-white font-serif-editorial leading-tight">
+          <h1 className="text-5xl sm:text-7xl font-light tracking-tight text-white font-serif-editorial leading-tight">
             Guardians of the <br />
-            <span className="italic text-emerald-300">Off-Grid Fields</span>
+            <span className="italic font-normal text-emerald-300">Off-Grid Fields</span>
           </h1>
           
           <p className="text-slate-300 text-sm sm:text-base max-w-xl mx-auto font-light leading-relaxed">
