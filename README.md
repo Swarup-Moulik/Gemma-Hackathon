@@ -502,4 +502,12 @@ python main.py
 # → http://localhost:8000
 # → Swagger UI: http://localhost:8000/docs
 ```
+### 3\. Start Frontend
+
+```bash
+cd client
+npm run dev
+# → http://localhost:5173
+```
+
 
