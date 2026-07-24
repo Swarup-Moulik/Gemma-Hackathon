@@ -103,3 +103,25 @@ User uploads crop image
 ```
 
 \---
+
+## 🔬 Core Features
+
+### 1\. 🌿 Plant Disease Identifier
+
+The flagship feature. A farmer uploads a crop leaf photo and receives a **structured AI diagnosis**.
+
+**AI Output:**
+
+```json
+{
+  "disease": "Early Blight",
+  "confidence": 0.91,
+  "yield\\\_risk": 18,
+  "recovery\\\_chance": 72,
+  "urgency": "treat\\\_24h"
+}
+```
+
+Image is uploaded via `multipart/form-data` → FastAPI saves to `/uploads/` → Gemma processes image URL + GPS → Structured JSON returned → Frontend renders as animated progress ring + diagnostic card.
+
+\---
