@@ -125,3 +125,18 @@ The flagship feature. A farmer uploads a crop leaf photo and receives a **struct
 Image is uploaded via `multipart/form-data` → FastAPI saves to `/uploads/` → Gemma processes image URL + GPS → Structured JSON returned → Frontend renders as animated progress ring + diagnostic card.
 
 \---
+
+### 2\. 🛸 Drone Multispectral Field Grid
+
+Maps drone telemetry into a **3×3 coordinate grid** (sectors F1–F9), color-coded by severity:
+
+|Color|Hex|Severity|
+|-|-|-|
+|🟢 Green|`#6E8C5C`|Healthy|
+|🟡 Yellow|`#C9A227`|Recovering|
+|🟠 Orange|`#C15832`|Moderate|
+|🔴 Red|`#A64B2A`|Severe|
+
+Grid is generated from GPS lat/lng inputs, computing relative sector positions dynamically.
+
+\---
