@@ -110,3 +110,13 @@ function Landing() {
             </div>
           </div>
         </section>
+{/* FEATURE TIMELINE SECTION - Inspired by Numbered Grid Reference */}
+        <section className="space-y-8">
+          <div className="text-center space-y-1.5">
+            <span className="text-[10px] font-bold text-emerald-400 tracking-widest uppercase">Features</span>
+            <h2 className="text-3xl font-bold font-serif-editorial text-white">
+              Core Modules & Workflows
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
