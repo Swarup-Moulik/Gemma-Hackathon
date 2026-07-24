@@ -1,7 +1,6 @@
 fastapi[standard]
 motor
 python-multipart
-chromadb
 pydantic-settings
 python-dotenv
 httpx
