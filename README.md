@@ -524,3 +524,34 @@ MONGO\\\_URI=mongodb://localhost:27017  # default
 ```
 
 \---
+## 🗂️ Project Structure
+
+```
+Gemma-Hackathon\\\_buildathon\\\_3/
+├── client/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Navbar.jsx         # Global nav + emergency rescue button
+│   │   │   └── ThemeToggle.jsx    # Dark/light mode switcher
+│   │   ├── pages/
+│   │   │   ├── Landing.jsx        # Green Praxis homepage (this README's star)
+│   │   │   ├── Home.jsx           # /scan — image upload + GPS
+│   │   │   ├── Report.jsx         # /report — full AI diagnosis
+│   │   │   ├── Chat.jsx           # /chat — Gemma voice advisor
+│   │   │   └── Dashboard.jsx      # /dashboard — MongoDB ledger
+│   │   ├── utils/
+│   │   │   └── qrcode.js          # ESM-patched QR code generator
+│   │   ├── App.jsx                # Route definitions + landing class toggle
+│   │   ├── main.jsx               # React DOM entry
+│   │   └── index.css              # Tailwind config + theme overrides
+│   ├── index.html
+│   └── vite.config.js
+│
+├── server/
+│   ├── main.py                    # FastAPI routes, Gemma AI, MongoDB ops
+│   └── uploads/                   # Uploaded crop images (gitignored)
+│
+└── README.md
+```
+
+\--
