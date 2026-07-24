@@ -40,9 +40,9 @@ function Navbar() {
           <Link
             to="/chat"
             className={`text-sm font-semibold transition-colors ${
-              location.pathname === '/chat'
-                ? 'text-white'
-                : 'text-slate-400 hover:text-white'
+              location.pathname === "/scan"
+                ? "text-primary underline underline-offset-4 decoration-primary"
+                : "text-muted-foreground hover:text-foreground"
             }`}
           >
             Ask Gemma

@@ -5,6 +5,7 @@ import Landing from "./pages/Landing";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import Report from "./pages/Report";
+import Chat from "./pages/Chat";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Landing />} />
+          <Route path="/chat" element={<Chat />} />
           <Route path="/scan" element={<Home />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/report" element={<Report />} />
