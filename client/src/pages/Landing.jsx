@@ -146,3 +146,19 @@ function Landing() {
                 <Plane className="w-3.5 h-3.5" /> Aerial Drone Grid
               </div>
             </div>
+ {/* Module 3 */}
+            <div className="border border-white/10 rounded-2xl p-5 bg-black/10 relative hover:border-white/20 transition-all flex flex-col justify-between h-[230px] md:col-span-2 lg:col-span-1">
+              <div>
+                <span className="text-3xl font-extrabold text-white/10 font-serif-editorial">03</span>
+                <h4 className="text-base font-bold text-white font-serif-editorial mt-1">Guest Zone Safeguards</h4>
+                <p className="text-[11px] text-slate-400 mt-2 leading-relaxed">
+                  Correlate crop contamination GPS maps with walking paths to secure public agritourism routes and guest safety zones immediately.
+                </p>
+              </div>
+              <div className="flex items-center gap-1.5 text-[10px] font-semibold text-rose-400 mt-4">
+                <ShieldAlert className="w-3.5 h-3.5" /> Hazard Safeguards
+              </div>
+            </div>
+
+          </div>
+        </section>
