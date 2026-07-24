@@ -206,3 +206,31 @@ This transparency demonstrates that the AI understands agriculture, not just pat
 Each report generates a dynamic QR code pointing to its URL. Any device on the same network can scan it to access the full diagnosis without any manual link sharing.
 
 \---
+### 7\. 📂 MongoDB Season Ledger
+
+Full document schema:
+
+```json
+{
+  "\\\_id": "ObjectId",
+  "crop": "Vitis vinifera",
+  "probable\\\_issue": "Early Blight",
+  "confidence": 0.91,
+  "coordinates": { "lat": 12.9716, "lng": 77.5946 },
+  "aiAnalysis": {
+    "disease": "Early Blight",
+    "yield\\\_risk": 18,
+    "recovery\\\_chance": 72,
+    "explanation": "Circular lesions with concentric rings...",
+    "organic\\\_treatments": \\\["Neem oil spray", "Baking soda solution"],
+    "chemical\\\_treatments": \\\["Mancozeb 75WP", "Chlorothalonil"],
+    "lookalike\\\_diseases": \\\[
+      { "name": "Late Blight", "similarity": 82 },
+      { "name": "Septoria", "similarity": 61 }
+    ]
+  },
+  "timestamp": "2026-07-24T14:32:11.000Z"
+}
+```
+
+\---
