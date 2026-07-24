@@ -14,7 +14,9 @@ import {
   Activity,
   Compass,
   Sparkles,
-  FlaskConical
+  FlaskConical,
+  Mic,
+  Volume2
 } from "lucide-react";
 
 function Report() {
@@ -27,6 +29,131 @@ function Report() {
   const [error, setError] = useState(null);
   const [activeFrame, setActiveFrame] = useState(null);
   const [language, setLanguage] = useState("en");
+  const [isListening, setIsListening] = useState(false);
+  const [transcript, setTranscript] = useState("");
+  const [assistantReply, setAssistantReply] = useState("");
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  const startVoiceAssistant = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Speech recognition is not supported in this browser. Try Chrome or Edge.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = language === "hi" ? "hi-IN" : language === "te" ? "te-IN" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    setIsListening(true);
+    setTranscript("Listening...");
+    setAssistantReply("");
+
+    recognition.onresult = (event) => {
+      const speechToText = event.results[0][0].transcript;
+      setTranscript(speechToText);
+      generateVoiceReply(speechToText);
+    };
+
+    recognition.onspeechend = () => {
+      recognition.stop();
+      setIsListening(false);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      setIsListening(false);
+      setTranscript("Error capturing speech. Try again.");
+    };
+  };
+
+  const generateVoiceReply = (query) => {
+    if (!analysis) return;
+    const q = query.toLowerCase();
+    let reply = "";
+
+    // Determine the response depending on language and analysis keywords
+    if (language === "hi") {
+      if (q.includes("टमाटर") || q.includes("tomato") || q.includes("समस्या") || q.includes("बीमारी")) {
+        reply = `आपके फसल में ${translateKey(analysis.probable_issue)} पाया गया है। इसकी गंभीरता ${translateKey(analysis.severity)} है।`;
+      } else if (q.includes("बचाव") || q.includes("इलाज") || q.includes("उपचार")) {
+        reply = `ऑर्गेनिक उपचार के लिए ${translateKey(analysis.organic_treatments?.[0] || "नीम तेल")} का उपयोग करें। रिकवरी की संभावना ${analysis.recovery_chance || 80} प्रतिशत है।`;
+      } else if (q.includes("सुरक्षित") || q.includes("पर्यटक")) {
+        reply = analysis.tourist_safety?.hazard_detected 
+          ? `चेतावनी: ${translateKey(analysis.tourist_safety.message)}` 
+          : "हाँ, पर्यटकों के लिए रास्ता सुरक्षित है।";
+      } else {
+        reply = `आपकी मुख्य समस्या ${translateKey(analysis.probable_issue)} है। उपचार के लिए तुरंत कार्रवाई करें।`;
+      }
+    } else if (language === "es") {
+      if (q.includes("problema") || q.includes("enfermedad") || q.includes("tomate") || q.includes("planta")) {
+        reply = `Se detectó ${translateKey(analysis.probable_issue)}. La gravedad es ${translateKey(analysis.severity)}.`;
+      } else if (q.includes("recuperar") || q.includes("tratar") || q.includes("tratamiento")) {
+        reply = `Para el tratamiento orgánico, utilice ${translateKey(analysis.organic_treatments?.[0] || "Aceite de neem")}. La probabilidad de recuperación es del ${analysis.recovery_chance || 80} por ciento.`;
+      } else if (q.includes("seguro") || q.includes("turistas")) {
+        reply = analysis.tourist_safety?.hazard_detected 
+          ? `Alerta: ${translateKey(analysis.tourist_safety.message)}` 
+          : "Sí, el área es segura para los visitantes.";
+      } else {
+        reply = `El problema principal es ${translateKey(analysis.probable_issue)}. Trate dentro del periodo de urgencia.`;
+      }
+    } else if (language === "fr") {
+      if (q.includes("problème") || q.includes("maladie") || q.includes("tomate") || q.includes("plante")) {
+        reply = `Nous avons détecté ${translateKey(analysis.probable_issue)}. La sévérité est ${translateKey(analysis.severity)}.`;
+      } else if (q.includes("traiter") || q.includes("soigner") || q.includes("traitement")) {
+        reply = `Pour un traitement biologique, utilisez ${translateKey(analysis.organic_treatments?.[0] || "Huile de neem")}. La chance de récupération est de ${analysis.recovery_chance || 80} pour cent.`;
+      } else if (q.includes("sécurisé") || q.includes("touristes")) {
+        reply = analysis.tourist_safety?.hazard_detected 
+          ? `Alerte: ${translateKey(analysis.tourist_safety.message)}` 
+          : "Oui, la zone est sécurisée pour les visiteurs.";
+      } else {
+        reply = `Le problème principal est ${translateKey(analysis.probable_issue)}. Suivez les recommandations urgentes.`;
+      }
+    } else if (language === "te") {
+      if (q.includes("టమోటా") || q.includes("సమస్య") || q.includes("తెగులు")) {
+        reply = `మీ పంటకు ${translateKey(analysis.probable_issue)} ఉన్నట్లు గుర్తించబడింది. తీవ్రత ${translateKey(analysis.severity)}.`;
+      } else if (q.includes("కోలుకోవడం") || q.includes("చికిత్స")) {
+        reply = `సేంద్రీయ చికిత్స కోసం ${translateKey(analysis.organic_treatments?.[0] || "వేప నూనె")} వాడండి. రికవరీ అవకాశం ${analysis.recovery_chance || 80} శాతం.`;
+      } else if (q.includes("సురక్షితం") || q.includes("పర్యాటకులు")) {
+        reply = analysis.tourist_safety?.hazard_detected 
+          ? `హెచ్చరిక: ${translateKey(analysis.tourist_safety.message)}` 
+          : "అవును, పర్యాటకులకు మార్గం సురక్షితం.";
+      } else {
+        reply = `ప్రధాన समस्या ${translateKey(analysis.probable_issue)}. దయచేసి తగిన చర్యలు తీసుకోండి.`;
+      }
+    } else {
+      // Default to English
+      if (q.includes("problem") || q.includes("wrong") || q.includes("issue") || q.includes("tomato") || q.includes("tea") || q.includes("grape")) {
+        reply = `Gemma detected ${analysis.probable_issue} on your crop. The severity level is ${analysis.severity}.`;
+      } else if (q.includes("treat") || q.includes("organic") || q.includes("action") || q.includes("recover") || q.includes("chickpea") || q.includes("mustard")) {
+        reply = `For organic treatment, spray ${analysis.organic_treatments?.[0] || "Neem oil"}. The crop survival recovery chance is estimated at ${analysis.recovery_chance || 80} percent.`;
+      } else if (q.includes("safe") || q.includes("tourist") || q.includes("guest") || q.includes("warning")) {
+        reply = analysis.tourist_safety?.hazard_detected 
+          ? `Caution: ${analysis.tourist_safety.message}` 
+          : "Yes, this field trail is fully safe for guest tours.";
+      } else {
+        reply = `The crop is showing signs of ${analysis.probable_issue}. We recommend reviewing the 30-day recovery timeline.`;
+      }
+    }
+
+    setAssistantReply(reply);
+    speakVoiceReply(reply);
+  };
+
+  const speakVoiceReply = (text) => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = language === "hi" ? "hi-IN" : language === "te" ? "te-IN" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : "en-US";
+    
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    window.speechSynthesis.speak(utterance);
+  };
 
   const BACKEND_URL = "http://localhost:8000";
 
@@ -96,7 +223,13 @@ function Report() {
         "Baking soda": "बेकिंग सोडा (Baking soda)",
         "Compost tea": "कम्पोस्ट चाय (Compost tea)",
         "Mancozeb": "मैनकोज़ेब (Mancozeb)",
-        "Copper oxychloride": "कॉपर ऑक्सीक्लोराइड (Copper oxychloride)"
+        "Copper oxychloride": "कॉपर ऑक्सीक्लोराइड (Copper oxychloride)",
+
+        // Emergency Zones
+        "North field pasture": "उत्तरी खेत चारागाह",
+        "Main farmhouse ridge": "मुख्य फार्महाउस रिज",
+        "East field bottomlands": "पूर्वी खेत निचला इलाका",
+        "Guest Trail Sector 1": "अतिथि पथ क्षेत्र 1"
       },
       es: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -151,7 +284,13 @@ function Report() {
         "Baking soda": "Bicarbonato de sodio",
         "Compost tea": "Té de compost",
         "Mancozeb": "Mancozeb",
-        "Copper oxychloride": "Oxicloruro de cobre"
+        "Copper oxychloride": "Oxicloruro de cobre",
+
+        // Emergency Zones
+        "North field pasture": "Pastizal del campo norte",
+        "Main farmhouse ridge": "Cresta de la granja principal",
+        "East field bottomlands": "Tierras bajas del campo este",
+        "Guest Trail Sector 1": "Sendero de invitados Sector 1"
       },
       fr: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -206,7 +345,13 @@ function Report() {
         "Baking soda": "Bicarbonate de soude",
         "Compost tea": "Thé de compost",
         "Mancozeb": "Mancozèbe",
-        "Copper oxychloride": "Oxychlorure de cuivre"
+        "Copper oxychloride": "Oxychlorure de cuivre",
+
+        // Emergency Zones
+        "North field pasture": "Pâturage du champ nord",
+        "Main farmhouse ridge": "Crête de la granja principale",
+        "East field bottomlands": "Basses terres du champ est",
+        "Guest Trail Sector 1": "Sentier des invités Secteur 1"
       },
       te: {
         "Tomato (Solanum lycopersicum)": "టమోటా (Solanum lycopersicum)",
@@ -261,7 +406,13 @@ function Report() {
         "Baking soda": "వంట సోడా",
         "Compost tea": "కంపోస్ట్ టీ",
         "Mancozeb": "మాంకోజెబ్",
-        "Copper oxychloride": "కాపర్ ఆక్సిక్లోరైడ్"
+        "Copper oxychloride": "కాపర్ ఆక్సిక్లోరైడ్",
+
+        // Emergency Zones
+        "North field pasture": "ఉత్తర మైదాన గడ్డి భూమి",
+        "Main farmhouse ridge": "ప్రధాన నివాస మైదానం",
+        "East field bottomlands": "తూర్పు మైదాన లోతట్టు ప్రాంతం",
+        "Guest Trail Sector 1": "అతిథి నడక మార్గం సెక్టార్ 1"
       }
     };
 
@@ -450,6 +601,76 @@ function Report() {
           </div>
         )}
 
+        {/* Emergency Farm Rescue dashboard card (High Impact ⭐⭐⭐⭐⭐) */}
+        {analysis.emergency_rescue && (
+          <div className="bg-rose-500/10 border-2 border-rose-500/20 rounded-2xl p-6 space-y-4 frosted-glass animate-pulse shadow-lg mb-6">
+            <div className="flex items-center justify-between border-b border-rose-500/20 pb-3">
+              <h2 className="text-base font-bold text-white flex items-center gap-2">
+                <AlertTriangle className="w-5 h-5 text-rose-500 animate-bounce" />
+                🚨 Gemma 4 Emergency Farm Rescue Dashboard
+              </h2>
+              <span className="px-3 py-1 rounded-full text-xs font-black bg-rose-500 text-slate-950 uppercase tracking-widest">
+                Critical Alert
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-slate-300">
+              {/* Flood Severity */}
+              <div className="bg-black/40 border border-white/5 p-4 rounded-xl space-y-1">
+                <span className="text-[10px] text-rose-400 font-bold block uppercase tracking-wider">
+                  Flood Severity Level
+                </span>
+                <span className="text-xl font-extrabold text-white block uppercase tracking-widest text-rose-500">
+                  {translateKey(analysis.emergency_rescue.flood_severity)}
+                </span>
+              </div>
+
+              {/* Safe Zones */}
+              <div className="bg-black/40 border border-white/5 p-4 rounded-xl space-y-1.5">
+                <span className="text-[10px] text-emerald-400 font-bold block uppercase tracking-wider">
+                  🟩 Secured Safe Areas
+                </span>
+                <ul className="list-disc list-inside space-y-1">
+                  {analysis.emergency_rescue.safe_areas.map((area, idx) => (
+                    <li key={idx} className="font-semibold text-white">
+                      {translateKey(area)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* Danger Zones */}
+              <div className="bg-black/40 border border-white/5 p-4 rounded-xl space-y-1.5">
+                <span className="text-[10px] text-rose-400 font-bold block uppercase tracking-wider">
+                  🟥 Danger Sectors
+                </span>
+                <ul className="list-disc list-inside space-y-1">
+                  {analysis.emergency_rescue.danger_areas.map((area, idx) => (
+                    <li key={idx} className="font-semibold text-rose-300">
+                      {translateKey(area)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            {/* Recommended Rescue Actions */}
+            <div className="bg-black/35 border border-rose-500/10 p-4 rounded-xl space-y-3">
+              <span className="text-[10px] text-rose-400 font-black block uppercase tracking-widest">
+                Required Farm Operations
+              </span>
+              <ul className="space-y-2 text-xs font-light">
+                {analysis.emergency_rescue.rescue_actions.map((act, idx) => (
+                  <li key={idx} className="flex items-start gap-2 text-slate-300">
+                    <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0 mt-1.5"></span>
+                    <span className="font-medium text-white">{translateKey(act)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        )}
+
         {/* Main Details Grid split panel */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
           
@@ -609,6 +830,85 @@ function Report() {
                 }`}>
                   {translateKey(analysis.treatment_urgency) || "Treat within 48 hours"}
                 </span>
+              </div>
+            </div>
+
+            {/* AI Voice Assistant (Offline) (High Impact ⭐⭐⭐⭐⭐) */}
+            <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-4 shadow-md">
+              <h3 className="text-sm font-semibold text-white flex items-center gap-1.5 border-b border-white/5 pb-2">
+                <Mic className="w-4 h-4 text-emerald-400" />
+                Gemma 4 Voice Assistant (Offline)
+              </h3>
+
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={startVoiceAssistant}
+                  className={`p-4 rounded-full border cursor-pointer transition-all flex items-center justify-center shrink-0 ${
+                    isListening
+                      ? "bg-rose-500/20 border-rose-500 text-rose-500 animate-pulse scale-105"
+                      : isSpeaking
+                        ? "bg-emerald-500/20 border-emerald-500 text-emerald-400 animate-bounce"
+                        : "bg-white/5 border-white/10 text-slate-300 hover:bg-white/10"
+                  }`}
+                  title="Ask Gemma verbally"
+                >
+                  <Mic className="w-6 h-6" />
+                </button>
+
+                <div className="text-xs space-y-1 overflow-hidden">
+                  <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider block">
+                    {isListening ? "Listening to your voice..." : isSpeaking ? "Speaking..." : "Offline Voice Assistant"}
+                  </span>
+                  <p className="font-semibold text-white truncate max-w-[200px]">
+                    {transcript || (language === "hi" ? "पूछने के लिए माइक दबाएं" : language === "te" ? "మాట్లాడటానికి మైక్ క్లిక్ చేయండి" : language === "es" ? "Presiona para hablar" : language === "fr" ? "Cliquez pour parler" : "Click to speak")}
+                  </p>
+                </div>
+              </div>
+
+              {/* Speech Replies Output */}
+              {assistantReply && (
+                <div className="bg-black/25 border border-white/5 p-3 rounded-lg flex items-start gap-2.5 text-xs text-slate-300 animate-fadeIn">
+                  <Volume2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <p className="leading-relaxed font-light">{assistantReply}</p>
+                </div>
+              )}
+
+              {/* Sample Hints */}
+              <div className="bg-white/5 border border-white/5 p-3 rounded-lg space-y-1.5 text-[10px]">
+                <span className="text-slate-400 font-bold block uppercase tracking-wider">Try asking:</span>
+                <ul className="list-disc list-inside text-slate-300 space-y-1 font-mono">
+                  {language === "hi" ? (
+                    <>
+                      <li>"फसल में क्या बीमारी है?"</li>
+                      <li>"इलाज कैसे करें?"</li>
+                      <li>"क्या पर्यटकों के लिए सुरक्षित है?"</li>
+                    </>
+                  ) : language === "te" ? (
+                    <>
+                      <li>"టమోటా పంటకు ఏ సమస్య ఉంది?"</li>
+                      <li>"చికిత్స ఏమిటి?"</li>
+                      <li>"పర్యాటకులకు సురక్షితమేనా?"</li>
+                    </>
+                  ) : language === "es" ? (
+                    <>
+                      <li>"¿Qué tiene mi tomate?"</li>
+                      <li>"¿Cómo lo trato?"</li>
+                      <li>"¿Es seguro para turistas?"</li>
+                    </>
+                  ) : language === "fr" ? (
+                    <>
+                      <li>"Quel est le problème avec ma tomate ?"</li>
+                      <li>"Comment la soigner ?"</li>
+                      <li>"Est-ce sécurisé pour les touristes ?"</li>
+                    </>
+                  ) : (
+                    <>
+                      <li>"What is wrong with my crop?"</li>
+                      <li>"How do I recover this?"</li>
+                      <li>"Is this path safe for tourists?"</li>
+                    </>
+                  )}
+                </ul>
               </div>
             </div>
 
