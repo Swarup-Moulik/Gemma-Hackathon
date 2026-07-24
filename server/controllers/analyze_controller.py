@@ -1,13 +1,14 @@
 import os
-import shutil
+import tempfile
 from datetime import datetime
 
 from database import get_reports_collection
 from fastapi import HTTPException, UploadFile
+from imagekitio import ImageKit
 from services.gemma_service import run_gemma_crop_analysis, run_gemma_drone_analysis
 
-UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "uploads")
-os.makedirs(UPLOAD_DIR, exist_ok=True)
+# Initialize ImageKit client (automatically reads IMAGEKIT_PRIVATE_KEY from environment)
+imagekit = ImageKit(private_key=os.getenv("IMAGEKIT_PRIVATE_KEY", ""))
 
 
 async def handle_field_analysis(
@@ -16,23 +17,41 @@ async def handle_field_analysis(
     if not file:
         raise HTTPException(status_code=400, detail="No image file uploaded.")
 
-    # 1. Save uploaded image to disk
-    file_extension = os.path.splitext(file.filename)[1] or ".jpg"
-    filename = f"scan-{int(datetime.utcnow().timestamp())}{file_extension}"
-    file_path = os.path.join(UPLOAD_DIR, filename)
+    # 1. Read file bytes into memory
+    file_bytes = await file.read()
+    filename = f"scan-{int(datetime.utcnow().timestamp())}.jpg"
 
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    # 2. Upload image directly to ImageKit CDN via client.files.upload
+    try:
+        upload_response = imagekit.files.upload(
+            file=file_bytes, file_name=filename, folder="/greenpraxis_scans/"
+        )
+        image_url = upload_response.url
+    except Exception as e:
+        print(f"ImageKit Upload Warning: {e}. Falling back to local URL.")
+        image_url = f"/uploads/{filename}"
 
-    image_url = f"/uploads/{filename}"
+    # 3. Create temporary file for PIL processing
+    temp_dir = tempfile.gettempdir()
+    temp_path = os.path.join(temp_dir, filename)
+    with open(temp_path, "wb") as f:
+        f.write(file_bytes)
 
-    # 2. Run Gemma 4 AI Analysis strictly
-    if scan_mode == "drone":
-        analysis_data = await run_gemma_drone_analysis(file_path, latitude, longitude)
-    else:
-        analysis_data = await run_gemma_crop_analysis(file_path, latitude, longitude)
+    # 4. Perform Gemma/Gemini AI Analysis
+    try:
+        if scan_mode == "drone":
+            analysis_data = await run_gemma_drone_analysis(
+                temp_path, latitude, longitude
+            )
+        else:
+            analysis_data = await run_gemma_crop_analysis(
+                temp_path, latitude, longitude
+            )
+    finally:
+        if os.path.exists(temp_path):
+            os.remove(temp_path)
 
-    # 3. Construct MongoDB Document
+    # 5. Persist analysis to MongoDB
     report_doc = {
         "type": scan_mode,
         "image_url": image_url,
@@ -41,7 +60,6 @@ async def handle_field_analysis(
         "created_at": datetime.utcnow().isoformat(),
     }
 
-    # 4. Insert into MongoDB
     collection = get_reports_collection()
     insert_result = await collection.insert_one(report_doc)
 
