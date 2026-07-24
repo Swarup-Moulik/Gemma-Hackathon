@@ -251,3 +251,33 @@ Full document schema:
 |Fonts|Google Fonts|Fraunces · IBM Plex Sans · IBM Plex Mono|
 
 \---
+## 📡 API Reference
+
+### `POST /api/analyze`
+
+**Request:** `multipart/form-data` — `file`, `lat`, `lng`, `scan\\\_type`  
+**Response:** Full diagnosis JSON with `aiAnalysis`, `imageUrl`, `id`
+
+### `POST /api/emergency-rescue`
+
+**Request:** `{ "lat": float, "lng": float }`  
+**Response:** `{ "emergency\\\_rescue": { "flood\\\_severity", "safe\\\_areas", "danger\\\_areas", "rescue\\\_actions" } }`
+
+### `POST /api/chat`
+
+**Request:** `{ "message": string, "lang": "en"|"hi"|"es"|"fr"|"te" }`  
+**Response:** `{ "reply": string }`
+
+### `GET /api/reports`
+
+Returns all stored reports from MongoDB.
+
+### `DELETE /api/reports/{id}`
+
+Deletes a report by MongoDB `\\\_id`.
+
+### `GET /api/health`
+
+Returns `{ "status": "Green Praxis backend online" }`.
+
+\---
