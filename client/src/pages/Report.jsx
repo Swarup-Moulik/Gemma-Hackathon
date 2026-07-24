@@ -161,7 +161,7 @@ function Report() {
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="bg-secondary text-[11px] text-secondary-foreground font-semibold px-2.5 py-1.5 rounded-lg border border-border focus:outline-none"
+              className="bg-slate-900 text-[11px] text-slate-200 font-semibold px-2.5 py-1.5 rounded-lg border border-white/10 focus:outline-none"
             >
               <option value="en">English (US)</option>
               <option value="hi">हिंदी (Hindi)</option>
@@ -169,7 +169,7 @@ function Report() {
 
             <button
               onClick={handleDelete}
-              className="inline-flex items-center gap-1 text-xs text-destructive hover:text-destructive/80 font-medium"
+              className="inline-flex items-center gap-1 text-xs text-destructive hover:text-destructive/80 font-medium cursor-pointer"
             >
               <Trash2 className="w-3.5 h-3.5" />
               Delete Report
@@ -178,16 +178,16 @@ function Report() {
         </div>
 
         {/* Header Summary Card */}
-        <div className="bg-secondary/20 border border-border rounded-2xl p-6 shadow-sm">
+        <div className="frosted-glass border border-white/10 rounded-2xl p-6 shadow-xl">
           <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
             <div>
               <span className="text-xs font-bold text-primary uppercase tracking-wider">
                 {translateKey(isDrone ? "Disaster Field Checker" : "Plant Health Checker")}
               </span>
-              <h1 className="text-2xl font-bold tracking-tight mt-1">
+              <h1 className="text-2xl font-bold tracking-tight mt-1 text-white">
                 {translateKey(analysis.probable_issue)}
               </h1>
-              <p className="text-sm text-muted-foreground mt-0.5">
+              <p className="text-sm text-slate-400 mt-0.5">
                 Target: {translateKey(analysis.crop)}
               </p>
             </div>
@@ -201,19 +201,19 @@ function Report() {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-border text-xs text-muted-foreground">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-white/15 text-xs text-slate-400">
             <div className="flex items-center gap-1.5">
               <span>Confidence Score:</span>
-              <span className="font-semibold text-foreground">{translateKey(analysis.confidence)}</span>
+              <span className="font-semibold text-white">{translateKey(analysis.confidence)}</span>
             </div>
             <div className="flex items-center gap-1.5">
               <span>Engine:</span>
-              <span className="font-semibold text-foreground">Offline Gemma 4 Pipeline</span>
+              <span className="font-semibold text-white">Offline Gemma 4 Pipeline</span>
             </div>
             {reportData.coordinates && (
               <div className="flex items-center gap-1.5">
                 <MapPin className="w-3.5 h-3.5 text-primary" />
-                <span className="font-semibold text-foreground">
+                <span className="font-semibold text-white">
                   {reportData.coordinates.latitude.toFixed(4)}, {reportData.coordinates.longitude.toFixed(4)}
                 </span>
               </div>
@@ -223,15 +223,15 @@ function Report() {
 
         {/* Drone Overall Metrics Header */}
         {isDrone && (
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 bg-secondary/30 border border-border rounded-2xl p-5 text-xs">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 frosted-glass border border-white/10 rounded-2xl p-5 text-xs">
             <div>
-              <span className="text-muted-foreground block uppercase font-bold tracking-wider text-[10px]">Field Suitability</span>
-              <span className="font-extrabold text-sm text-foreground mt-1 block">
+              <span className="text-slate-400 block uppercase font-bold tracking-wider text-[10px]">Field Suitability</span>
+              <span className="font-extrabold text-sm text-white mt-1 block">
                 {translateKey(analysis.field_status)}
               </span>
             </div>
             <div>
-              <span className="text-muted-foreground block uppercase font-bold tracking-wider text-[10px] mb-1">Toxic Silt Risk</span>
+              <span className="text-slate-400 block uppercase font-bold tracking-wider text-[10px] mb-1">Toxic Silt Risk</span>
               <span className={`inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold border ${
                 analysis.toxic_silt_risk === "High"
                   ? "bg-destructive/10 text-destructive border border-destructive/20"
@@ -241,8 +241,8 @@ function Report() {
               </span>
             </div>
             <div>
-              <span className="text-muted-foreground block uppercase font-bold tracking-wider text-[10px]">Estimated Land Damage</span>
-              <span className="font-extrabold text-sm text-foreground mt-1 block">
+              <span className="text-slate-400 block uppercase font-bold tracking-wider text-[10px]">Estimated Land Damage</span>
+              <span className="font-extrabold text-sm text-white mt-1 block">
                 {analysis.damaged_percentage}%
               </span>
             </div>
@@ -256,9 +256,9 @@ function Report() {
           <div className="md:col-span-2 space-y-6">
             
             {/* Uploaded Leaf/Terrain image */}
-            <div className="bg-secondary/10 border border-border p-4 rounded-2xl space-y-3">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground">Scan Capture</h3>
-              <div className="rounded-xl overflow-hidden border border-border bg-black/10 aspect-video md:aspect-square flex items-center justify-center">
+            <div className="frosted-glass border border-white/10 p-4 rounded-2xl space-y-3">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Scan Capture</h3>
+              <div className="rounded-xl overflow-hidden border border-white/5 bg-black/25 aspect-video md:aspect-square flex items-center justify-center">
                 <img
                   src={`${BACKEND_URL}${reportData.image_url}`}
                   alt="Telemetry visual"
@@ -273,16 +273,16 @@ function Report() {
 
             {/* Drone coordinate grid (only visible in drone scanner mode) */}
             {isDrone && analysis.individualFrameAnalyses && (
-              <div className="bg-secondary/10 border border-border p-4 rounded-2xl space-y-4">
+              <div className="frosted-glass border border-white/10 p-4 rounded-2xl space-y-4">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                  <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
                     <Compass className="w-4 h-4 text-primary" />
                     <span>Multispectral Map Grid</span>
                   </h3>
-                  <span className="text-[10px] text-muted-foreground font-semibold">Offline Grid</span>
+                  <span className="text-[10px] text-slate-500 font-bold uppercase">Offline Grid</span>
                 </div>
                 
-                <div className="grid grid-cols-3 gap-2.5 max-w-[200px] mx-auto aspect-square p-2 bg-background border border-border rounded-xl">
+                <div className="grid grid-cols-3 gap-2.5 max-w-[200px] mx-auto aspect-square p-2 bg-black/20 border border-white/5 rounded-xl">
                   {analysis.individualFrameAnalyses.map((frame, index) => {
                     const colorMap = {
                       Mild: "bg-emerald-500 border-emerald-400 shadow-emerald-500/20",
@@ -298,8 +298,8 @@ function Report() {
                         onClick={() => setActiveFrame(frame)}
                         className={`flex items-center justify-center rounded-lg border-2 ${
                           colorMap[frame.severity] || "bg-muted border-border"
-                        } hover:scale-105 transition-transform font-mono text-[10px] font-bold text-background ${
-                          isSelected ? "ring-2 ring-foreground scale-105 border-foreground" : ""
+                        } hover:scale-105 transition-transform font-mono text-[10px] font-bold text-background cursor-pointer ${
+                          isSelected ? "ring-2 ring-white border-white scale-105" : ""
                         }`}
                       >
                         F{index + 1}
@@ -309,16 +309,16 @@ function Report() {
                 </div>
 
                 {activeFrame && (
-                  <div className="bg-background border border-border rounded-xl p-3 text-xs space-y-2">
-                    <div className="flex justify-between border-b border-border pb-1">
-                      <span className="font-semibold">Frame Telemetry F{analysis.individualFrameAnalyses.indexOf(activeFrame) + 1}</span>
-                      <span className="text-muted-foreground">t={activeFrame.timestamp}s</span>
+                  <div className="bg-black/25 border border-white/5 rounded-xl p-3 text-xs space-y-2">
+                    <div className="flex justify-between border-b border-white/5 pb-1">
+                      <span className="font-semibold text-white">Frame Telemetry F{analysis.individualFrameAnalyses.indexOf(activeFrame) + 1}</span>
+                      <span className="text-slate-400">t={activeFrame.timestamp}s</span>
                     </div>
-                    <p className="text-muted-foreground font-mono">
+                    <p className="text-slate-400 font-mono">
                       GPS: {activeFrame.coordinates.latitude.toFixed(5)}, {activeFrame.coordinates.longitude.toFixed(5)}
                     </p>
                     <div>
-                      <span className="font-semibold">Grid Findings:</span>
+                      <span className="font-semibold text-white">Grid Findings:</span>
                       <ul className="list-disc list-inside text-primary mt-1">
                         {activeFrame.visual_findings.map((item, idx) => (
                           <li key={idx}>{item}</li>
@@ -336,23 +336,23 @@ function Report() {
             
             {/* Tourist Safety Card */}
             {analysis.tourist_safety?.hazard_detected ? (
-              <div className="bg-destructive/10 border border-destructive/20 text-destructive rounded-xl p-4 flex items-start gap-3">
-                <ShieldAlert className="w-5 h-5 shrink-0 mt-0.5" />
+              <div className="bg-rose-500/10 border border-rose-500/15 text-rose-400 rounded-xl p-4 flex items-start gap-3 frosted-glass animate-fadeIn">
+                <ShieldAlert className="w-5 h-5 shrink-0 mt-0.5 text-rose-400" />
                 <div>
-                  <h3 className="font-bold text-sm">
+                  <h3 className="font-bold text-sm text-white">
                     Guest & Tourist Safety Hazard Warning
                   </h3>
-                  <p className="text-xs mt-0.5">
+                  <p className="text-xs mt-0.5 text-rose-300">
                     {analysis.tourist_safety.message}
                   </p>
                 </div>
               </div>
             ) : (
-              <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-700 dark:text-emerald-400 rounded-xl p-4 flex items-start gap-3">
-                <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" />
+              <div className="bg-emerald-500/5 border border-emerald-500/15 text-emerald-400 rounded-xl p-4 flex items-start gap-3 frosted-glass animate-fadeIn">
+                <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5 text-emerald-400" />
                 <div>
-                  <h3 className="font-bold text-sm">Guest Zone Secured</h3>
-                  <p className="text-xs mt-0.5">
+                  <h3 className="font-bold text-sm text-white">Guest Zone Secured</h3>
+                  <p className="text-xs mt-0.5 text-slate-300">
                     {analysis.tourist_safety?.message || "No guest safety alerts reported."}
                   </p>
                 </div>
@@ -362,15 +362,15 @@ function Report() {
             {/* Causes and Treatments grid */}
             <div className="grid sm:grid-cols-2 gap-4">
               {/* Likely Causes */}
-              <div className="bg-secondary/10 border border-border rounded-xl p-5 space-y-3">
-                <div className="flex items-center gap-2 text-sm font-semibold">
+              <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-3 shadow-md">
+                <div className="flex items-center gap-2 text-sm font-semibold text-white">
                   <AlertTriangle className="w-4 h-4 text-amber-500" />
                   Likely Environmental Causes
                 </div>
-                <ul className="space-y-1.5 text-xs text-muted-foreground">
+                <ul className="space-y-1.5 text-xs text-slate-300">
                   {analysis.likely_causes?.map((cause, idx) => (
                     <li key={idx} className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground shrink-0 mt-1.5"></span>
+                      <span className="w-1.5 h-1.5 rounded-full bg-slate-500 shrink-0 mt-1.5"></span>
                       <span>{cause}</span>
                     </li>
                   ))}
@@ -378,12 +378,12 @@ function Report() {
               </div>
 
               {/* Organic Options */}
-              <div className="bg-secondary/10 border border-border rounded-xl p-5 space-y-3">
-                <div className="flex items-center gap-2 text-sm font-semibold">
+              <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-3 shadow-md">
+                <div className="flex items-center gap-2 text-sm font-semibold text-white">
                   <Leaf className="w-4 h-4 text-primary" />
                   Organic Treatment Plan
                 </div>
-                <ul className="space-y-1.5 text-xs text-muted-foreground">
+                <ul className="space-y-1.5 text-xs text-slate-300">
                   {analysis.organic_options?.map((option, idx) => (
                     <li key={idx} className="flex items-start gap-2">
                       <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-1.5"></span>
@@ -395,14 +395,14 @@ function Report() {
             </div>
 
             {/* Recommended Immediate Actions */}
-            <div className="bg-secondary/10 border border-border rounded-xl p-5 space-y-3">
-              <h3 className="text-sm font-semibold">
+            <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-3 shadow-md">
+              <h3 className="text-sm font-semibold text-white">
                 Recommended Immediate Actions
               </h3>
-              <ol className="space-y-2 text-xs text-muted-foreground list-decimal list-inside leading-relaxed">
+              <ol className="space-y-2 text-xs text-slate-300 list-decimal list-inside leading-relaxed">
                 {analysis.recommended_actions?.map((action, idx) => (
                   <li key={idx}>
-                    <span className="text-foreground font-medium">{action}</span>
+                    <span className="text-white font-medium">{action}</span>
                   </li>
                 ))}
               </ol>
@@ -410,28 +410,28 @@ function Report() {
 
             {/* Disaster Field Checker Soil agents (only visible if drone scanned) */}
             {isDrone && analysis.reclamation_steps && (
-              <div className="bg-primary/5 border border-primary/20 rounded-xl p-5 space-y-3">
+              <div className="frosted-glass border border-primary/20 rounded-xl p-5 space-y-3 shadow-md">
                 <h3 className="text-sm font-semibold text-primary flex items-center gap-1.5">
                   <Activity className="w-4 h-4" />
                   Disaster Soil Reclamation Roadmap
                 </h3>
                 <div className="grid sm:grid-cols-2 gap-4 text-xs">
                   <div>
-                    <span className="font-bold text-foreground">Steps Required:</span>
-                    <ul className="list-disc list-inside text-muted-foreground mt-1 space-y-1">
+                    <span className="font-bold text-white">Steps Required:</span>
+                    <ul className="list-disc list-inside text-slate-300 mt-1 space-y-1">
                       {analysis.reclamation_steps.map((step, idx) => (
                         <li key={idx}>{step}</li>
                       ))}
                     </ul>
                   </div>
                   <div className="space-y-3">
-                    <div className="bg-background border border-border p-3 rounded-lg">
+                    <div className="bg-black/25 border border-white/5 p-3 rounded-lg">
                       <span className="font-bold text-primary block">Soil Rebalancing Agent:</span>
-                      <span className="text-foreground text-xs mt-1 block">{analysis.soil_rebalancing_agent}</span>
+                      <span className="text-slate-300 text-xs mt-1 block">{analysis.soil_rebalancing_agent}</span>
                     </div>
-                    <div className="bg-background border border-border p-3 rounded-lg">
+                    <div className="bg-black/25 border border-white/5 p-3 rounded-lg">
                       <span className="font-bold text-amber-500 block">Immediate Safeguards:</span>
-                      <ul className="list-disc list-inside text-[10px] text-muted-foreground mt-1 space-y-0.5">
+                      <ul className="list-disc list-inside text-[10px] text-slate-400 mt-1 space-y-0.5">
                         {analysis.immediate_safeguards?.map((safeguard, idx) => (
                           <li key={idx}>{safeguard}</li>
                         ))}
@@ -444,11 +444,11 @@ function Report() {
 
             {/* Expert Threshold Alert */}
             {analysis.expert_advice && (
-              <div className="bg-amber-500/5 border border-amber-500/10 rounded-xl p-4 flex gap-2 text-xs">
+              <div className="bg-amber-500/5 border border-amber-500/15 frosted-glass rounded-xl p-4 flex gap-2 text-xs">
                 <ShieldAlert className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
                 <div>
                   <span className="font-bold text-amber-500">Expert Action Threshold Indicator</span>
-                  <p className="text-muted-foreground mt-1">{analysis.expert_advice}</p>
+                  <p className="text-slate-300 mt-1">{analysis.expert_advice}</p>
                 </div>
               </div>
             )}
@@ -456,19 +456,19 @@ function Report() {
           </div>
         </div>
 
-        {/* Footer Actions */}
-        <div className="flex items-center justify-between pt-4 border-t border-border">
+         {/* Footer Actions */}
+        <div className="flex items-center justify-between pt-6 border-t border-white/10">
           <Link
             to="/dashboard"
-            className="px-4 py-2 bg-secondary text-secondary-foreground text-xs font-semibold rounded-lg hover:bg-secondary/80 transition-colors"
+            className="btn-pill-secondary font-semibold text-xs"
           >
             Go to Timeline History
           </Link>
           <button
             onClick={() => window.print()}
-            className="px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-lg flex items-center gap-1.5 hover:opacity-90"
+            className="btn-pill-primary text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md"
           >
-            <Share2 className="w-3.5 h-3.5" />
+            <Share2 className="w-3.5 h-3.5 text-emerald-950" />
             Export / Print Report
           </button>
         </div>
