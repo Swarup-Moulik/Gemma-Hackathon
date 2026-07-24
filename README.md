@@ -234,3 +234,20 @@ Full document schema:
 ```
 
 \---
+## 🛠️ Technical Stack
+
+|Layer|Technology|Purpose|
+|-|-|-|
+|UI Framework|React 18|Component rendering|
+|Build Tool|Vite 5.x|HMR dev server, ESM bundling|
+|Styling|TailwindCSS v4|Utility classes|
+|Routing|React Router v6|Client-side navigation|
+|Icons|Lucide React|SVG icon library|
+|Voice|Web Speech API|Browser-native STT + TTS|
+|Backend|FastAPI 0.110|REST API server|
+|DB Driver|Motor (async)|Async MongoDB client|
+|Database|MongoDB 7.0|Persistent report storage|
+|Server|Uvicorn|ASGI application runner|
+|Fonts|Google Fonts|Fraunces · IBM Plex Sans · IBM Plex Mono|
+
+\---
