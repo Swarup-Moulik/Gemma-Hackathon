@@ -92,6 +92,22 @@ function Navbar() {
             History Timeline
           </Link>
 
+          <a
+            href="#about"
+            onClick={(e) => {
+              e.preventDefault();
+              if (location.pathname !== '/') {
+                window.location.href = '/#about';
+              } else {
+                const el = document.getElementById('about');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            className="text-sm font-semibold text-slate-400 hover:text-white transition-colors cursor-pointer"
+          >
+            About & Team
+          </a>
+
           {/* Theme Toggle Button */}
           <ThemeToggle />
         </div>
