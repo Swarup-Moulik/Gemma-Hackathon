@@ -52,3 +52,28 @@ function Landing() {
                   <span className="italic text-emerald-400">Project Console</span>
                 </h2>
               </div>
+{/* Layout Details list mimicking reference card */}
+              <div className="space-y-4 text-xs">
+                <div className="border-t border-white/5 pt-3">
+                  <span className="text-slate-400 block font-semibold">Hackathon Event</span>
+                  <span className="text-white font-bold">Google Build with Gemma</span>
+                </div>
+                <div className="border-t border-white/5 pt-3">
+                  <span className="text-slate-400 block font-semibold">AI Intelligence Model</span>
+                  <span className="text-white font-bold">Gemma 4 Multimodal Pipeline</span>
+                </div>
+                <div className="border-t border-white/5 pt-3">
+                  <span className="text-slate-400 block font-semibold">Deployment Context</span>
+                  <span className="text-white font-bold">Offline Local WLAN Hotspot</span>
+                </div>
+                <div className="border-t border-white/5 pt-3">
+                  <span className="text-slate-400 block font-semibold">Visual Palette System</span>
+                  <div className="flex items-center gap-1.5 mt-1.5">
+                    <span className="w-3.5 h-3.5 rounded-full bg-[#051f0b] border border-white/10" title="Dark Green"></span>
+                    <span className="w-3.5 h-3.5 rounded-full bg-emerald-500 border border-white/10" title="Soft Green"></span>
+                    <span className="w-3.5 h-3.5 rounded-full bg-white border border-white/10" title="Light Accent"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
