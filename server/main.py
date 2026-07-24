@@ -252,3 +252,18 @@ async def get_single_report(report_id: str):
         return serialize_doc(doc)
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid report ID format")
+
+@app.delete("/api/reports/{report_id}")
+async def delete_report(report_id: str):
+    try:
+        result = await reports_collection.delete_one({"_id": ObjectId(report_id)})
+        if result.deleted_count == 0:
+            raise HTTPException(status_code=404, detail="Report not found")
+        return {"status": "success", "message": "Report deleted"}
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid report ID format")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+
