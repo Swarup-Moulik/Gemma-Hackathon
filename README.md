@@ -420,3 +420,23 @@ const isLanding = location.pathname === "/";
 **Root cause:**  
 After renaming "AgriRescue AI" → "Green Praxis", all source code was updated. But historical MongoDB documents stored under the old name still surfaced the old brand in the Dashboard and Report views.
 
+**Solution:**  
+Automated startup migration in `main.py`:
+
+```python
+@app.on\\\_event("startup")
+async def startup\\\_tasks():
+    cursor = reports\\\_collection.find({})
+    async for doc in cursor:
+        updated = False
+        for field in \\\["crop", "probable\\\_issue"]:
+            if field in doc and "AgriRescue" in str(doc\\\[field]):
+                doc\\\[field] = str(doc\\\[field]).replace("AgriRescue", "Green Praxis")
+                updated = True
+        if updated:
+            await reports\\\_collection.replace\\\_one({"\\\_id": doc\\\["\\\_id"]}, doc)
+```
+
+Runs automatically on every server boot — patches all legacy documents without manual intervention.
+
+\---
