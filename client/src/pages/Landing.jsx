@@ -133,3 +133,16 @@ function Landing() {
                 <Camera className="w-3.5 h-3.5" /> Mobile Scan Mode
               </div>
             </div>
+{/* Module 2 */}
+            <div className="border border-white/10 rounded-2xl p-5 bg-black/10 relative hover:border-white/20 transition-all flex flex-col justify-between h-[230px]">
+              <div>
+                <span className="text-3xl font-extrabold text-white/10 font-serif-editorial">02</span>
+                <h4 className="text-base font-bold text-white font-serif-editorial mt-1">Disaster Field Checker</h4>
+                <p className="text-[11px] text-slate-400 mt-2 leading-relaxed">
+                  Process flight telemetry profiles. Map 2D grid coordinates for silt levels, evaluate estimated crop damage, and view reclamation roadmaps.
+                </p>
+              </div>
+              <div className="flex items-center gap-1.5 text-[10px] font-semibold text-emerald-400 mt-4">
+                <Plane className="w-3.5 h-3.5" /> Aerial Drone Grid
+              </div>
+            </div>
