@@ -291,3 +291,8 @@ Returns `{ "status": "Green Praxis backend online" }`.
 ├── Site Ledger — 4-page flow list with route links
 ├── About \\\& Team — brand vision + contributor roles
 └── Footer
+/scan (Home)
+├── GPS input (manual or auto-detect)
+├── Scan mode toggle (Mobile / Drone)
+├── Drag-and-drop image upload
+└── Submit → redirects to /report
