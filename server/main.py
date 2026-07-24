@@ -228,3 +228,27 @@ async def analyze_field(
         "created_at": datetime.utcnow().isoformat()
     }
 
+# Save to MongoDB
+    insert_result = await reports_collection.insert_one(report_data)
+    report_data["id"] = str(insert_result.inserted_id)
+    del report_data["_id"]
+
+    return report_data
+
+@app.get("/api/reports")
+async def get_all_reports():
+    cursor = reports_collection.find().sort("created_at", -1)
+    reports = []
+    async for doc in cursor:
+        reports.append(serialize_doc(doc))
+    return reports
+
+@app.get("/api/reports/{report_id}")
+async def get_single_report(report_id: str):
+    try:
+        doc = await reports_collection.find_one({"_id": ObjectId(report_id)})
+        if not doc:
+            raise HTTPException(status_code=404, detail="Report not found")
+        return serialize_doc(doc)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid report ID format")
