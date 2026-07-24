@@ -4,6 +4,8 @@ import axios from "axios";
 import ScanModeSelector from "../components/home/ScanModeSelector";
 import ImageUploader from "../components/home/ImageUploader";
 
+const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:8000";
+
 function Home() {
   const navigate = useNavigate();
   const [scanMode, setScanMode] = useState("crop"); // 'crop' | 'drone'
@@ -59,7 +61,7 @@ function Home() {
       formData.append("longitude", coords.longitude);
 
       const response = await axios.post(
-        "http://localhost:8000/api/analyze",
+        `${BACKEND_URL}/api/analyze`,
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -72,7 +74,7 @@ function Home() {
       console.error("Gemma 4 Analysis failed:", err);
       setIsAnalyzing(false);
       alert(
-        "Error: Local AI Service is offline. Check if your FastAPI server is running.",
+        "Error: AI Service is offline or unreachable. Check if your FastAPI server is running.",
       );
     }
   };
