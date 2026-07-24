@@ -60,7 +60,10 @@ function Landing() {
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
         
-        body.landing-page-active {
+        body.landing-page-active,
+        body.landing-page-active #root,
+        body.landing-page-active .bg-background,
+        body.landing-page-active main {
           background-image: none !important;
           background-color: #171D14 !important;
           background: #171D14 !important;
