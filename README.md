@@ -309,3 +309,9 @@ Returns `{ "status": "Green Praxis backend online" }`.
 ├── TTS voice playback
 └── Language switcher (5 languages)
 
+/chat (Chat)
+├── Conversation history
+├── Quick-question pills
+├── Mic button (STT)
+├── Language selector
+└── TTS spoken response
