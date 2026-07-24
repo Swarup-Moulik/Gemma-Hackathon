@@ -7,7 +7,7 @@ function Chat() {
   const [messages, setMessages] = useState([
     {
       sender: "bot",
-      text: "Hello! I am Gemma, your offline agricultural assistant. How can I help you improve your crop yields today?",
+      text: "Hello! I am Gemma, your agricultural assistant. How can I help you improve your crop yields today?",
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -81,7 +81,7 @@ function Chat() {
       console.error("Offline Chat failed:", err);
       const errorMsg = {
         sender: "bot",
-        text: "Offline engine error. Please ensure your local FastAPI server is running.",
+        text: "AI engine error. Please ensure your local FastAPI server is running.",
         timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
       };
       setMessages(prev => [...prev, errorMsg]);
@@ -108,7 +108,7 @@ function Chat() {
               Gemma Agricultural Advisor
             </h1>
             <p className="text-[11px] text-emerald-400 font-bold uppercase tracking-wider">
-              Offline Knowledge Engine Active
+              Gemma AI Engine Active
             </p>
           </div>
         </div>
