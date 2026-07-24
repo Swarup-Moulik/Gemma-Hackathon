@@ -72,7 +72,15 @@ MOCK_CROP_RESPONSES = [
             {"period": "Day 4-7", "action": "Foliar spray copper hydroxide or organic neem oil every 7 days to halt spore spread."},
             {"period": "Week 2", "action": "Incorporate liquid compost tea to reintroduce healthy root and leaf microbiomes."},
             {"period": "Week 3-4", "action": "Resume sub-surface drip irrigation and check new foliage shoots for green growth."}
-        ]
+        ],
+        "crop_recommendation": {
+            "avoid_crop": "Tomato (Solanum lycopersicum)",
+            "suggested_crops": [
+                {"name": "Mustard", "reason": "Requires low soil moisture, breaking the early blight lifecycle."},
+                {"name": "Chickpea", "reason": "Adapts well to current soil pH and naturally re-nitrogenates beds."},
+                {"name": "Spinach", "reason": "Short 30-day growth cycle to produce yield before damaged soil conditions worsen."}
+            ]
+        }
     },
     {
         "crop": "Tea Plantation (Camellia sinensis)",
@@ -104,7 +112,15 @@ MOCK_CROP_RESPONSES = [
             {"period": "Day 4-7", "action": "Apply garlic-barrier extract or organic copper spray under direct sunlight hours."},
             {"period": "Week 2", "action": "Clear mudbed boundary drainage channels to prevent root rot and dry topsoil layers."},
             {"period": "Week 3-4", "action": "Verify guest pathway fences to ensure safety, and resume light organic spraying."}
-        ]
+        ],
+        "crop_recommendation": {
+            "avoid_crop": "Tea Plantation (Camellia sinensis)",
+            "suggested_crops": [
+                {"name": "Mustard", "reason": "Thrives in dry, well-aerated mudbeds with excellent drainage."},
+                {"name": "Chickpea", "reason": "Corrects soil nitrogen loss and balances pH in acidic clay tracts."},
+                {"name": "Spinach", "reason": "Shallow root depth bypasses high moisture layers that trigger blister blight."}
+            ]
+        }
     },
     {
         "crop": "Grapes / Vineyards (Vitis vinifera)",
@@ -136,7 +152,15 @@ MOCK_CROP_RESPONSES = [
             {"period": "Day 4-7", "action": "Apply a light water-milk foliar spray or sulfur powder to leaf undersides."},
             {"period": "Week 2", "action": "Test cluster air circulation rates and monitor for early fuzzy powdery spots."},
             {"period": "Week 3-4", "action": "Conduct visual cluster counts and verify crop health logs."}
-        ]
+        ],
+        "crop_recommendation": {
+            "avoid_crop": "Grapes / Vineyards (Vitis vinifera)",
+            "suggested_crops": [
+                {"name": "Mustard", "reason": "Requires low water draw, aerating dense under-canopy dirt."},
+                {"name": "Chickpea", "reason": "High salt tolerance makes it ideal for vineyard margins."},
+                {"name": "Spinach", "reason": "Short cycle prevents exposure to long-lasting mildew spores."}
+            ]
+        }
     }
 ]
 
@@ -178,32 +202,56 @@ async def analyze_field(
             {
                 "timestamp": 0,
                 "coordinates": {"latitude": base_lat, "longitude": base_lng},
-                "visual_findings": ["Standing floodwater", "Mild canopy stress"],
-                "severity": "Moderate"
+                "visual_findings": ["Foliage coverage clear", "No flood residue"],
+                "severity": "Healthy"
             },
             {
                 "timestamp": 5,
-                "coordinates": {"latitude": base_lat + 0.001, "longitude": base_lng + 0.001},
-                "visual_findings": ["Thick chemical silt layer", "Soil washaway"],
-                "severity": "Severe"
+                "coordinates": {"latitude": base_lat + 0.0005, "longitude": base_lng + 0.0005},
+                "visual_findings": ["Soil is moist", "Seedlings showing green shoots"],
+                "severity": "Recovering"
             },
             {
                 "timestamp": 10,
-                "coordinates": {"latitude": base_lat - 0.001, "longitude": base_lng + 0.0015},
-                "visual_findings": ["Dry soil terrain", "Crop leaves healthy"],
-                "severity": "Mild"
+                "coordinates": {"latitude": base_lat + 0.001, "longitude": base_lng + 0.001},
+                "visual_findings": ["Standing floodwater", "Mild canopy stress"],
+                "severity": "Moderate Damage"
             },
             {
                 "timestamp": 15,
-                "coordinates": {"latitude": base_lat + 0.0005, "longitude": base_lng - 0.001},
-                "visual_findings": ["Soil erosion", "Uprooted young plants"],
-                "severity": "Moderate"
+                "coordinates": {"latitude": base_lat - 0.0005, "longitude": base_lng + 0.0005},
+                "visual_findings": ["Thick acidic silt layer", "Root rot detected"],
+                "severity": "Severe Damage"
             },
             {
                 "timestamp": 20,
-                "coordinates": {"latitude": base_lat - 0.0005, "longitude": base_lng - 0.0005},
-                "visual_findings": ["Silt blocks root ventilation", "Slight root rot"],
-                "severity": "Severe"
+                "coordinates": {"latitude": base_lat - 0.001, "longitude": base_lng + 0.001},
+                "visual_findings": ["Silt blocks root ventilation", "Slow water pooling"],
+                "severity": "Severe Damage"
+            },
+            {
+                "timestamp": 25,
+                "coordinates": {"latitude": base_lat + 0.0015, "longitude": base_lng - 0.0005},
+                "visual_findings": ["Drained topsoil", "Trichoderma sprayed"],
+                "severity": "Recovering"
+            },
+            {
+                "timestamp": 30,
+                "coordinates": {"latitude": base_lat + 0.0005, "longitude": base_lng - 0.001},
+                "visual_findings": ["Soil erosion", "Uprooted young plants"],
+                "severity": "Moderate Damage"
+            },
+            {
+                "timestamp": 35,
+                "coordinates": {"latitude": base_lat - 0.0005, "longitude": base_lng - 0.0015},
+                "visual_findings": ["Healthy tea canopy", "Good soil composition"],
+                "severity": "Healthy"
+            },
+            {
+                "timestamp": 40,
+                "coordinates": {"latitude": base_lat - 0.0015, "longitude": base_lng - 0.0005},
+                "visual_findings": ["Slight moisture pooling", "Leaves are clean"],
+                "severity": "Healthy"
             }
         ]
 
@@ -211,7 +259,7 @@ async def analyze_field(
             "crop": "Mixed Plantation / Silt Soil",
             "probable_issue": "Post-Disaster Field Contamination",
             "confidence": "High (90%)",
-            "severity": "Severe" if any(f["severity"] == "Severe" for f in frame_data) else "Moderate",
+            "severity": "Severe" if any("Severe" in f["severity"] for f in frame_data) else "Moderate",
             "likely_causes": [
                 "River breach introducing industrial silt runoff.",
                 "Poor soil absorption rates causing extended waterlogging."
@@ -252,7 +300,15 @@ async def analyze_field(
                 {"period": "Day 4-7", "action": "Apply agricultural gypsum (calcium sulfate) to counter silt crusting and flush sodium."},
                 {"period": "Week 2", "action": "Blend raw compost, mulch, and biochar into topsoil to restore organic carbon."},
                 {"period": "Week 3-4", "action": "Sow nitrogen-fixing cover crops (clover, alfalfa) to aerate soil and resume drip irrigation."}
-            ]
+            ],
+            "crop_recommendation": {
+                "avoid_crop": "Rice",
+                "suggested_crops": [
+                    {"name": "Mustard", "reason": "Requires low soil moisture, preventing waterlogged root damage."},
+                    {"name": "Chickpea", "reason": "Thrives in current soil pH, fixing nitrogen into depleted tracts."},
+                    {"name": "Spinach", "reason": "Short growth cycle to bypass current damaged fertility layers."}
+                ]
+            }
         }
 
     # Create MongoDB report document
