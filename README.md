@@ -414,3 +414,9 @@ const isLanding = location.pathname === "/";
 ```
 
 \---
+
+### Problem 3: MongoDB Brand Contamination from Old Records
+
+**Root cause:**  
+After renaming "AgriRescue AI" → "Green Praxis", all source code was updated. But historical MongoDB documents stored under the old name still surfaced the old brand in the Dashboard and Report views.
+
