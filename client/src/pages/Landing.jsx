@@ -38,3 +38,17 @@ function Landing() {
             </Link>
           </div>
         </section>
+{/* ABOUT INFO PANEL - Inspired by Monstera Wikipedia Card Layout */}
+        <section className="frosted-glass border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-950/10 via-transparent to-transparent pointer-events-none"></div>
+          
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Left Column: Title & Metadata style */}
+            <div className="md:col-span-1 space-y-6 md:border-r md:border-white/10 md:pr-8">
+              <div>
+                <span className="text-[10px] font-bold text-slate-400 tracking-widest uppercase">Overview</span>
+                <h2 className="text-3xl font-bold font-serif-editorial text-white mt-1">
+                  AgriRescue <br />
+                  <span className="italic text-emerald-400">Project Console</span>
+                </h2>
+              </div>
