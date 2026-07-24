@@ -149,3 +149,88 @@ function Chat() {
                 {msg.sender === "user" ? <User className="w-4 h-4" /> : <Bot className="w-4 h-4" />}
               </div>
 
+              {/* Text Bubble */}
+              <div className="space-y-1">
+                <div
+                  className={`p-3.5 rounded-2xl text-xs leading-relaxed ${
+                    msg.sender === "user"
+                      ? "bg-primary text-primary-foreground font-semibold rounded-tr-none"
+                      : "bg-white/5 border border-white/5 text-slate-200 rounded-tl-none font-light"
+                  }`}
+                >
+                  {msg.text}
+                </div>
+                <span className="text-[9px] text-slate-500 block px-1">
+                  {msg.timestamp}
+                </span>
+              </div>
+            </div>
+          ))}
+          {loading && (
+            <div className="flex gap-3 max-w-[85%]">
+              <div className="w-8 h-8 rounded-full bg-slate-900 border border-white/5 text-emerald-400 flex items-center justify-center shrink-0 animate-pulse">
+                <Bot className="w-4 h-4" />
+              </div>
+              <div className="bg-white/5 border border-white/5 p-3.5 rounded-2xl rounded-tl-none text-xs text-slate-400 flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce delay-75"></span>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-bounce delay-150"></span>
+              </div>
+            </div>
+          )}
+          <div ref={chatEndRef} />
+        </div>
+
+        {/* Suggestion hints (quick click-to-ask questions) */}
+        <div className="space-y-2">
+          <span className="text-[10px] text-slate-500 font-bold block uppercase tracking-wider">
+            Quick Inquiries:
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {quickQuestions[language].map((q, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleSend(q)}
+                className="bg-white/5 border border-white/5 hover:bg-white/10 hover:border-primary/20 rounded-lg px-3 py-1.5 text-[11px] text-slate-300 hover:text-white transition-all cursor-pointer flex items-center gap-1.5"
+              >
+                <MessageSquare className="w-3.5 h-3.5 text-primary" />
+                {q}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Message Input Box */}
+        <div className="flex gap-2 border-t border-white/10 pt-4">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSend()}
+            placeholder={
+              language === "hi"
+                ? "सवाल पूछें (उदा. 'पत्तियां क्यों मुड़ रही हैं?')..."
+                : language === "te"
+                  ? "ప్రశ్న అడగండి..."
+                  : language === "es"
+                    ? "Haz una pregunta..."
+                    : language === "fr"
+                      ? "Posez une question..."
+                      : "Type your agricultural query here..."
+            }
+            className="flex-1 bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-primary placeholder-slate-500"
+          />
+          <button
+            onClick={() => handleSend()}
+            disabled={!input.trim() || loading}
+            className="bg-primary hover:opacity-90 disabled:opacity-50 text-primary-foreground font-bold p-3 rounded-xl flex items-center justify-center transition-all cursor-pointer"
+          >
+            <Send className="w-4 h-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Chat;
