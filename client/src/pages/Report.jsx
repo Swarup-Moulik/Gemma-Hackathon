@@ -75,7 +75,19 @@ function Report() {
         // Urgency
         "Treat within 24 hours": "24 घंटों के भीतर उपचार करें",
         "Treat within 48 hours": "48 घंटों के भीतर उपचार करें",
-        "Treat within 72 hours": "72 घंटों के भीतर उपचार करें"
+        "Treat within 72 hours": "72 घंटों के भीतर उपचार करें",
+
+        // Grid States
+        "Healthy": "स्वस्थ (Healthy)",
+        "Recovering": "सुधर रहा है (Recovering)",
+        "Moderate Damage": "मध्यम क्षति (Moderate Damage)",
+        "Severe Damage": "गंभीर क्षति (Severe Damage)",
+
+        // Suggested crops
+        "Mustard": "सरसों (Mustard)",
+        "Chickpea": "चना (Chickpea)",
+        "Spinach": "पालक (Spinach)",
+        "Rice": "चावल (Rice)"
       },
       es: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -111,7 +123,19 @@ function Report() {
         // Urgency
         "Treat within 24 hours": "Tratar dentro de las 24 horas",
         "Treat within 48 hours": "Tratar dentro de las 48 horas",
-        "Treat within 72 hours": "Tratar dentro de las 72 horas"
+        "Treat within 72 hours": "Tratar dentro de las 72 horas",
+
+        // Grid States
+        "Healthy": "Saludable",
+        "Recovering": "Recuperando",
+        "Moderate Damage": "Daño Moderado",
+        "Severe Damage": "Daño Grave",
+
+        // Suggested crops
+        "Mustard": "Mostaza",
+        "Chickpea": "Garbanzo",
+        "Spinach": "Espinaca",
+        "Rice": "Arroz"
       },
       fr: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -147,7 +171,19 @@ function Report() {
         // Urgency
         "Treat within 24 hours": "Traiter sous 24 heures",
         "Treat within 48 hours": "Traiter sous 48 heures",
-        "Treat within 72 hours": "Traiter sous 72 heures"
+        "Treat within 72 hours": "Traiter sous 72 heures",
+
+        // Grid States
+        "Healthy": "Sain",
+        "Recovering": "En récupération",
+        "Moderate Damage": "Dégâts Modérés",
+        "Severe Damage": "Dégâts Graves",
+
+        // Suggested crops
+        "Mustard": "Moutarde",
+        "Chickpea": "Pois chiche",
+        "Spinach": "Épinard",
+        "Rice": "Riz"
       },
       te: {
         "Tomato (Solanum lycopersicum)": "టమోటా (Solanum lycopersicum)",
@@ -183,7 +219,19 @@ function Report() {
         // Urgency
         "Treat within 24 hours": "24 గంటలలోపు చికిత్స చేయండి",
         "Treat within 48 hours": "48 గంటలలోపు చికిత్స చేయండి",
-        "Treat within 72 hours": "72 గంటలలోపు చికిత్స చేయండి"
+        "Treat within 72 hours": "72 గంటలలోపు చికిత్స చేయండి",
+
+        // Grid States
+        "Healthy": "ఆరోగ్యకరమైనది",
+        "Recovering": "కోలుకుంటుంది",
+        "Moderate Damage": "మధ్యస్థ నష్టం",
+        "Severe Damage": "తీవ్రమైన నష్టం",
+
+        // Suggested crops
+        "Mustard": "ఆవాలు",
+        "Chickpea": "శెనగలు",
+        "Spinach": "పాలకూర",
+        "Rice": "వరి (Rice)"
       }
     };
 
@@ -408,9 +456,10 @@ function Report() {
                 <div className="grid grid-cols-3 gap-2.5 max-w-[200px] mx-auto aspect-square p-2 bg-black/20 border border-white/5 rounded-xl">
                   {analysis.individualFrameAnalyses.map((frame, index) => {
                     const colorMap = {
-                      Mild: "bg-emerald-500 border-emerald-400 shadow-emerald-500/20",
-                      Moderate: "bg-amber-500 border-amber-400 shadow-amber-500/20",
-                      Severe: "bg-destructive border-destructive-foreground/20 shadow-destructive/20"
+                      "Healthy": "bg-emerald-500 border-emerald-400 shadow-emerald-500/20 text-emerald-950",
+                      "Recovering": "bg-yellow-500 border-yellow-400 shadow-yellow-500/20 text-yellow-950",
+                      "Moderate Damage": "bg-amber-500 border-amber-400 shadow-amber-500/20 text-amber-950",
+                      "Severe Damage": "bg-rose-500 border-rose-400 shadow-rose-500/20 text-rose-950"
                     };
 
                     const isSelected = activeFrame?.timestamp === frame.timestamp;
@@ -420,8 +469,8 @@ function Report() {
                         key={index}
                         onClick={() => setActiveFrame(frame)}
                         className={`flex items-center justify-center rounded-lg border-2 ${
-                          colorMap[frame.severity] || "bg-muted border-border"
-                        } hover:scale-105 transition-transform font-mono text-[10px] font-bold text-background cursor-pointer ${
+                          colorMap[frame.severity] || "bg-muted border-border text-slate-400"
+                        } hover:scale-105 transition-transform font-mono text-[10px] font-bold cursor-pointer ${
                           isSelected ? "ring-2 ring-white border-white scale-105" : ""
                         }`}
                       >
@@ -429,6 +478,26 @@ function Report() {
                       </button>
                     );
                   })}
+                </div>
+
+                {/* Map Grid Color-Coded Legend */}
+                <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 pt-3 border-t border-white/5 text-[9px] font-bold text-slate-400 uppercase tracking-wide">
+                  <div className="flex items-center gap-1">
+                    <span className="w-2.5 h-2.5 rounded bg-emerald-500 border border-white/5"></span>
+                    <span>{translateKey("Healthy")}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="w-2.5 h-2.5 rounded bg-yellow-500 border border-white/5"></span>
+                    <span>{translateKey("Recovering")}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="w-2.5 h-2.5 rounded bg-amber-500 border border-white/5"></span>
+                    <span>{translateKey("Moderate Damage")}</span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <span className="w-2.5 h-2.5 rounded bg-rose-500 border border-white/5"></span>
+                    <span>{translateKey("Severe Damage")}</span>
+                  </div>
                 </div>
 
                 {activeFrame && (
@@ -611,6 +680,47 @@ function Report() {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* AI Crop Recommendation (High Impact ⭐⭐⭐⭐⭐) */}
+            {analysis.crop_recommendation && (
+              <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-4 shadow-md">
+                <h3 className="text-sm font-semibold text-white flex items-center gap-1.5 border-b border-white/5 pb-2">
+                  <Leaf className="w-4 h-4 text-emerald-400" />
+                  Gemma 4 Alternative Crop Rotations
+                </h3>
+
+                <div className="bg-rose-500/10 border border-rose-500/20 rounded-lg p-3 text-xs flex items-center justify-between">
+                  <span className="text-rose-300 font-semibold flex items-center gap-1">
+                    <ShieldAlert className="w-3.5 h-3.5" />
+                    Avoid Replanting:
+                  </span>
+                  <span className="font-bold text-white uppercase font-mono">
+                    {translateKey(analysis.crop_recommendation.avoid_crop)}
+                  </span>
+                </div>
+
+                <div className="space-y-3">
+                  <span className="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">
+                    Recommended Alternatives
+                  </span>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {analysis.crop_recommendation.suggested_crops.map((crop, idx) => (
+                      <div key={idx} className="bg-black/20 border border-white/5 rounded-xl p-3 flex flex-col justify-between space-y-2">
+                        <div>
+                          <span className="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/15 text-emerald-300 uppercase mb-1">
+                            {translateKey(crop.name)}
+                          </span>
+                          <p className="text-[11px] text-slate-300 leading-relaxed font-light">
+                            {translateKey(crop.reason)}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
