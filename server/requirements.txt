@@ -5,3 +5,5 @@ chromadb
 pydantic-settings
 python-dotenv
 httpx
+google-genai
+Pillow
