@@ -70,7 +70,12 @@ function Report() {
         "Day 1-3": "दिन 1-3",
         "Day 4-7": "दिन 4-7",
         "Week 2": "सप्ताह 2",
-        "Week 3-4": "सप्ताह 3-4"
+        "Week 3-4": "सप्ताह 3-4",
+
+        // Urgency
+        "Treat within 24 hours": "24 घंटों के भीतर उपचार करें",
+        "Treat within 48 hours": "48 घंटों के भीतर उपचार करें",
+        "Treat within 72 hours": "72 घंटों के भीतर उपचार करें"
       },
       es: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -101,7 +106,12 @@ function Report() {
         "Day 1-3": "Día 1-3",
         "Day 4-7": "Día 4-7",
         "Week 2": "Semana 2",
-        "Week 3-4": "Semana 3-4"
+        "Week 3-4": "Semana 3-4",
+
+        // Urgency
+        "Treat within 24 hours": "Tratar dentro de las 24 horas",
+        "Treat within 48 hours": "Tratar dentro de las 48 horas",
+        "Treat within 72 hours": "Tratar dentro de las 72 horas"
       },
       fr: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -132,7 +142,12 @@ function Report() {
         "Day 1-3": "Jour 1-3",
         "Day 4-7": "Jour 4-7",
         "Week 2": "Semaine 2",
-        "Week 3-4": "Semaine 3-4"
+        "Week 3-4": "Semaine 3-4",
+
+        // Urgency
+        "Treat within 24 hours": "Traiter sous 24 heures",
+        "Treat within 48 hours": "Traiter sous 48 heures",
+        "Treat within 72 hours": "Traiter sous 72 heures"
       },
       te: {
         "Tomato (Solanum lycopersicum)": "టమోటా (Solanum lycopersicum)",
@@ -163,7 +178,12 @@ function Report() {
         "Day 1-3": "1-3 రోజులు",
         "Day 4-7": "4-7 రోజులు",
         "Week 2": "2వ వారం",
-        "Week 3-4": "3-4 వారాలు"
+        "Week 3-4": "3-4 వారాలు",
+
+        // Urgency
+        "Treat within 24 hours": "24 గంటలలోపు చికిత్స చేయండి",
+        "Treat within 48 hours": "48 గంటలలోపు చికిత్స చేయండి",
+        "Treat within 72 hours": "72 గంటలలోపు చికిత్స చేయండి"
       }
     };
 
@@ -437,6 +457,62 @@ function Report() {
           {/* Right panel: AI analysis details */}
           <div className="md:col-span-3 space-y-6">
             
+            {/* Crop Survival Probability (Predictive Analytics) */}
+            <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-4 shadow-md">
+              <h3 className="text-sm font-semibold text-white flex items-center gap-1.5 border-b border-white/5 pb-2">
+                <Activity className="w-4 h-4 text-emerald-400" />
+                Gemma 4 Predictive Analytics
+              </h3>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                {/* Chance of Recovery */}
+                <div className="space-y-1.5">
+                  <div className="flex justify-between font-semibold">
+                    <span className="text-slate-300">Chance of Recovery</span>
+                    <span className="text-emerald-400">{analysis.recovery_chance || 80}%</span>
+                  </div>
+                  <div className="h-2 bg-slate-900 rounded-full overflow-hidden border border-white/5">
+                    <div 
+                      className={`h-full rounded-full transition-all duration-500 ${
+                        (analysis.recovery_chance || 80) > 75 
+                          ? "bg-emerald-500" 
+                          : (analysis.recovery_chance || 80) > 40 
+                            ? "bg-amber-500" 
+                            : "bg-destructive"
+                      }`}
+                      style={{ width: `${analysis.recovery_chance || 80}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                {/* Estimated Yield Loss */}
+                <div className="space-y-1.5">
+                  <div className="flex justify-between font-semibold">
+                    <span className="text-slate-300">Estimated Yield Loss</span>
+                    <span className="text-rose-400">{analysis.yield_loss_estimate || 20}%</span>
+                  </div>
+                  <div className="h-2 bg-slate-900 rounded-full overflow-hidden border border-white/5">
+                    <div 
+                      className="bg-rose-500 h-full rounded-full transition-all duration-500"
+                      style={{ width: `${analysis.yield_loss_estimate || 20}%` }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Treatment Urgency Badge */}
+              <div className="bg-white/5 border border-white/5 rounded-lg p-3 flex items-center justify-between text-xs">
+                <span className="text-slate-400">Treatment Urgency:</span>
+                <span className={`px-2.5 py-0.5 rounded-full font-bold uppercase tracking-wider text-[9px] border ${
+                  analysis.treatment_urgency?.includes("24")
+                    ? "bg-rose-500/10 text-rose-400 border-rose-500/20"
+                    : "bg-amber-500/10 text-amber-600 border-amber-500/20"
+                }`}>
+                  {translateKey(analysis.treatment_urgency) || "Treat within 48 hours"}
+                </span>
+              </div>
+            </div>
+
             {/* Tourist Safety Card */}
             {analysis.tourist_safety?.hazard_detected ? (
               <div className="bg-rose-500/10 border border-rose-500/15 text-rose-400 rounded-xl p-4 flex items-start gap-3 frosted-glass animate-fadeIn">
