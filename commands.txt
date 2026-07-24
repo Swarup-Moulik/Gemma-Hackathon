@@ -1,0 +1,10 @@
+for Fastapi
+
+python -m venv venv                                             #initialize virtual environment
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass      #If error normally
+.\venv\Scripts\Activate                                         #activate virtual environment
+uvicorn main:app --reload                                       #run FastAPI server with auto-reload
+
+for React
+
+npm run dev             #run React development server

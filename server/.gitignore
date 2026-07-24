@@ -1,0 +1,67 @@
+# ==========================================
+# Virtual Environment (Crucial based on your tree)
+# ==========================================
+venv/
+ENV/
+env/
+.venv/
+env.bak/
+venv.bak/
+
+# ==========================================
+# Python Bytecode & Cache Files
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# ==========================================
+# Environment Variables & Secrets
+# ==========================================
+.env
+.env.*
+!.env.example
+
+# ==========================================
+# Local Vector DB & Persistent Storage Data
+# ==========================================
+# ChromaDB persistence directory & SQLite files
+chroma_db/
+*.sqlite3
+*.db
+chroma/
+
+# User Uploaded Images / Temporary Processing Cache
+uploads/
+temp_images/
+*.jpg
+*.jpeg
+*.png
+*.webp
+
+# ==========================================
+# IDEs & System Files
+# ==========================================
+# Windows Explorer
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# VS Code / Zed / JetBrains
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MSYS2 / MinGW / Bash Artifacts
+*.exe
+*.dll
+
+# ==========================================
+# Testing & Coverage
+# ==========================================
+.pytest_cache/
+.coverage
+htmlcov/
