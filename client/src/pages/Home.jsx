@@ -10,12 +10,29 @@ import {
   Cpu,
 } from "lucide-react";
 
+import axios from "axios";
+
 function Home() {
   const navigate = useNavigate();
   const [scanMode, setScanMode] = useState("crop"); // 'crop' | 'drone'
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [coords, setCoords] = useState({ latitude: 26.2006, longitude: 92.4005 });
+
+  React.useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setCoords({
+            latitude: pos.coords.latitude,
+            longitude: pos.coords.longitude
+          });
+        },
+        (err) => console.warn("Location permission denied. Using base agricultural coordinates.")
+      );
+    }
+  }, []);
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -31,12 +48,25 @@ function Home() {
 
     setIsAnalyzing(true);
 
-    // Simulate API call to FastAPI backend
-    setTimeout(() => {
+    try {
+      const formData = new FormData();
+      formData.append("file", selectedFile);
+      formData.append("scanMode", scanMode);
+      formData.append("latitude", coords.latitude);
+      formData.append("longitude", coords.longitude);
+
+      const response = await axios.post("http://localhost:8000/api/analyze", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      });
+
       setIsAnalyzing(false);
-      // Navigate to report page (passing dummy ID or data via state)
-      navigate("/report");
-    }, 2000);
+      // Navigate to report page passing the newly saved MongoDB report ID
+      navigate(`/report?id=${response.data.id}`);
+    } catch (err) {
+      console.error("Gemma 4 Analysis failed:", err);
+      setIsAnalyzing(false);
+      alert("Error: Local AI Service is offline. Check if uvicorn main:app is running.");
+    }
   };
 
   return (
