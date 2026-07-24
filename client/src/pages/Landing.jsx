@@ -10,7 +10,7 @@ function Landing() {
       <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-[-10%] left-[-10%] w-[400px] h-[400px] bg-emerald-700/5 rounded-full blur-[120px] pointer-events-none"></div>
 
-<main className="flex-1 max-w-5xl mx-auto w-full px-6 py-12 md:py-16 space-y-20 relative z-10">
+      <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-12 md:py-16 space-y-20 relative z-10">
         
         {/* HERO SECTION - Inspired by Cover Leaf Reference */}
         <section className="text-center space-y-6 max-w-3xl mx-auto py-8">
@@ -38,7 +38,8 @@ function Landing() {
             </Link>
           </div>
         </section>
-{/* ABOUT INFO PANEL - Inspired by Monstera Wikipedia Card Layout */}
+
+        {/* ABOUT INFO PANEL - Inspired by Monstera Wikipedia Card Layout */}
         <section className="frosted-glass border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-950/10 via-transparent to-transparent pointer-events-none"></div>
           
@@ -52,7 +53,8 @@ function Landing() {
                   <span className="italic text-emerald-400">Project Console</span>
                 </h2>
               </div>
-{/* Layout Details list mimicking reference card */}
+
+              {/* Layout Details list mimicking reference card */}
               <div className="space-y-4 text-xs">
                 <div className="border-t border-white/5 pt-3">
                   <span className="text-slate-400 block font-semibold">Hackathon Event</span>
@@ -76,7 +78,8 @@ function Landing() {
                 </div>
               </div>
             </div>
-             {/* Right Column: Three Core Pillars (Cause, AI, Event) */}
+
+            {/* Right Column: Three Core Pillars (Cause, AI, Event) */}
             <div className="md:col-span-2 space-y-6 md:pl-4">
               <div className="space-y-1.5">
                 <h3 className="text-sm font-bold text-emerald-300 uppercase tracking-widest flex items-center gap-2">
@@ -110,7 +113,8 @@ function Landing() {
             </div>
           </div>
         </section>
-{/* FEATURE TIMELINE SECTION - Inspired by Numbered Grid Reference */}
+
+        {/* FEATURE TIMELINE SECTION - Inspired by Numbered Grid Reference */}
         <section className="space-y-8">
           <div className="text-center space-y-1.5">
             <span className="text-[10px] font-bold text-emerald-400 tracking-widest uppercase">Features</span>
@@ -120,7 +124,8 @@ function Landing() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
- {/* Module 1 */}
+            
+            {/* Module 1 */}
             <div className="border border-white/10 rounded-2xl p-5 bg-black/10 relative hover:border-white/20 transition-all flex flex-col justify-between h-[230px]">
               <div>
                 <span className="text-3xl font-extrabold text-white/10 font-serif-editorial">01</span>
@@ -133,7 +138,8 @@ function Landing() {
                 <Camera className="w-3.5 h-3.5" /> Mobile Scan Mode
               </div>
             </div>
-{/* Module 2 */}
+
+            {/* Module 2 */}
             <div className="border border-white/10 rounded-2xl p-5 bg-black/10 relative hover:border-white/20 transition-all flex flex-col justify-between h-[230px]">
               <div>
                 <span className="text-3xl font-extrabold text-white/10 font-serif-editorial">02</span>
@@ -146,7 +152,8 @@ function Landing() {
                 <Plane className="w-3.5 h-3.5" /> Aerial Drone Grid
               </div>
             </div>
- {/* Module 3 */}
+
+            {/* Module 3 */}
             <div className="border border-white/10 rounded-2xl p-5 bg-black/10 relative hover:border-white/20 transition-all flex flex-col justify-between h-[230px] md:col-span-2 lg:col-span-1">
               <div>
                 <span className="text-3xl font-extrabold text-white/10 font-serif-editorial">03</span>
@@ -162,3 +169,23 @@ function Landing() {
 
           </div>
         </section>
+
+        {/* BOTTOM CALL TO ACTION */}
+        <section className="text-center py-6">
+          <p className="text-[10px] tracking-widest text-slate-400 uppercase font-bold">Get Started</p>
+          <div className="mt-4 flex justify-center gap-4">
+            <Link to="/scan" className="btn-pill-primary text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-lg">
+              Launch Console
+            </Link>
+            <Link to="/dashboard" className="btn-pill-secondary text-xs font-bold cursor-pointer">
+              Timeline Dashboard
+            </Link>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  );
+}
+
+export default Landing;
