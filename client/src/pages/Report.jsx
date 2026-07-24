@@ -30,13 +30,14 @@ function Report() {
 
   const translateKey = (enText) => {
     if (!enText) return "";
-    if (language === "hi") {
-      const dict = {
+    
+    const translations = {
+      hi: {
         // Crops
         "Tomato (Solanum lycopersicum)": "टमाटर (Solanum lycopersicum)",
         "Tea Plantation (Camellia sinensis)": "चाय बागान (Camellia sinensis)",
         "Grapes / Vineyards (Vitis vinifera)": "अंगूर / अंगूर का बाग (Vitis vinifera)",
-        "Mixed Plantation / Silt Soil": "मिश्रित वृक्षारोपण / गाद मिट्टी",
+        "Mixed Plantation / Silt Soil": "मिश्रित वृक्षारोपण / गाద మట్టి",
         
         // Issues
         "Early Blight (Alternaria solani)": "अगेती झुलसा (Early Blight)",
@@ -64,10 +65,85 @@ function Report() {
         // Sections
         "Disaster Field Checker": "आपदा क्षेत्र समीक्षक (Disaster Field Checker)",
         "Plant Health Checker": "पौधा स्वास्थ्य रक्षक (Plant Health Checker)"
-      };
-      return dict[enText] || enText;
-    }
-    return enText;
+      },
+      es: {
+        "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
+        "Tea Plantation (Camellia sinensis)": "Plantación de Té (Camellia sinensis)",
+        "Grapes / Vineyards (Vitis vinifera)": "Uvas / Viñedos (Vitis vinifera)",
+        "Mixed Plantation / Silt Soil": "Plantación Mixta / Suelo de Limo",
+        "Early Blight (Alternaria solani)": "Tizón Temprano (Alternaria solani)",
+        "Blister Blight (Exobasidium vexans)": "Roya de la Ampolla (Exobasidium vexans)",
+        "Powdery Mildew (Uncinula necator)": "Mildiú Polvoriento (Uncinula necator)",
+        "Post-Disaster Field Contamination": "Contaminación de Campo Post-Desastre",
+        "Mild": "Leve",
+        "Moderate": "Moderado",
+        "Severe": "Grave",
+        "High": "Alto",
+        "Medium": "Medio",
+        "Low": "Bajo",
+        "High (94%)": "Alto (94%)",
+        "High (91%)": "Alto (91%)",
+        "Medium (88%)": "Medio (88%)",
+        "High (90%)": "Alto (90%)",
+        "Waterlogged but Salvagable": "Inundado pero Recuperable",
+        "Highly Contaminated": "Altamente Contaminado",
+        "Safe for Immediate Planting": "Seguro para Siembra Inmediata",
+        "Disaster Field Checker": "Verificador de Campo en Desastres",
+        "Plant Health Checker": "Verificador de Salud de Plantas"
+      },
+      fr: {
+        "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
+        "Tea Plantation (Camellia sinensis)": "Plantation de Thé (Camellia sinensis)",
+        "Grapes / Vineyards (Vitis vinifera)": "Raisins / Vignobles (Vitis vinifera)",
+        "Mixed Plantation / Silt Soil": "Plantation Mixte / Limon de Sol",
+        "Early Blight (Alternaria solani)": "Alternariose (Alternaria solani)",
+        "Blister Blight (Exobasidium vexans)": "Maladie des Cloques (Exobasidium vexans)",
+        "Powdery Mildew (Uncinula necator)": "Oïdium (Uncinula necator)",
+        "Post-Disaster Field Contamination": "Contamination du Champ Après Sinistre",
+        "Mild": "Léger",
+        "Moderate": "Modéré",
+        "Severe": "Grave",
+        "High": "Élevé",
+        "Medium": "Moyen",
+        "Low": "Faible",
+        "High (94%)": "Élevé (94%)",
+        "High (91%)": "Élevé (91%)",
+        "Medium (88%)": "Moyen (88%)",
+        "High (90%)": "Élevé (90%)",
+        "Waterlogged but Salvagable": "Gorgé d'eau mais Récupérable",
+        "Highly Contaminated": "Hautement Contaminé",
+        "Safe for Immediate Planting": "Sûr pour Plantation Immédiate",
+        "Disaster Field Checker": "Contrôleur de Champ Post-Catastrophe",
+        "Plant Health Checker": "Vérificateur de Santé des Plantes"
+      },
+      te: {
+        "Tomato (Solanum lycopersicum)": "టమోటా (Solanum lycopersicum)",
+        "Tea Plantation (Camellia sinensis)": "తేయాకు తోట (Camellia sinensis)",
+        "Grapes / Vineyards (Vitis vinifera)": "ద్రాక్ష తోటలు (Vitis vinifera)",
+        "Mixed Plantation / Silt Soil": "మిశ్రమ తోట / ఒండ్రు మట్టి",
+        "Early Blight (Alternaria solani)": "అల్టర్నేరియా ఆకుమచ్చ తెగులు (Early Blight)",
+        "Blister Blight (Exobasidium vexans)": "ఆకు బొబ్బ తెగులు (Blister Blight)",
+        "Powdery Mildew (Uncinula necator)": "బూడిద తెగులు (Powdery Mildew)",
+        "Post-Disaster Field Contamination": "విపత్తు అనంతర పొలం కాలుష్యం",
+        "Mild": "తేలికపాటి (Mild)",
+        "Moderate": "మధ్యస్థం (Moderate)",
+        "Severe": "తీవ్రమైన (Severe)",
+        "High": "అధికం (High)",
+        "Medium": "మధ్యస్థం (Medium)",
+        "Low": "తక్కువ (Low)",
+        "High (94%)": "అధికం (94%)",
+        "High (91%)": "అధికం (91%)",
+        "Medium (88%)": "మధ్యస్థం (88%)",
+        "High (90%)": "అధికం (90%)",
+        "Waterlogged but Salvagable": "నీటితో నిండినప్పటికీ కాపాడుకోగలరు",
+        "Highly Contaminated": "ఎక్కువగా కలుషితమైనది",
+        "Safe for Immediate Planting": "వెంటనే నాటడానికి సురక్షితం",
+        "Disaster Field Checker": "విపత్తు పొల పరిశీలకుడు (Disaster Field Checker)",
+        "Plant Health Checker": "మొక్కల ఆరోగ్య పరీక్షకారి (Plant Health Checker)"
+      }
+    };
+
+    return translations[language]?.[enText] || enText;
   };
 
   useEffect(() => {
@@ -161,10 +237,13 @@ function Report() {
             <select
               value={language}
               onChange={(e) => setLanguage(e.target.value)}
-              className="bg-slate-900 text-[11px] text-slate-200 font-semibold px-2.5 py-1.5 rounded-lg border border-white/10 focus:outline-none"
+              className="bg-slate-900 text-[11px] text-slate-200 font-semibold px-2.5 py-1.5 rounded-lg border border-white/10 focus:outline-none cursor-pointer"
             >
               <option value="en">English (US)</option>
               <option value="hi">हिंदी (Hindi)</option>
+              <option value="es">Español (Spanish)</option>
+              <option value="fr">Français (French)</option>
+              <option value="te">తెలుగు (Telugu)</option>
             </select>
 
             <button
