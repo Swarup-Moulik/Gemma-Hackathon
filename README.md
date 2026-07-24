@@ -179,3 +179,25 @@ window.speechSynthesis.speak(utterance);
 **Languages:** English · Hindi (हिंदी) · Spanish (Español) · French (Français) · Telugu (తెలుగు)
 
 \---
+### 5\. 🧠 Explainable AI (XAI) Transparency
+
+Every diagnosis includes Gemma's own reasoning:
+
+```
+I identified Early Blight because I observed:
+  • Circular brown lesions with concentric target-like rings
+  • Yellowing (chlorosis) surrounding infected areas
+  • Lesions predominantly on older, lower leaves
+
+Look-alike diseases ruled out:
+  • Late Blight (82% visual similarity)
+    → No water-soaked white sporulation on leaf undersides
+  • Septoria (61%)
+    → Lesions too large, no pycnidia visible
+  • Leaf Spot (54%)
+    → No angular lesion boundary
+```
+
+This transparency demonstrates that the AI understands agriculture, not just pattern-matches images — critical for hackathon evaluation.
+
+\---
