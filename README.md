@@ -161,3 +161,21 @@ One-click disaster assessment. Calls `POST /api/emergency-rescue` and generates:
 Outputs a print-ready PDF via `window.print()`. Accessible as a global navbar button from any page.
 
 \---
+
+### 4\. 🎙️ AI Voice Assistant (Web Speech API)
+
+```javascript
+// STT — farmer speaks a question
+const recognition = new window.SpeechRecognition();
+recognition.lang = selectedLanguage;  // 'en-US', 'hi-IN', 'es-ES', 'fr-FR', 'te-IN'
+recognition.onresult = (e) => sendToGemma(e.results\\\[0]\\\[0].transcript);
+
+// TTS — Gemma speaks the answer back
+const utterance = new SpeechSynthesisUtterance(gemmaReply);
+utterance.lang = selectedLanguage;
+window.speechSynthesis.speak(utterance);
+```
+
+**Languages:** English · Hindi (हिंदी) · Spanish (Español) · French (Français) · Telugu (తెలుగు)
+
+\---
