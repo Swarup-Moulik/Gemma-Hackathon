@@ -234,7 +234,10 @@ function Report() {
         // Similar Diseases
         "Late Blight": "पछैती झुलसा (Late Blight)",
         "Septoria": "सेप्टोरिया (Septoria)",
-        "Leaf Spot": "पत्ती धब्बा (Leaf Spot)"
+        "Leaf Spot": "पत्ती धब्बा (Leaf Spot)",
+
+        // Explainable AI
+        "I identified Early Blight because I observed circular brown lesions with concentric rings (target-like pattern) on older lower leaves, along with distinct chlorotic yellowing around the margins of the infected spots.": "मैंने अगेती झुलसा (Early Blight) की पहचान इसलिए की क्योंकि मैंने पुरानी निचली पत्तियों पर संकेंद्रीय छल्लों (लक्ष्य-समान पैटर्न) के साथ गोल भूरे रंग के घाव देखे, साथ ही संक्रमित स्थानों के किनारों के आसपास स्पष्ट पीलापन देखा।"
       },
       es: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -300,7 +303,10 @@ function Report() {
         // Similar Diseases
         "Late Blight": "Tizón Tardío",
         "Septoria": "Septoria",
-        "Leaf Spot": "Mancha Foliar"
+        "Leaf Spot": "Mancha Foliar",
+
+        // Explainable AI
+        "I identified Early Blight because I observed circular brown lesions with concentric rings (target-like pattern) on older lower leaves, along with distinct chlorotic yellowing around the margins of the infected spots.": "Identifiqué el tizón temprano porque observé lesiones marrones circulares con anillos concéntricos en las hojas inferiores más viejas, junto con un color amarillento distintivo alrededor de los bordes."
       },
       fr: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -366,7 +372,10 @@ function Report() {
         // Similar Diseases
         "Late Blight": "Mildiou Tardif",
         "Septoria": "Septoriose",
-        "Leaf Spot": "Tache Foliaire"
+        "Leaf Spot": "Tache Foliaire",
+
+        // Explainable AI
+        "I identified Early Blight because I observed circular brown lesions with concentric rings (target-like pattern) on older lower leaves, along with distinct chlorotic yellowing around the margins of the infected spots.": "J'ai identifié l'alternariose parce que j'ai observé des lésions brunes circulaires avec des anneaux concentriques sur les feuilles inférieures plus anciennes, ainsi qu'un jaunissement distinct sur les bordures."
       },
       te: {
         "Tomato (Solanum lycopersicum)": "టమోటా (Solanum lycopersicum)",
@@ -432,7 +441,10 @@ function Report() {
         // Similar Diseases
         "Late Blight": "లేట్ బ్లైట్ తెగులు",
         "Septoria": "సెప్టోరియా",
-        "Leaf Spot": "ఆకుమచ్చ తెగులు"
+        "Leaf Spot": "ఆకుమచ్చ తెగులు",
+
+        // Explainable AI
+        "I identified Early Blight because I observed circular brown lesions with concentric rings (target-like pattern) on older lower leaves, along with distinct chlorotic yellowing around the margins of the infected spots.": "పాత ఆకులపై గుండ్రటి గోధుమ రంగు మచ్చలను గుర్తించినందువల్ల మరియు సోకిన ప్రాంతాల చుట్టూ పసుపు రంగును గమనించినందువల్ల నేను అల్టర్నేరియా ఆకుమచ్చ తెగులుగా గుర్తించాను."
       }
     };
 
@@ -687,6 +699,21 @@ function Report() {
                   </li>
                 ))}
               </ul>
+            </div>
+          </div>
+        )}
+
+        {/* AI Explainability block (High Impact ⭐⭐⭐⭐⭐) */}
+        {analysis.explainable_ai && (
+          <div className="bg-primary/5 border border-primary/20 rounded-2xl p-5 mb-6 text-xs text-slate-300 frosted-glass flex items-start gap-3 animate-fadeIn shadow-md">
+            <Cpu className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+            <div className="space-y-1">
+              <span className="text-[10px] text-primary font-bold uppercase tracking-wider block">
+                🧠 Gemma 4 Explainable AI Reasoning (Model Confidence: {analysis.confidence})
+              </span>
+              <p className="italic font-light leading-relaxed text-white">
+                "{translateKey(analysis.explainable_ai)}"
+              </p>
             </div>
           </div>
         )}
