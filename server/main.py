@@ -10,7 +10,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="Green Praxis Backend", description="Gemma 4 Offline Web Server")
+app = FastAPI(title="Green Praxis Backend", description="Gemma 4 Web Server")
 
 # Startup event to download clean qrcode.js offline generator library
 @app.on_event("startup")
@@ -200,7 +200,7 @@ MOCK_CROP_RESPONSES = [
 def health_check():
     return {
         "status": "OK",
-        "engine": "Gemma 4 Offline Web Pipeline",
+        "engine": "Gemma 4 Web Pipeline",
         "database": "MongoDB Connected"
     }
 
@@ -533,11 +533,11 @@ def agricultural_chat(req: ChatRequest):
             
     # Default local fallbacks
     defaults = {
-        "en": "I am Gemma, your offline agricultural consultant. Ask me about powdery mildew, leaf curling, irrigation schedules, or post-flood soil recovery.",
-        "hi": "मैं जेम्मा हूँ, आपकी ऑफलाइन कृषि सलाहकार। मुझसे चूर्णिल आसिता (powdery mildew), पत्तियों का मुड़ना, सिंचाई का समय, या मिट्टी सुधार के बारे में पूछें।",
-        "es": "Soy Gemma, tu consultora agrícola offline. Pregúntame sobre el mildiú polvoriento, enrollamiento de hojas, riego o recuperación del suelo.",
-        "fr": "Je suis Gemma, votre conseillère agricole hors ligne. Posez-moi des questions sur l'oïdium, l'enroulement des feuilles, l'irrigation ou le sol.",
-        "te": "నేను జెమ్మా, మీ ఆఫ్లైన్ వ్యవసాయ సహాయకురాలిని. నన్ను బూడిద తెగులు, ఆకులు ముడుచుకోవడం, నీటి పారుదల లేదా నేల రికవరీ గురించి అడగండి."
+        "en": "I am Gemma, your agricultural consultant. Ask me about powdery mildew, leaf curling, irrigation schedules, or post-flood soil recovery.",
+        "hi": "मैं जेम्मा हूँ, आपकी कृषि सलाहकार। मुझसे चूर्णिल आसिता (powdery mildew), पत्तियों का मुड़ना, सिंचाई का समय, या मिट्टी सुधार के बारे में पूछें।",
+        "es": "Soy Gemma, tu consultora agrícola. Pregúntame sobre el mildiú polvoriento, enrollamiento de hojas, riego o recuperación del suelo.",
+        "fr": "Je suis Gemma, votre conseillère agricole. Posez-moi des questions sur l'oïdium, l'enroulement des feuilles, l'irrigation ou le sol.",
+        "te": "నేను జెమ్మా, మీ వ్యవసాయ సహాయకురాలిని. నన్ను బూడిద తెగులు, ఆకులు ముడుచుకోవడం, నీటి పారుదల లేదా నేల రికవరీ గురించి అడగండి."
     }
     return {"reply": defaults.get(lang, defaults["en"])}
 
