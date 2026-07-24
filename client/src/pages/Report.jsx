@@ -12,7 +12,9 @@ import {
   MapPin,
   Trash2,
   Activity,
-  Compass
+  Compass,
+  Sparkles,
+  FlaskConical
 } from "lucide-react";
 
 function Report() {
@@ -87,7 +89,14 @@ function Report() {
         "Mustard": "सरसों (Mustard)",
         "Chickpea": "चना (Chickpea)",
         "Spinach": "पालक (Spinach)",
-        "Rice": "चावल (Rice)"
+        "Rice": "चावल (Rice)",
+
+        // Treatments
+        "Neem oil": "नीम का तेल (Neem oil)",
+        "Baking soda": "बेकिंग सोडा (Baking soda)",
+        "Compost tea": "कम्पोस्ट चाय (Compost tea)",
+        "Mancozeb": "मैनकोज़ेब (Mancozeb)",
+        "Copper oxychloride": "कॉपर ऑक्सीक्लोराइड (Copper oxychloride)"
       },
       es: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -135,7 +144,14 @@ function Report() {
         "Mustard": "Mostaza",
         "Chickpea": "Garbanzo",
         "Spinach": "Espinaca",
-        "Rice": "Arroz"
+        "Rice": "Arroz",
+
+        // Treatments
+        "Neem oil": "Aceite de neem",
+        "Baking soda": "Bicarbonato de sodio",
+        "Compost tea": "Té de compost",
+        "Mancozeb": "Mancozeb",
+        "Copper oxychloride": "Oxicloruro de cobre"
       },
       fr: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -183,7 +199,14 @@ function Report() {
         "Mustard": "Moutarde",
         "Chickpea": "Pois chiche",
         "Spinach": "Épinard",
-        "Rice": "Riz"
+        "Rice": "Riz",
+
+        // Treatments
+        "Neem oil": "Huile de neem",
+        "Baking soda": "Bicarbonate de soude",
+        "Compost tea": "Thé de compost",
+        "Mancozeb": "Mancozèbe",
+        "Copper oxychloride": "Oxychlorure de cuivre"
       },
       te: {
         "Tomato (Solanum lycopersicum)": "టమోటా (Solanum lycopersicum)",
@@ -231,7 +254,14 @@ function Report() {
         "Mustard": "ఆవాలు",
         "Chickpea": "శెనగలు",
         "Spinach": "పాలకూర",
-        "Rice": "వరి (Rice)"
+        "Rice": "వరి (Rice)",
+
+        // Treatments
+        "Neem oil": "వేప నూనె",
+        "Baking soda": "వంట సోడా",
+        "Compost tea": "కంపోస్ట్ టీ",
+        "Mancozeb": "మాంకోజెబ్",
+        "Copper oxychloride": "కాపర్ ఆక్సిక్లోరైడ్"
       }
     };
 
@@ -607,38 +637,59 @@ function Report() {
               </div>
             )}
 
-            {/* Causes and Treatments grid */}
-            <div className="grid sm:grid-cols-2 gap-4">
-              {/* Likely Causes */}
-              <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-3 shadow-md">
-                <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                  <AlertTriangle className="w-4 h-4 text-amber-500" />
-                  Likely Environmental Causes
-                </div>
-                <ul className="space-y-1.5 text-xs text-slate-300">
-                  {analysis.likely_causes?.map((cause, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-slate-500 shrink-0 mt-1.5"></span>
-                      <span>{cause}</span>
-                    </li>
-                  ))}
-                </ul>
+            {/* Likely Environmental Causes */}
+            <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-3 shadow-md">
+              <div className="flex items-center gap-2 text-sm font-semibold text-white">
+                <AlertTriangle className="w-4 h-4 text-amber-500" />
+                Likely Environmental Causes
               </div>
+              <ul className="space-y-1.5 text-xs text-slate-300">
+                {analysis.likely_causes?.map((cause, idx) => (
+                  <li key={idx} className="flex items-start gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-slate-500 shrink-0 mt-1.5"></span>
+                    <span>{cause}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
 
-              {/* Organic Options */}
-              <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-3 shadow-md">
-                <div className="flex items-center gap-2 text-sm font-semibold text-white">
-                  <Leaf className="w-4 h-4 text-primary" />
-                  Organic Treatment Plan
+            {/* Organic vs Chemical Treatment Plans */}
+            <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-4 shadow-md">
+              <div className="flex items-center gap-2 text-sm font-semibold text-white border-b border-white/5 pb-2">
+                <FlaskConical className="w-4 h-4 text-emerald-400" />
+                Gemma 4 Treatment Plan Options
+              </div>
+              
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                {/* Organic Column */}
+                <div className="space-y-2.5 bg-emerald-500/5 border border-emerald-500/10 p-3.5 rounded-xl">
+                  <span className="font-extrabold text-[10px] text-emerald-400 uppercase tracking-wider block">
+                    🍀 Organic Options
+                  </span>
+                  <ul className="space-y-2 text-slate-300 font-light">
+                    {analysis.organic_treatments?.map((treatment, idx) => (
+                      <li key={idx} className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+                        <span>{translateKey(treatment)}</span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-                <ul className="space-y-1.5 text-xs text-slate-300">
-                  {analysis.organic_options?.map((option, idx) => (
-                    <li key={idx} className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary shrink-0 mt-1.5"></span>
-                      <span>{option}</span>
-                    </li>
-                  ))}
-                </ul>
+
+                {/* Chemical Column */}
+                <div className="space-y-2.5 bg-amber-500/5 border border-amber-500/10 p-3.5 rounded-xl">
+                  <span className="font-extrabold text-[10px] text-amber-400 uppercase tracking-wider block">
+                    🧪 Chemical Options
+                  </span>
+                  <ul className="space-y-2 text-slate-300 font-light">
+                    {analysis.chemical_treatments?.map((treatment, idx) => (
+                      <li key={idx} className="flex items-center gap-2">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-amber-450 shrink-0" />
+                        <span>{translateKey(treatment)}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
 
