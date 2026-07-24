@@ -6,6 +6,9 @@ function Landing() {
   const ringRef = useRef(null);
 
   useEffect(() => {
+    // Add landing page class to override global body background
+    document.body.classList.add("landing-page-active");
+
     // Scroll reveal animation
     const revealEls = document.querySelectorAll(".reveal");
     const io = new IntersectionObserver(
@@ -43,6 +46,7 @@ function Landing() {
     }
 
     return () => {
+      document.body.classList.remove("landing-page-active");
       io.disconnect();
       ringObserver.disconnect();
     };
@@ -54,6 +58,20 @@ function Landing() {
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700;9..144,900&family=IBM+Plex+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
         
+        body.landing-page-active {
+          background-image: none !important;
+          background-color: #171D14 !important;
+          background: #171D14 !important;
+          color: #EFE8D8 !important;
+          font-family: 'IBM Plex Sans', sans-serif !important;
+        }
+
+        body.landing-page-active header {
+          background: rgba(23, 29, 20, 0.88) !important;
+          backdrop-filter: blur(10px) !important;
+          border-bottom: 1px solid rgba(239,232,216,0.08) !important;
+        }
+
         .landing-container {
           --soil: #171D14;
           --pine: #24371F;
