@@ -229,7 +229,12 @@ function Report() {
         "North field pasture": "उत्तरी खेत चारागाह",
         "Main farmhouse ridge": "मुख्य फार्महाउस रिज",
         "East field bottomlands": "पूर्वी खेत निचला इलाका",
-        "Guest Trail Sector 1": "अतिथि पथ क्षेत्र 1"
+        "Guest Trail Sector 1": "अतिथि पथ क्षेत्र 1",
+
+        // Similar Diseases
+        "Late Blight": "पछैती झुलसा (Late Blight)",
+        "Septoria": "सेप्टोरिया (Septoria)",
+        "Leaf Spot": "पत्ती धब्बा (Leaf Spot)"
       },
       es: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -290,7 +295,12 @@ function Report() {
         "North field pasture": "Pastizal del campo norte",
         "Main farmhouse ridge": "Cresta de la granja principal",
         "East field bottomlands": "Tierras bajas del campo este",
-        "Guest Trail Sector 1": "Sendero de invitados Sector 1"
+        "Guest Trail Sector 1": "Sendero de invitados Sector 1",
+
+        // Similar Diseases
+        "Late Blight": "Tizón Tardío",
+        "Septoria": "Septoria",
+        "Leaf Spot": "Mancha Foliar"
       },
       fr: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -351,7 +361,12 @@ function Report() {
         "North field pasture": "Pâturage du champ nord",
         "Main farmhouse ridge": "Crête de la granja principale",
         "East field bottomlands": "Basses terres du champ est",
-        "Guest Trail Sector 1": "Sentier des invités Secteur 1"
+        "Guest Trail Sector 1": "Sentier des invités Secteur 1",
+
+        // Similar Diseases
+        "Late Blight": "Mildiou Tardif",
+        "Septoria": "Septoriose",
+        "Leaf Spot": "Tache Foliaire"
       },
       te: {
         "Tomato (Solanum lycopersicum)": "టమోటా (Solanum lycopersicum)",
@@ -412,7 +427,12 @@ function Report() {
         "North field pasture": "ఉత్తర మైదాన గడ్డి భూమి",
         "Main farmhouse ridge": "ప్రధాన నివాస మైదానం",
         "East field bottomlands": "తూర్పు మైదాన లోతట్టు ప్రాంతం",
-        "Guest Trail Sector 1": "అతిథి నడక మార్గం సెక్టార్ 1"
+        "Guest Trail Sector 1": "అతిథి నడక మార్గం సెక్టార్ 1",
+
+        // Similar Diseases
+        "Late Blight": "లేట్ బ్లైట్ తెగులు",
+        "Septoria": "సెప్టోరియా",
+        "Leaf Spot": "ఆకుమచ్చ తెగులు"
       }
     };
 
@@ -911,6 +931,46 @@ function Report() {
                 </ul>
               </div>
             </div>
+
+            {/* Looks Similar To (Diagnostic Comparisons) (High Impact ⭐⭐⭐⭐⭐) */}
+            {analysis.similar_diseases && (
+              <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-4 shadow-md">
+                <h3 className="text-sm font-semibold text-white flex items-center gap-1.5 border-b border-white/5 pb-2">
+                  <Compass className="w-4 h-4 text-emerald-400" />
+                  Gemma 4 Diagnostic Comparisons
+                </h3>
+
+                <div className="text-xs space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-slate-400">Current Diagnosis:</span>
+                    <span className="font-extrabold text-white">{translateKey(analysis.probable_issue)}</span>
+                  </div>
+
+                  <div className="space-y-3 pt-2 border-t border-white/5">
+                    <span className="text-[10px] text-slate-400 block uppercase font-bold tracking-wider">
+                      Looks Similar To:
+                    </span>
+
+                    <div className="space-y-3">
+                      {analysis.similar_diseases.map((disease, idx) => (
+                        <div key={idx} className="space-y-1">
+                          <div className="flex justify-between text-xs font-semibold">
+                            <span className="text-slate-300">{translateKey(disease.name)}</span>
+                            <span className="text-slate-450">{disease.percentage}%</span>
+                          </div>
+                          <div className="h-1.5 bg-slate-900 rounded-full overflow-hidden border border-white/5">
+                            <div 
+                              className="bg-emerald-500/60 h-full rounded-full transition-all duration-500"
+                              style={{ width: `${disease.percentage}%` }}
+                            ></div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
 
             {/* Tourist Safety Card */}
             {analysis.tourist_safety?.hazard_detected ? (
