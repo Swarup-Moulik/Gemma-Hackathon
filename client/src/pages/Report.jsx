@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { Link, useSearchParams, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { ArrowLeft, AlertTriangle, Cpu, Share2, Trash2 } from "lucide-react";
-
-import ReportHeader from "../components/report/ReportHeader";
-import ReportMediaPanel from "../components/report/ReportMediaPanel";
-import ReportAnalysisContent from "../components/report/ReportAnalysisContent";
+import qrcode from "../utils/qrcode";
+import {
+  Leaf,
+  ArrowLeft,
+  AlertTriangle,
+  CheckCircle2,
+  ShieldAlert,
+  Cpu,
+  Share2,
+  MapPin,
+  Trash2,
+  Activity,
+  Compass,
+  Sparkles,
+  FlaskConical,
+  Mic,
+  Volume2
+} from "lucide-react";
 
 function Report() {
   const [searchParams] = useSearchParams();
@@ -16,12 +29,138 @@ function Report() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [activeFrame, setActiveFrame] = useState(null);
+  const [language, setLanguage] = useState("en");
+  const [isListening, setIsListening] = useState(false);
+  const [transcript, setTranscript] = useState("");
+  const [assistantReply, setAssistantReply] = useState("");
+  const [isSpeaking, setIsSpeaking] = useState(false);
+
+  const startVoiceAssistant = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Speech recognition is not supported in this browser. Try Chrome or Edge.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = language === "hi" ? "hi-IN" : language === "te" ? "te-IN" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : "en-US";
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+
+    setIsListening(true);
+    setTranscript("Listening...");
+    setAssistantReply("");
+
+    recognition.onresult = (event) => {
+      const speechToText = event.results[0][0].transcript;
+      setTranscript(speechToText);
+      generateVoiceReply(speechToText);
+    };
+
+    recognition.onspeechend = () => {
+      recognition.stop();
+      setIsListening(false);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      setIsListening(false);
+      setTranscript("Error capturing speech. Try again.");
+    };
+  };
+
+  const generateVoiceReply = (query) => {
+    if (!analysis) return;
+    const q = query.toLowerCase();
+    let reply = "";
+
+    // Determine the response depending on language and analysis keywords
+    if (language === "hi") {
+      if (q.includes("टमाटर") || q.includes("tomato") || q.includes("समस्या") || q.includes("बीमारी")) {
+        reply = `आपके फसल में ${translateKey(analysis.probable_issue)} पाया गया है। इसकी गंभीरता ${translateKey(analysis.severity)} है।`;
+      } else if (q.includes("बचाव") || q.includes("इलाज") || q.includes("उपचार")) {
+        reply = `ऑर्गेनिक उपचार के लिए ${translateKey(analysis.organic_treatments?.[0] || "नीम तेल")} का उपयोग करें। रिकवरी की संभावना ${analysis.recovery_chance || 80} प्रतिशत है।`;
+      } else if (q.includes("सुरक्षित") || q.includes("पर्यटक")) {
+        reply = analysis.tourist_safety?.hazard_detected 
+          ? `चेतावनी: ${translateKey(analysis.tourist_safety.message)}` 
+          : "हाँ, पर्यटकों के लिए रास्ता सुरक्षित है।";
+      } else {
+        reply = `आपकी मुख्य समस्या ${translateKey(analysis.probable_issue)} है। उपचार के लिए तुरंत कार्रवाई करें।`;
+      }
+    } else if (language === "es") {
+      if (q.includes("problema") || q.includes("enfermedad") || q.includes("tomate") || q.includes("planta")) {
+        reply = `Se detectó ${translateKey(analysis.probable_issue)}. La gravedad es ${translateKey(analysis.severity)}.`;
+      } else if (q.includes("recuperar") || q.includes("tratar") || q.includes("tratamiento")) {
+        reply = `Para el tratamiento orgánico, utilice ${translateKey(analysis.organic_treatments?.[0] || "Aceite de neem")}. La probabilidad de recuperación es del ${analysis.recovery_chance || 80} por ciento.`;
+      } else if (q.includes("seguro") || q.includes("turistas")) {
+        reply = analysis.tourist_safety?.hazard_detected 
+          ? `Alerta: ${translateKey(analysis.tourist_safety.message)}` 
+          : "Sí, el área es segura para los visitantes.";
+      } else {
+        reply = `El problema principal es ${translateKey(analysis.probable_issue)}. Trate dentro del periodo de urgencia.`;
+      }
+    } else if (language === "fr") {
+      if (q.includes("problème") || q.includes("maladie") || q.includes("tomate") || q.includes("plante")) {
+        reply = `Nous avons détecté ${translateKey(analysis.probable_issue)}. La sévérité est ${translateKey(analysis.severity)}.`;
+      } else if (q.includes("traiter") || q.includes("soigner") || q.includes("traitement")) {
+        reply = `Pour un traitement biologique, utilisez ${translateKey(analysis.organic_treatments?.[0] || "Huile de neem")}. La chance de récupération est de ${analysis.recovery_chance || 80} pour cent.`;
+      } else if (q.includes("sécurisé") || q.includes("touristes")) {
+        reply = analysis.tourist_safety?.hazard_detected 
+          ? `Alerte: ${translateKey(analysis.tourist_safety.message)}` 
+          : "Oui, la zone est sécurisée pour les visiteurs.";
+      } else {
+        reply = `Le problème principal est ${translateKey(analysis.probable_issue)}. Suivez les recommandations urgentes.`;
+      }
+    } else if (language === "te") {
+      if (q.includes("టమోటా") || q.includes("సమస్య") || q.includes("తెగులు")) {
+        reply = `మీ పంటకు ${translateKey(analysis.probable_issue)} ఉన్నట్లు గుర్తించబడింది. తీవ్రత ${translateKey(analysis.severity)}.`;
+      } else if (q.includes("కోలుకోవడం") || q.includes("చికిత్స")) {
+        reply = `సేంద్రీయ చికిత్స కోసం ${translateKey(analysis.organic_treatments?.[0] || "వేప నూనె")} వాడండి. రికవరీ అవకాశం ${analysis.recovery_chance || 80} శాతం.`;
+      } else if (q.includes("సురక్షితం") || q.includes("పర్యాటకులు")) {
+        reply = analysis.tourist_safety?.hazard_detected 
+          ? `హెచ్చరిక: ${translateKey(analysis.tourist_safety.message)}` 
+          : "అవును, పర్యాటకులకు మార్గం సురక్షితం.";
+      } else {
+        reply = `ప్రధాన समस्या ${translateKey(analysis.probable_issue)}. దయచేసి తగిన చర్యలు తీసుకోండి.`;
+      }
+    } else {
+      // Default to English
+      if (q.includes("problem") || q.includes("wrong") || q.includes("issue") || q.includes("tomato") || q.includes("tea") || q.includes("grape")) {
+        reply = `Gemma detected ${analysis.probable_issue} on your crop. The severity level is ${analysis.severity}.`;
+      } else if (q.includes("treat") || q.includes("organic") || q.includes("action") || q.includes("recover") || q.includes("chickpea") || q.includes("mustard")) {
+        reply = `For organic treatment, spray ${analysis.organic_treatments?.[0] || "Neem oil"}. The crop survival recovery chance is estimated at ${analysis.recovery_chance || 80} percent.`;
+      } else if (q.includes("safe") || q.includes("tourist") || q.includes("guest") || q.includes("warning")) {
+        reply = analysis.tourist_safety?.hazard_detected 
+          ? `Caution: ${analysis.tourist_safety.message}` 
+          : "Yes, this field trail is fully safe for guest tours.";
+      } else {
+        reply = `The crop is showing signs of ${analysis.probable_issue}. We recommend reviewing the 30-day recovery timeline.`;
+      }
+    }
+
+    setAssistantReply(reply);
+    speakVoiceReply(reply);
+  };
+
+  const speakVoiceReply = (text) => {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = language === "hi" ? "hi-IN" : language === "te" ? "te-IN" : language === "es" ? "es-ES" : language === "fr" ? "fr-FR" : "en-US";
+    
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    window.speechSynthesis.speak(utterance);
+  };
 
   const BACKEND_URL = "http://localhost:8000";
 
   const translateKey = (enText) => {
     if (!enText) return "";
-
+    
     const translations = {
       hi: {
         // Crops
@@ -29,18 +168,18 @@ function Report() {
         "Tea Plantation (Camellia sinensis)": "चाय बागान (Camellia sinensis)",
         "Grapes / Vineyards (Vitis vinifera)": "अंगूर / अंगूर का बाग (Vitis vinifera)",
         "Mixed Plantation / Silt Soil": "मिश्रित वृक्षारोपण / गाద మట్టి",
-
+        
         // Issues
         "Early Blight (Alternaria solani)": "अगेती झुलसा (Early Blight)",
         "Blister Blight (Exobasidium vexans)": "फफोला झुलसा (Blister Blight)",
         "Powdery Mildew (Uncinula necator)": "चूर्णिल आसिता (Powdery Mildew)",
         "Post-Disaster Field Contamination": "आपदा पश्चात क्षेत्र संदूषण",
-
+        
         // Severity
         "Mild": "हल्का (Mild)",
         "Moderate": "मध्यम (Moderate)",
         "Severe": "गंभीर (Severe)",
-
+        
         // Status & Risk
         "High": "उच्च (High)",
         "Medium": "मध्यम (Medium)",
@@ -315,7 +454,7 @@ function Report() {
 
   useEffect(() => {
     if (!reportId) {
-      setError("No report ID provided.");
+      setError("No report ID provided in the query string. Go to Home to scan.");
       setLoading(false);
       return;
     }
@@ -324,17 +463,15 @@ function Report() {
       .get(`${BACKEND_URL}/api/reports/${reportId}`)
       .then((res) => {
         setReportData(res.data);
-        if (
-          res.data.type === "drone" &&
-          res.data.analysis?.individualFrameAnalyses?.length > 0
-        ) {
+        // Default first frame if drone mode
+        if (res.data.type === "drone" && res.data.analysis?.individualFrameAnalyses?.length > 0) {
           setActiveFrame(res.data.analysis.individualFrameAnalyses[0]);
         }
         setLoading(false);
       })
       .catch((err) => {
         console.error(err);
-        setError("Failed to retrieve report from MongoDB.");
+        setError("Failed to retrieve crop report. Ensure the local FastAPI server and MongoDB are online.");
         setLoading(false);
       });
   }, [reportId]);
@@ -352,9 +489,14 @@ function Report() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4 text-muted-foreground">
-        <Cpu className="w-8 h-8 text-primary animate-spin" />
-        <p className="text-sm font-medium animate-pulse">
+      <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center gap-4">
+        <div className="relative">
+          <div className="w-12 h-12 rounded-full border-4 border-primary/20 border-t-primary animate-spin"></div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Cpu className="w-5 h-5 text-primary animate-pulse" />
+          </div>
+        </div>
+        <p className="text-sm font-medium text-muted-foreground animate-pulse">
           Loading Gemma 4 Assessment...
         </p>
       </div>
@@ -363,18 +505,17 @@ function Report() {
 
   if (error || !reportData) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-6">
-        <div className="leaf-glass-card border border-border p-8 rounded-3xl text-center space-y-4 max-w-md w-full">
-          <AlertTriangle className="w-8 h-8 text-destructive mx-auto" />
-          <h2 className="text-lg font-bold text-foreground">
-            Report Not Found
-          </h2>
-          <p className="text-sm text-muted-foreground">{error}</p>
+      <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-4">
+        <div className="max-w-md w-full bg-secondary/50 border border-border p-6 rounded-2xl text-center space-y-4">
+          <AlertTriangle className="w-10 h-10 text-destructive mx-auto" />
+          <h2 className="text-lg font-bold text-foreground">Failed to Load Report</h2>
+          <p className="text-xs text-muted-foreground">{error || "Report not found."}</p>
           <Link
             to="/"
-            className="btn-pill-primary text-sm font-bold inline-flex items-center gap-2"
+            className="inline-flex items-center gap-1 px-4 py-2 bg-primary text-primary-foreground text-xs font-semibold rounded-lg hover:opacity-90"
           >
-            <ArrowLeft className="w-4 h-4" /> Back to Home
+            <ArrowLeft className="w-3.5 h-3.5" />
+            Back to Home
           </Link>
         </div>
       </div>
@@ -385,13 +526,14 @@ function Report() {
   const isDrone = reportData.type === "drone";
 
   return (
-    <div className="min-h-screen text-foreground flex flex-col">
-      <main className="flex-1 max-w-5xl mx-auto w-full px-6 py-8 space-y-6">
-        {/* Navigation Bar */}
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
+      <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-8 space-y-6">
+        
+        {/* Navigation back */}
         <div className="flex items-center justify-between">
           <Link
             to="/dashboard"
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground font-medium"
+            className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground font-medium"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             Back to Dashboard
@@ -579,10 +721,10 @@ function Report() {
 
         {/* Main Details Grid split panel */}
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-
+          
           {/* Left panel: Media & Interactive coordinate grids */}
           <div className="md:col-span-2 space-y-6">
-
+            
             {/* Uploaded Leaf/Terrain image */}
             <div className="frosted-glass border border-white/10 p-4 rounded-2xl space-y-3">
               <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400">Scan Capture</h3>
@@ -599,6 +741,52 @@ function Report() {
               </div>
             </div>
 
+            {/* Local Farm Network QR Sync (High Impact ⭐⭐⭐⭐⭐) */}
+            <div className="frosted-glass border border-white/10 p-4 rounded-2xl space-y-4 shadow-md">
+              <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+                  <Share2 className="w-4 h-4 text-emerald-400" />
+                  Local Farm Network QR Sync
+                </h3>
+                <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 uppercase">
+                  Offline Sync
+                </span>
+              </div>
+
+              <div className="flex flex-col items-center justify-center p-3 bg-white/5 border border-white/5 rounded-xl space-y-3">
+                {/* Render local QR Code */}
+                {(() => {
+                  try {
+                    const qr = qrcode(0, 'M');
+                    qr.addData(window.location.href);
+                    qr.make();
+                    const qrDataUrl = qr.createDataURL(4, 8);
+                    return (
+                      <div className="p-2.5 bg-white rounded-lg flex items-center justify-center border border-white/10 aspect-square max-w-[150px]">
+                        <img 
+                          src={qrDataUrl} 
+                          alt="Inspection QR Link" 
+                          className="w-full h-full object-contain"
+                        />
+                      </div>
+                    );
+                  } catch (err) {
+                    console.error("QR drawing error:", err);
+                    return <div className="text-xs text-rose-400">Failed to render offline QR.</div>;
+                  }
+                })()}
+
+                <div className="text-center space-y-1">
+                  <span className="text-[10px] text-slate-400 font-bold block uppercase tracking-wider">
+                    Scan Local Access
+                  </span>
+                  <p className="text-[9px] text-slate-400 font-light leading-relaxed max-w-[180px] mx-auto">
+                    Scanning this on the local farm Wi-Fi displays the active diagnostic report, 30-day recovery plans, and safety maps.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             {/* Drone coordinate grid (only visible in drone scanner mode) */}
             {isDrone && analysis.individualFrameAnalyses && (
               <div className="frosted-glass border border-white/10 p-4 rounded-2xl space-y-4">
@@ -609,7 +797,7 @@ function Report() {
                   </h3>
                   <span className="text-[10px] text-slate-500 font-bold uppercase">Offline Grid</span>
                 </div>
-
+                
                 <div className="grid grid-cols-3 gap-2.5 max-w-[200px] mx-auto aspect-square p-2 bg-black/20 border border-white/5 rounded-xl">
                   {analysis.individualFrameAnalyses.map((frame, index) => {
                     const colorMap = {
@@ -682,14 +870,14 @@ function Report() {
 
           {/* Right panel: AI analysis details */}
           <div className="md:col-span-3 space-y-6">
-
+            
             {/* Crop Survival Probability (Predictive Analytics) */}
             <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-4 shadow-md">
               <h3 className="text-sm font-semibold text-white flex items-center gap-1.5 border-b border-white/5 pb-2">
                 <Activity className="w-4 h-4 text-emerald-400" />
                 Gemma 4 Predictive Analytics
               </h3>
-
+              
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 {/* Chance of Recovery */}
                 <div className="space-y-1.5">
@@ -698,12 +886,12 @@ function Report() {
                     <span className="text-emerald-400">{analysis.recovery_chance || 80}%</span>
                   </div>
                   <div className="h-2 bg-slate-900 rounded-full overflow-hidden border border-white/5">
-                    <div
+                    <div 
                       className={`h-full rounded-full transition-all duration-500 ${
-                        (analysis.recovery_chance || 80) > 75
-                          ? "bg-emerald-500"
-                          : (analysis.recovery_chance || 80) > 40
-                            ? "bg-amber-500"
+                        (analysis.recovery_chance || 80) > 75 
+                          ? "bg-emerald-500" 
+                          : (analysis.recovery_chance || 80) > 40 
+                            ? "bg-amber-500" 
                             : "bg-destructive"
                       }`}
                       style={{ width: `${analysis.recovery_chance || 80}%` }}
@@ -718,7 +906,7 @@ function Report() {
                     <span className="text-rose-400">{analysis.yield_loss_estimate || 20}%</span>
                   </div>
                   <div className="h-2 bg-slate-900 rounded-full overflow-hidden border border-white/5">
-                    <div
+                    <div 
                       className="bg-rose-500 h-full rounded-full transition-all duration-500"
                       style={{ width: `${analysis.yield_loss_estimate || 20}%` }}
                     ></div>
@@ -845,7 +1033,7 @@ function Report() {
                             <span className="text-slate-450">{disease.percentage}%</span>
                           </div>
                           <div className="h-1.5 bg-slate-900 rounded-full overflow-hidden border border-white/5">
-                            <div
+                            <div 
                               className="bg-emerald-500/60 h-full rounded-full transition-all duration-500"
                               style={{ width: `${disease.percentage}%` }}
                             ></div>
@@ -905,7 +1093,7 @@ function Report() {
                 <FlaskConical className="w-4 h-4 text-emerald-400" />
                 Gemma 4 Treatment Plan Options
               </div>
-
+              
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
                 {/* Organic Column */}
                 <div className="space-y-2.5 bg-emerald-500/5 border border-emerald-500/10 p-3.5 rounded-xl">
@@ -960,13 +1148,13 @@ function Report() {
                   <Sparkles className="w-4 h-4 text-emerald-400" />
                   Gemma 4 AI Crop Recovery Planner (30-Day Roadmap)
                 </h3>
-
+                
                 <div className="relative pl-4 border-l border-white/15 ml-2 space-y-4">
                   {analysis.crop_recovery_planner.map((phase, idx) => (
                     <div key={idx} className="relative">
                       {/* Timeline Node Dot */}
                       <span className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-slate-950"></span>
-
+                      
                       <div className="space-y-1">
                         <span className="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold bg-white/5 border border-white/10 text-emerald-300 uppercase">
                           {translateKey(phase.period)}
@@ -1079,49 +1267,11 @@ function Report() {
             Go to Timeline History
           </Link>
           <button
-            type="button"
-            onClick={handleDelete}
-            className="inline-flex items-center gap-1.5 text-sm text-destructive hover:text-destructive/80 font-medium cursor-pointer"
-          >
-            <Trash2 className="w-4 h-4" /> Delete Report
-          </button>
-        </div>
-
-        {/* Component: Header Card */}
-        <ReportHeader
-          analysis={analysis}
-          coordinates={reportData.coordinates}
-          isDrone={isDrone}
-        />
-
-        {/* Component Grid Layout */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
-          <ReportMediaPanel
-            imageUrl={reportData.image_url}
-            isDrone={isDrone}
-            individualFrameAnalyses={analysis?.individualFrameAnalyses}
-            activeFrame={activeFrame}
-            setActiveFrame={setActiveFrame}
-            backendUrl={BACKEND_URL}
-          />
-
-          <ReportAnalysisContent analysis={analysis} />
-        </div>
-
-        {/* Bottom Actions */}
-        <div className="flex items-center justify-between pt-6 border-t border-border">
-          <Link
-            to="/dashboard"
-            className="btn-pill-secondary font-semibold text-sm"
-          >
-            Timeline Dashboard
-          </Link>
-          <button
-            type="button"
             onClick={() => window.print()}
-            className="btn-pill-primary text-sm font-bold flex items-center gap-2 cursor-pointer"
+            className="btn-pill-primary text-xs font-bold flex items-center gap-1.5 cursor-pointer shadow-md"
           >
-            <Share2 className="w-4 h-4" /> Print / Export
+            <Share2 className="w-3.5 h-3.5 text-emerald-950" />
+            Export / Print Report
           </button>
         </div>
       </main>
