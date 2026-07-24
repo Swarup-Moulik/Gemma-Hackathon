@@ -7,3 +7,17 @@
 
 \---
 
+## Table of Contents
+
+* [Overview](#-overview)
+* [System Architecture](#-system-architecture)
+* [Core Features](#-core-features)
+* [Technical Stack](#-technical-stack)
+* [API Reference](#-api-reference)
+* [Page Structure](#-page-structure)
+* [AI \& ML Components](#-ai--ml-components)
+* [Technical Problems \& Solutions](#-technical-problems--solutions)
+* [Installation \& Setup](#-installation--setup)
+* [Project Structure](#-project-structure)
+
+\---
