@@ -374,3 +374,19 @@ export default qrcode;
 ```
 
 \---
+
+### Problem 2: Tailwind `@layer base` Overrides Landing Theme
+
+**Root cause:**  
+`index.css` defined the body background inside `@layer base`:
+
+```css
+@layer base {
+  body {
+    background: url('https://images.unsplash.com/...') fixed;
+  }
+}
+```
+
+Even `!important` overrides inside a React `<style>` tag lost to this because Vite compiles `@layer` rules into the final static bundle — runtime style injections cannot beat compiled layer rules consistently.
+
