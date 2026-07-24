@@ -347,3 +347,30 @@ DISEASE\\\_PROFILES = {
 ```
 
 \---
+
+## 🔥 Technical Problems \& Solutions
+
+### Problem 1: QR Code Library — Vite ESM Incompatibility
+
+**Root cause:**  
+`qrcode-generator` (v1.4.4) is a legacy UMD/IIFE module that attaches to `window.qrcode`. Vite's ESM bundler could not parse it:
+
+```
+SyntaxError: does not provide an export named 'default'
+```
+
+**What failed:**
+
+* `import \\\* as qrcode` — IIFE doesn't export named bindings
+* `optimizeDeps.include` — no proper CJS entrypoint exists
+* `read\\\_url\\\_content` tool — converts `<`/`>` operators to HTML entities (`\\\&lt;`/`\\\&gt;`), mangling comparison operators throughout the binary encoding logic
+
+**Solution:**  
+Fetched raw JS via headless browser subagent (bypasses HTML parsing). Appended one line to convert the global into an ES module:
+
+```javascript
+// Added to end of qrcode.js
+export default qrcode;
+```
+
+\---
