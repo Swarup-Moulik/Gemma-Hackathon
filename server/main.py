@@ -38,6 +38,16 @@ async def shutdown_event():
     await close_mongo_connection()
 
 
+# Root Landing Route
+@app.get("/")
+def root():
+    return {
+        "status": "OK",
+        "message": "Green Praxis API Engine is live on Vercel!",
+        "health": "/api/health",
+    }
+
+
 # Health Check Route
 @app.get("/api/health")
 def health_check():
