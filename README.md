@@ -482,3 +482,16 @@ For TTS, added a try/catch that skips voice synthesis if the requested language 
 * Node.js 18+
 * Python 3.11+
 * MongoDB running locally or a MongoDB Atlas URI
+
+### 1\. Install dependencies
+
+```bash
+# Frontend
+cd Gemma-Hackathon\\\_buildathon\\\_3/client
+npm install
+
+# Backend
+cd ../server
+pip install fastapi uvicorn motor python-multipart aiofiles
+```
+
