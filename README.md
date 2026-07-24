@@ -296,3 +296,16 @@ Returns `{ "status": "Green Praxis backend online" }`.
 ├── Scan mode toggle (Mobile / Drone)
 ├── Drag-and-drop image upload
 └── Submit → redirects to /report
+/report (Report)
+├── Diagnosis overview card
+├── Animated SVG recovery ring
+├── 3×3 Drone field grid heatmap
+├── Organic vs Chemical treatment matrix
+├── XAI explanation panel
+├── Look-alike disease comparisons
+├── Emergency rescue hazard map
+├── Crop rotation recommendations
+├── QR code generator
+├── TTS voice playback
+└── Language switcher (5 languages)
+
