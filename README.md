@@ -474,3 +474,11 @@ if (!SpeechRecognition) {
 For TTS, added a try/catch that skips voice synthesis if the requested language voice is not installed, falling back to silent text response.
 
 \---
+
+## 🚀 Installation \& Setup
+
+### Prerequisites
+
+* Node.js 18+
+* Python 3.11+
+* MongoDB running locally or a MongoDB Atlas URI
