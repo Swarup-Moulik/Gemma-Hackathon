@@ -21,3 +21,18 @@
 * [Project Structure](#-project-structure)
 
 \---
+
+## 🌱 Overview
+
+**Green Praxis** is a modern, cloud-connected agricultural management platform built for the **Google Build with Gemma 2026 Hackathon**. It bridges the gap between advanced AI reasoning and day-to-day farming operations.
+
+The platform enables:
+
+* 📸 **Instant crop disease detection** via image upload or drone telemetry
+* 🧠 **Explainable AI diagnosis** with Gemma reasoning transparency
+* 🌊 **Emergency farm rescue** with hazard zone mapping
+* 🎙️ **Multilingual voice assistant** for hands-free crop queries
+* 📊 **Season-long audit trail** stored in MongoDB
+* 📱 **QR code sharing** for instant report distribution
+
+\---
