@@ -1,186 +1,176 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Inter:wght@300;400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
-.font-serif-editorial {
-  font-family: 'Playfair Display', Georgia, serif;
+@variant dark (&:where(.dark, .dark *));
+
+.font-editorial {
+    font-family: "Playfair Display", Georgia, serif;
 }
 
 @theme {
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
+    --color-background: hsl(var(--background));
+    --color-foreground: hsl(var(--foreground));
 
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
+    --color-primary: hsl(var(--primary));
+    --color-primary-foreground: hsl(var(--primary-foreground));
 
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
+    --color-secondary: hsl(var(--secondary));
+    --color-secondary-foreground: hsl(var(--secondary-foreground));
 
-  --color-muted: hsl(var(--muted));
-  --color-muted-foreground: hsl(var(--muted-foreground));
+    --color-muted: hsl(var(--muted));
+    --color-muted-foreground: hsl(var(--muted-foreground));
 
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-ring: hsl(var(--ring));
+    --color-border: hsl(var(--border));
+    --color-input: hsl(var(--input));
+    --color-ring: hsl(var(--ring));
 
-  --color-destructive: hsl(var(--destructive));
-  --color-destructive-foreground: hsl(var(--destructive-foreground));
+    --color-destructive: hsl(var(--destructive));
+    --color-destructive-foreground: hsl(var(--destructive-foreground));
 }
 
 @layer base {
-  :root {
-    /* Light Mode (Fresh Agricultural Emerald/Green Theme) */
-    --background: 120 15% 98%;
-    --foreground: 140 30% 10%;
+    /* Default: Light Mode (Organic Leaf Paper) */
+    :root {
+        --background: 120 20% 96%;
+        --foreground: 150 50% 8%; /* Deep Obsidian Emerald */
 
-    --primary: 142 72% 29%;           /* Emerald Green */
-    --primary-foreground: 120 15% 98%;
+        --primary: 150 75% 26%; /* Rich Leaf Green */
+        --primary-foreground: 120 20% 98%;
 
-    --secondary: 135 25% 93%;
-    --secondary-foreground: 140 30% 15%;
+        --secondary: 135 25% 90%;
+        --secondary-foreground: 150 50% 10%;
 
-    --muted: 135 15% 91%;
-    --muted-foreground: 140 10% 40%;
+        --muted: 135 15% 85%;
+        --muted-foreground: 145 20% 30%;
 
-    --border: 135 20% 88%;
-    --input: 135 20% 88%;
-    --ring: 142 72% 29%;
+        --border: 140 25% 78%;
+        --input: 140 25% 78%;
+        --ring: 150 75% 26%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-  }
+        --destructive: 350 85% 55%;
+        --destructive-foreground: 210 40% 98%;
 
-  .dark {
-    /* Dark Mode (High-contrast Deep Forest / Midnight Theme) */
-    --background: 140 25% 6%;
-    --foreground: 120 15% 95%;
+        --bg-overlay: radial-gradient(
+            circle at 50% 0%,
+            rgba(235, 250, 240, 0.94) 0%,
+            rgba(210, 240, 222, 0.98) 100%
+        );
+    }
 
-    --primary: 142 65% 42%;           /* Vibrant Leaf Green */
-    --primary-foreground: 140 30% 5%;
+    /* Dark Mode: Deep Foliage & Heavy Glass (Reference Theme) */
+    .dark {
+        --background: 150 45% 4%;
+        --foreground: 130 30% 96%;
 
-    --secondary: 140 20% 12%;
-    --secondary-foreground: 120 15% 95%;
+        --primary: 145 70% 48%; /* Lush Vibrant Emerald */
+        --primary-foreground: 150 45% 4%;
 
-    --muted: 140 15% 15%;
-    --muted-foreground: 140 10% 65%;
+        --secondary: 150 25% 10%;
+        --secondary-foreground: 130 30% 96%;
 
-    --border: 140 20% 16%;
-    --input: 140 20% 16%;
-    --ring: 142 65% 42%;
+        --muted: 150 20% 16%;
+        --muted-foreground: 140 15% 68%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-  }
+        --border: 145 25% 20%;
+        --input: 145 25% 20%;
+        --ring: 145 70% 48%;
+
+        --destructive: 350 80% 60%;
+        --destructive-foreground: 210 40% 98%;
+
+        --bg-overlay: radial-gradient(
+            circle at 50% 0%,
+            rgba(6, 28, 15, 0.88) 0%,
+            rgba(2, 12, 6, 0.96) 100%
+        );
+    }
 }
 
 @layer base {
-  * {
-    border-color: hsl(var(--border) / 0.6);
-  }
+    * {
+        border-color: hsl(var(--border) / 0.6);
+    }
 
-  body {
-    background: radial-gradient(circle at 50% 0%, rgba(6, 25, 11, 0.82) 0%, rgba(3, 8, 5, 0.97) 100%), 
-                url('https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1920&auto=format&fit=crop');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    color: hsl(var(--foreground));
-    font-family:
-      system-ui,
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      Roboto,
-      sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
+    html {
+        font-size: 17px; /* Increased font scale globally */
+    }
+
+    body {
+        background:
+            var(--bg-overlay),
+            url("https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?q=80&w=1920&auto=format&fit=crop");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        color: hsl(var(--foreground));
+        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        transition:
+            background 0.3s ease,
+            color 0.3s ease;
+    }
 }
 
-/* Premium Frosted Glassmorphism Theme (matches nature reference image) */
-.frosted-glass {
-  background: rgba(14, 32, 18, 0.42);
-  backdrop-filter: blur(24px) saturate(120%);
-  -webkit-backdrop-filter: blur(24px) saturate(120%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 10px 40px 0 rgba(0, 0, 0, 0.45);
+/* Glassmorphic Foliage Card Styling */
+.leaf-glass-card {
+    backdrop-filter: blur(28px) saturate(130%);
+    -webkit-backdrop-filter: blur(28px) saturate(130%);
+    border-radius: 1.75rem; /* rounded-3xl */
+    transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.frosted-glass-light {
-  background: rgba(255, 255, 255, 0.04);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+:root:not(.dark) .leaf-glass-card {
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(16, 85, 38, 0.15);
+    box-shadow: 0 16px 40px -8px rgba(0, 30, 10, 0.08);
 }
 
-/* Glass Outline Borders and Pill Elements */
-.glass-border {
-  border-color: rgba(255, 255, 255, 0.08);
+.dark .leaf-glass-card {
+    background: rgba(8, 32, 18, 0.48);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow:
+        0 20px 50px 0 rgba(0, 0, 0, 0.55),
+        inset 0 1px 1px rgba(255, 255, 255, 0.15);
 }
 
+.dark .leaf-glass-card:hover {
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow:
+        0 24px 60px 0 rgba(0, 0, 0, 0.65),
+        inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+/* Pill CTA Buttons */
 .btn-pill-primary {
-  background-color: #ffffff;
-  color: #06190b;
-  font-weight: 600;
-  border-radius: 9999px;
-  padding: 0.6rem 1.6rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 14px 0 rgba(255, 255, 255, 0.15);
+    background-color: hsl(var(--foreground));
+    color: hsl(var(--background));
+    font-weight: 700;
+    border-radius: 9999px;
+    padding: 0.75rem 2rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .btn-pill-primary:hover {
-  opacity: 0.95;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px 0 rgba(255, 255, 255, 0.2);
+    opacity: 0.92;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.28);
 }
 
 .btn-pill-secondary {
-  background-color: transparent;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 9999px;
-  padding: 0.6rem 1.6rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: transparent;
+    color: hsl(var(--foreground));
+    border: 1px solid hsl(var(--foreground) / 0.35);
+    font-weight: 600;
+    border-radius: 9999px;
+    padding: 0.75rem 2rem;
+    transition: all 0.3s ease;
 }
 
 .btn-pill-secondary:hover {
-  background-color: rgba(255, 255, 255, 0.06);
-  border-color: rgba(255, 255, 255, 0.6);
-  transform: translateY(-1px);
-}
-
-/* Custom Scrollbar Styles */
-.custom-scrollbar::-webkit-scrollbar {
-  height: 6px;
-  width: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: hsl(var(--border));
-  border-radius: 20px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: hsl(var(--muted-foreground));
-}
-
-/* Print Styles for Exporting Reports */
-@media print {
-  header, footer, button, a[href="/"] {
-    display: none !important;
-  }
-
-  body {
-    background-color: white !important;
-    color: black !important;
-  }
-
-  main {
-    max-width: 100% !important;
-    padding: 0 !important;
-  }
+    background-color: hsl(var(--foreground) / 0.08);
+    border-color: hsl(var(--foreground) / 0.6);
+    transform: translateY(-2px);
 }
