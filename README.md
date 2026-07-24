@@ -390,3 +390,27 @@ export default qrcode;
 
 Even `!important` overrides inside a React `<style>` tag lost to this because Vite compiles `@layer` rules into the final static bundle — runtime style injections cannot beat compiled layer rules consistently.
 
+**Solution:**  
+Added the override **outside `@layer`** at the bottom of `index.css`. CSS rules outside layers always beat rules inside layers:
+
+```css
+/\\\* Outside @layer — beats @layer base \\\*/
+body.landing-page-active,
+body.landing-page-active #root,
+body.landing-page-active #root > div,
+body.landing-page-active main {
+  background: #171D14 !important;
+  background-image: none !important;
+  background-attachment: unset !important;
+}
+```
+
+Also fixed `App.jsx` to conditionally strip the `bg-background` Tailwind class:
+
+```jsx
+const isLanding = location.pathname === "/";
+<div className={isLanding ? "min-h-screen flex flex-col" 
+                           : "min-h-screen bg-background text-foreground flex flex-col"}>
+```
+
+\---
