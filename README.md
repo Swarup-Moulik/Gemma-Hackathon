@@ -440,3 +440,18 @@ async def startup\\\_tasks():
 Runs automatically on every server boot — patches all legacy documents without manual intervention.
 
 \---
+
+### Problem 4: Vite Cache Persistence in Codespaces
+
+**Root cause:**  
+Vite caches transpiled modules in `node\\\_modules/.vite/`. Cloud dev environments (GitHub Codespaces) don't always pick up file changes because the browser hits a cached forwarded-port response.
+
+**Solution:**
+
+```bash
+rm -rf node\\\_modules/.vite   # clear module cache
+npm run dev -- --force      # force full rebundle
+# then Ctrl + Shift + R in browser (hard refresh)
+```
+
+\---
