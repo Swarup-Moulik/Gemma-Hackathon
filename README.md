@@ -509,5 +509,18 @@ cd client
 npm run dev
 # → http://localhost:5173
 ```
+### 4\. Environment Variables
 
+Create `client/.env`:
 
+```env
+VITE\\\_API\\\_URL=http://localhost:8000
+```
+
+Backend reads:
+
+```env
+MONGO\\\_URI=mongodb://localhost:27017  # default
+```
+
+\---
