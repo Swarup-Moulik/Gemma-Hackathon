@@ -315,3 +315,11 @@ Returns `{ "status": "Green Praxis backend online" }`.
 ├── Mic button (STT)
 ├── Language selector
 └── TTS spoken response
+/dashboard (Dashboard)
+├── Historical scan cards
+├── Crop type filter
+├── Expand for full diagnosis
+└── Delete from MongoDB
+```
+
+\---
