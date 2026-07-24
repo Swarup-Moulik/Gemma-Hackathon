@@ -40,10 +40,10 @@ The platform enables:
 ## 🏗️ System Architecture
 
 ```
-┌───────────────────────────────────────────────────────────────┐
-│                     GREEN PRAXIS PLATFORM                     │
-│                                                               │
-│  ┌─────────────┐    HTTP/REST   ┌────────────────────────┐    │
+┌─────────────────────────────────────────────────────────────────┐
+│                     GREEN PRAXIS PLATFORM                       │
+│                                                                 │
+│  ┌─────────────┐    HTTP/REST    ┌────────────────────────┐    │
 │  │  React 18   │ ◄────────────► │   FastAPI Backend      │    │
 │  │  Vite 5.x   │                │   (Python 3.11+)       │    │
 │  │  TailwindCSS│                │                        │    │
@@ -61,12 +61,45 @@ The platform enables:
 │                                 │  │  Static /uploads │  │    │
 │  ┌─────────────┐                │  └──────────────────┘  │    │
 │  │ Web Speech  │                └────────────────────────┘    │
-│  │ API (Voice) │                                              │
-│  └─────────────┘                                              │
-│                                                               │
-│  ┌─────────────┐                                              │
-│  │  QR Code    │                                              │
-│  │  Generator  │                                              │
-│  └─────────────┘                                              │
-└───────────────────────────────────────────────────────────────┘
+│  │ API (Voice) │                                               │
+│  └─────────────┘                                               │
+│                                                                 │
+│  ┌─────────────┐                                               │
+│  │  QR Code    │                                               │
+│  │  Generator  │                                               │
+│  └─────────────┘                                               │
+└─────────────────────────────────────────────────────────────────┘
 ```
+
+### Request Flow: Image Scan → Diagnosis
+
+```
+User uploads crop image
+         │
+         ▼
+\\\[React Home.jsx]  FormData POST /api/analyze
+         │
+         ▼
+\\\[FastAPI]
+  1. Saves file → /uploads/{filename}
+  2. Constructs public URL
+  3. Runs Gemma reasoning prompt
+  4. Returns structured JSON
+         │
+         ▼
+\\\[React Report.jsx]
+  - Recovery ring animation
+  - Diagnosis cards
+  - Treatment matrix
+  - Drone field grid
+  - XAI rationale
+  - QR code
+         │
+         ▼
+\\\[MongoDB]  Saves to greenpraxis.reports
+         │
+         ▼
+\\\[Dashboard]  Appears as historical card
+```
+
+\---
