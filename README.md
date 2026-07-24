@@ -455,3 +455,22 @@ npm run dev -- --force      # force full rebundle
 ```
 
 \---
+
+### Problem 5: Web Speech API Browser Compatibility
+
+**Root cause:**  
+`window.SpeechRecognition` is unavailable in Firefox and Safari. Hindi/Telugu TTS voices require OS language packs.
+
+**Solution:**  
+Feature detection with graceful degradation:
+
+```javascript
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+if (!SpeechRecognition) {
+  setVoiceSupported(false); // hides mic button silently
+}
+```
+
+For TTS, added a try/catch that skips voice synthesis if the requested language voice is not installed, falling back to silent text response.
+
+\---
