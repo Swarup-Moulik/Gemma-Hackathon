@@ -219,7 +219,7 @@ async def analyze_field(
             "soil_rebalancing_agent": "Agricultural Gypsum + Calcium Carbonate"
         }
 
- # Create MongoDB report document
+    # Create MongoDB report document
     report_data = {
         "type": scanMode,
         "image_url": image_url,
@@ -228,7 +228,7 @@ async def analyze_field(
         "created_at": datetime.utcnow().isoformat()
     }
 
-# Save to MongoDB
+    # Save to MongoDB
     insert_result = await reports_collection.insert_one(report_data)
     report_data["id"] = str(insert_result.inserted_id)
     del report_data["_id"]
@@ -266,4 +266,3 @@ async def delete_report(report_id: str):
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
-
