@@ -47,6 +47,9 @@ MOCK_CROP_RESPONSES = [
         "probable_issue": "Early Blight (Alternaria solani)",
         "confidence": "High (94%)",
         "severity": "Moderate",
+        "recovery_chance": 87,
+        "yield_loss_estimate": 18,
+        "treatment_urgency": "Treat within 48 hours",
         "likely_causes": [
             "High humidity following recent heavy monsoon rainfall.",
             "Insufficient air circulation between dense leaf canopy."
@@ -76,6 +79,9 @@ MOCK_CROP_RESPONSES = [
         "probable_issue": "Blister Blight (Exobasidium vexans)",
         "confidence": "High (91%)",
         "severity": "Severe",
+        "recovery_chance": 45,
+        "yield_loss_estimate": 35,
+        "treatment_urgency": "Treat within 24 hours",
         "likely_causes": [
             "Excessive shade cover combined with continuous morning fog.",
             "Water stagnation around tea root collar zones."
@@ -105,6 +111,9 @@ MOCK_CROP_RESPONSES = [
         "probable_issue": "Powdery Mildew (Uncinula necator)",
         "confidence": "Medium (88%)",
         "severity": "Mild",
+        "recovery_chance": 92,
+        "yield_loss_estimate": 8,
+        "treatment_urgency": "Treat within 72 hours",
         "likely_causes": [
             "Humid shade pockets underneath dense foliage trellises.",
             "Lack of canopy trimming blocking direct sunlight access."
@@ -224,6 +233,9 @@ async def analyze_field(
             "field_status": "Waterlogged but Salvagable",
             "toxic_silt_risk": "High",
             "damaged_percentage": 50,
+            "recovery_chance": 65,
+            "yield_loss_estimate": 42,
+            "treatment_urgency": "Treat within 48 hours",
             "individualFrameAnalyses": frame_data,
             "reclamation_steps": [
                 "Drain waterlogged sub-surfaces using grid trenching.",
