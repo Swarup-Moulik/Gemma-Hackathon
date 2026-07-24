@@ -140,3 +140,24 @@ Maps drone telemetry into a **3×3 coordinate grid** (sectors F1–F9), color-co
 Grid is generated from GPS lat/lng inputs, computing relative sector positions dynamically.
 
 \---
+
+### 3\. 🚨 Emergency Farm Rescue Mode
+
+One-click disaster assessment. Calls `POST /api/emergency-rescue` and generates:
+
+```python
+"emergency\\\_rescue": {
+    "flood\\\_severity": "High",
+    "safe\\\_areas": \\\["North field", "Ridge paddock"],
+    "danger\\\_areas": \\\["East field", "Irrigation channel"],
+    "rescue\\\_actions": \\\[
+        "Evacuate livestock immediately",
+        "Close tourist entry at Gate B",
+        "Inspect irrigation infrastructure"
+    ]
+}
+```
+
+Outputs a print-ready PDF via `window.print()`. Accessible as a global navbar button from any page.
+
+\---
