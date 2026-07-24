@@ -593,7 +593,7 @@ function Report() {
             </div>
             <div className="flex items-center gap-1.5">
               <span>Engine:</span>
-              <span className="font-semibold text-white">Offline Gemma 4 Pipeline</span>
+              <span className="font-semibold text-white">Gemma AI 4 Pipeline</span>
             </div>
             {reportData.coordinates && (
               <div className="flex items-center gap-1.5">
@@ -749,7 +749,7 @@ function Report() {
                   Local Farm Network QR Sync
                 </h3>
                 <span className="px-2 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/25 uppercase">
-                  Offline Sync
+                  Web Sync
                 </span>
               </div>
 
@@ -772,7 +772,7 @@ function Report() {
                     );
                   } catch (err) {
                     console.error("QR drawing error:", err);
-                    return <div className="text-xs text-rose-400">Failed to render offline QR.</div>;
+                    return <div className="text-xs text-rose-400">Failed to render sync QR.</div>;
                   }
                 })()}
 
@@ -795,7 +795,7 @@ function Report() {
                     <Compass className="w-4 h-4 text-primary" />
                     <span>Multispectral Map Grid</span>
                   </h3>
-                  <span className="text-[10px] text-slate-500 font-bold uppercase">Offline Grid</span>
+                  <span className="text-[10px] text-slate-500 font-bold uppercase">Telemetry Grid</span>
                 </div>
                 
                 <div className="grid grid-cols-3 gap-2.5 max-w-[200px] mx-auto aspect-square p-2 bg-black/20 border border-white/5 rounded-xl">
@@ -931,7 +931,7 @@ function Report() {
             <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-4 shadow-md">
               <h3 className="text-sm font-semibold text-white flex items-center gap-1.5 border-b border-white/5 pb-2">
                 <Mic className="w-4 h-4 text-emerald-400" />
-                Gemma 4 Voice Assistant (Offline)
+                Gemma 4 Voice Assistant
               </h3>
 
               <div className="flex items-center gap-4">
@@ -951,7 +951,7 @@ function Report() {
 
                 <div className="text-xs space-y-1 overflow-hidden">
                   <span className="text-[10px] text-slate-500 uppercase font-bold tracking-wider block">
-                    {isListening ? "Listening to your voice..." : isSpeaking ? "Speaking..." : "Offline Voice Assistant"}
+                    {isListening ? "Listening to your voice..." : isSpeaking ? "Speaking..." : "Voice Assistant Active"}
                   </span>
                   <p className="font-semibold text-white truncate max-w-[200px]">
                     {transcript || (language === "hi" ? "पूछने के लिए माइक दबाएं" : language === "te" ? "మాట్లాడటానికి మైక్ క్లిక్ చేయండి" : language === "es" ? "Presiona para hablar" : language === "fr" ? "Cliquez pour parler" : "Click to speak")}
