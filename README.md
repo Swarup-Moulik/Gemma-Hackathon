@@ -281,3 +281,13 @@ Deletes a report by MongoDB `\\\_id`.
 Returns `{ "status": "Green Praxis backend online" }`.
 
 \---
+## 📄 Page Structure
+
+```
+/ (Landing)
+├── Hero + animated ticket card
+├── Integrated Architecture (Gemma · Voice · MongoDB)
+├── Field Tools — 6-feature card grid
+├── Site Ledger — 4-page flow list with route links
+├── About \\\& Team — brand vision + contributor roles
+└── Footer
