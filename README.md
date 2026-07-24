@@ -494,4 +494,12 @@ npm install
 cd ../server
 pip install fastapi uvicorn motor python-multipart aiofiles
 ```
+### 2\. Start Backend
+
+```bash
+cd server
+python main.py
+# → http://localhost:8000
+# → Swagger UI: http://localhost:8000/docs
+```
 
