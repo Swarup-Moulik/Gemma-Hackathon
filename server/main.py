@@ -10,7 +10,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from bson import ObjectId
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="AgriRescue AI Backend", description="Gemma 4 Offline Web Server")
+app = FastAPI(title="Green Praxis Backend", description="Gemma 4 Offline Web Server")
 
 # Startup event to download clean qrcode.js offline generator library
 @app.on_event("startup")
@@ -49,7 +49,7 @@ app.mount("/uploads", StaticFiles(directory=UPLOAD_DIR), name="uploads")
 # MongoDB client initialization
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb://localhost:27017")
 client = AsyncIOMotorClient(MONGO_URI)
-db = client.agrirescue
+db = client.greenpraxis
 reports_collection = db.reports
 
 # Helper to serialize MongoDB documents to JSON
