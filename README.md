@@ -555,3 +555,23 @@ Gemma-Hackathon\\\_buildathon\\\_3/
 ```
 
 \--
+
+## 👥 Team
+
+|Role|Contribution|
+|-|-|
+|**Lead Engineer**|Full-stack architecture, API design, MongoDB ledger, TTS pipeline|
+|**AI Specialist**|Gemma reasoning flows, XAI rationale, disease taxonomy|
+|**UI/UX Designer**|Green Praxis design system, typography, animated ticket component|
+|**Project Coordinator**|Drone simulation, user workflow QA, emergency rescue validation|
+
+\---
+
+<div align="center">
+
+**Green Praxis** — Modern Agricultural Management  
+Powered by Google Gemma · Built with React + FastAPI + MongoDB
+
+*"The field doesn't wait. Neither does Gemma."*
+
+</div>
