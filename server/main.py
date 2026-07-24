@@ -41,7 +41,6 @@ def serialize_doc(doc):
     return doc
 
 # High-fidelity Mock Responses for Gemma 4 Analysis (Offline fallback)
-# High-fidelity Mock Responses for Gemma 4 Analysis (Offline fallback)
 MOCK_CROP_RESPONSES = [
     {
         "crop": "Tomato (Solanum lycopersicum)",
@@ -84,7 +83,8 @@ MOCK_CROP_RESPONSES = [
             {"name": "Late Blight", "percentage": 82},
             {"name": "Septoria", "percentage": 61},
             {"name": "Leaf Spot", "percentage": 54}
-        ]
+        ],
+        "explainable_ai": "I identified Early Blight because I observed circular brown lesions with concentric rings (target-like pattern) on older lower leaves, along with distinct chlorotic yellowing around the margins of the infected spots."
     },
     {
         "crop": "Tea Plantation (Camellia sinensis)",
@@ -127,7 +127,8 @@ MOCK_CROP_RESPONSES = [
             {"name": "Algal Leaf Spot", "percentage": 78},
             {"name": "Bird's Eye Spot", "percentage": 64},
             {"name": "Black Rot", "percentage": 49}
-        ]
+        ],
+        "explainable_ai": "I identified Blister Blight because I observed blister-like translucent lesions on younger leaves, with white powdery spore deposits accumulating on the lower leaf surfaces."
     },
     {
         "crop": "Grapes / Vineyards (Vitis vinifera)",
@@ -170,7 +171,8 @@ MOCK_CROP_RESPONSES = [
             {"name": "Downy Mildew", "percentage": 85},
             {"name": "Black Rot", "percentage": 58},
             {"name": "Anthracnose", "percentage": 42}
-        ]
+        ],
+        "explainable_ai": "I identified Powdery Mildew because I observed characteristic dusty white-to-gray powder patches coating the upper surfaces of the leaves and grape berries, matching fungal mycelium expansion."
     }
 ]
 
@@ -254,6 +256,7 @@ async def analyze_field(
                 {"name": "Severe Soil Liquefaction", "percentage": 73},
                 {"name": "Fencing Debris Damage", "percentage": 52}
             ],
+            "explainable_ai": "I identified riverine flood breach because I detected contiguous high-moisture grids (F3, F4, F6) showing complete canopy submersion and river embankment erosion profiles from satellite/drone elevation sensors.",
             "emergency_rescue": {
                 "flood_severity": "High",
                 "safe_areas": ["North field pasture", "Main farmhouse ridge"],
@@ -383,7 +386,8 @@ async def analyze_field(
                 {"name": "Industrial Chemical Runoff", "percentage": 79},
                 {"name": "Standing Irrigation Leakage", "percentage": 68},
                 {"name": "Soil Nutrient Depletion", "percentage": 50}
-            ]
+            ],
+            "explainable_ai": "I identified Post-Disaster Field Contamination because my multi-spectral analysis observed near-infrared (NIR) absorption drops below 0.25 (index of standing surface water) and high reflective signatures of heavy silt debris layers covering active crop sectors."
         }
 
     # Create MongoDB report document
