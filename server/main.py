@@ -168,25 +168,82 @@ def health_check():
 
 @app.post("/api/analyze")
 async def analyze_field(
-    file: UploadFile = File(...),
-    scanMode: str = Form(...), # 'crop' | 'drone'
+    file: Optional[UploadFile] = File(None),
+    scanMode: str = Form(...), # 'crop' | 'drone' | 'emergency'
     latitude: Optional[float] = Form(26.2006),
     longitude: Optional[float] = Form(92.4005)
 ):
-    # Save the file locally
-    file_extension = os.path.splitext(file.filename)[1]
-    filename = f"upload-{int(datetime.now().timestamp())}{file_extension}"
-    file_path = os.path.join(UPLOAD_DIR, filename)
-    
-    with open(file_path, "wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    if file:
+        # Save the file locally
+        file_extension = os.path.splitext(file.filename)[1]
+        filename = f"upload-{int(datetime.now().timestamp())}{file_extension}"
+        file_path = os.path.join(UPLOAD_DIR, filename)
+        
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
 
-    image_url = f"/uploads/{filename}"
+        image_url = f"/uploads/{filename}"
+    else:
+        # Default Unsplash flood image for emergency rescue mock scans
+        image_url = "https://images.unsplash.com/photo-1547683905-f686c993aae5?auto=format&fit=crop&w=600&q=80"
 
     # Compile Analysis using Gemma 4 Schema
     if scanMode == "crop":
         # Pick one random mock crop report with Gemma 4 output schema
         analysis = random.choice(MOCK_CROP_RESPONSES)
+    elif scanMode == "emergency":
+        analysis = {
+            "crop": "All Farm Sectors / Emergency Report",
+            "probable_issue": "Sudden Riverine Flood Breach",
+            "confidence": "High (98%)",
+            "severity": "Severe",
+            "recovery_chance": 35,
+            "yield_loss_estimate": 60,
+            "treatment_urgency": "Treat within 24 hours",
+            "likely_causes": [
+                "River embankment breach due to heavy rainfall upstream.",
+                "Silt barrier collapse near the eastern boundary."
+            ],
+            "recommended_actions": [
+                "Evacuate all livestock from low-lying pastures immediately.",
+                "Restrict tourist entry entirely; lock gates on guest walking paths.",
+                "Shut down and inspect electric irrigation pumps in flooded zones."
+            ],
+            "organic_treatments": ["Apply sandbags around wellheads", "Clear mud channels"],
+            "chemical_treatments": ["Inspect main power lines for shorts", "Test drinking water wells"],
+            "tourist_safety": {
+                "hazard_detected": True,
+                "message": "EMERGENCY: Immediate flood hazards on East Guest Trail and southern fences. Keep all visitors cleared."
+            },
+            "expert_advice": "Contact local emergency response teams. Secure livestock first.",
+            "field_status": "Severe Water Logging & Debris Strew",
+            "toxic_silt_risk": "Critical",
+            "damaged_percentage": 75,
+            "crop_recovery_planner": [
+                {"period": "Day 1-3", "action": "Siphon and drain standing surface water using dynamic grid trenches."},
+                {"period": "Day 4-7", "action": "Apply agricultural gypsum (calcium sulfate) to counter silt crusting and flush sodium."},
+                {"period": "Week 2", "action": "Blend raw compost, mulch, and biochar into topsoil to restore organic carbon."},
+                {"period": "Week 3-4", "action": "Sow nitrogen-fixing cover crops (clover, alfalfa) to aerate soil and resume drip irrigation."}
+            ],
+            "crop_recommendation": {
+                "avoid_crop": "Rice",
+                "suggested_crops": [
+                    {"name": "Mustard", "reason": "Requires low soil moisture, preventing waterlogged root damage."},
+                    {"name": "Chickpea", "reason": "Thrives in current soil pH, fixing nitrogen into depleted tracts."},
+                    {"name": "Spinach", "reason": "Short growth cycle to bypass current damaged fertility layers."}
+                ]
+            },
+            "emergency_rescue": {
+                "flood_severity": "High",
+                "safe_areas": ["North field pasture", "Main farmhouse ridge"],
+                "danger_areas": ["East field bottomlands", "Guest Trail Sector 1"],
+                "rescue_actions": [
+                    "Evacuate all livestock from pastures to the North field pasture immediately.",
+                    "Close safety gates and lock visitor path entries.",
+                    "Shut down primary well power grids and inspect active irrigation systems."
+                ]
+            }
+        }
     else:
         # Generate grid telemetry cells for Disaster Field Checker
         base_lat = latitude
