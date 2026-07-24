@@ -12,24 +12,7 @@ from pydantic import BaseModel, Field
 
 app = FastAPI(title="Green Praxis Backend", description="Gemma 4 Web Server")
 
-# Startup event to download clean qrcode.js offline generator library
-@app.on_event("startup")
-def download_qrcode_js():
-    try:
-        import urllib.request
-        url = "https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.js"
-        target_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "client", "src", "utils"))
-        os.makedirs(target_dir, exist_ok=True)
-        target_path = os.path.join(target_dir, "qrcode.js")
-        with urllib.request.urlopen(url) as response:
-            content = response.read().decode('utf-8')
-        # Append ESM export to allow React imports
-        content += "\nexport default qrcode;\n"
-        with open(target_path, "w", encoding="utf-8") as f:
-            f.write(content)
-        print("qrcode.js downloaded and exported successfully!")
-    except Exception as e:
-        print(f"Error downloading qrcode.js: {e}")
+
 
 
 # Configure CORS for React Client (typically http://localhost:5173)
@@ -51,6 +34,59 @@ MONGO_URI = os.environ.get("MONGO_URI", "mongodb://localhost:27017")
 client = AsyncIOMotorClient(MONGO_URI)
 db = client.greenpraxis
 reports_collection = db.reports
+
+@app.on_event("startup")
+async def startup_tasks():
+    # 1. Download clean qrcode.js Offline Library
+    try:
+        import urllib.request
+        url = "https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.js"
+        target_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "client", "src", "utils"))
+        os.makedirs(target_dir, exist_ok=True)
+        target_path = os.path.join(target_dir, "qrcode.js")
+        with urllib.request.urlopen(url) as response:
+            content = response.read().decode('utf-8')
+        # Append ESM export to allow React imports
+        content += "\nexport default qrcode;\n"
+        with open(target_path, "w", encoding="utf-8") as f:
+            f.write(content)
+        print("qrcode.js downloaded and exported successfully!")
+    except Exception as e:
+        print(f"Error downloading qrcode.js: {e}")
+
+    # 2. Rebrand existing DB documents
+    try:
+        cursor = reports_collection.find({})
+        async for doc in cursor:
+            updated = False
+            # Check crop
+            if "crop" in doc and "AgriRescue" in str(doc["crop"]):
+                doc["crop"] = str(doc["crop"]).replace("AgriRescue", "Green Praxis")
+                updated = True
+            # Check probable_issue
+            if "probable_issue" in doc and "AgriRescue" in str(doc["probable_issue"]):
+                doc["probable_issue"] = str(doc["probable_issue"]).replace("AgriRescue", "Green Praxis")
+                updated = True
+            # Check inside aiAnalysis
+            if "aiAnalysis" in doc:
+                for k, v in doc["aiAnalysis"].items():
+                    if isinstance(v, str) and "AgriRescue" in v:
+                        doc["aiAnalysis"][k] = v.replace("AgriRescue", "Green Praxis")
+                        updated = True
+                    elif isinstance(v, list):
+                        new_list = []
+                        for item in v:
+                            if isinstance(item, str) and "AgriRescue" in item:
+                                new_list.append(item.replace("AgriRescue", "Green Praxis"))
+                                updated = True
+                            else:
+                                new_list.append(item)
+                        doc["aiAnalysis"][k] = new_list
+            if updated:
+                await reports_collection.replace_one({"_id": doc["_id"]}, doc)
+        print("MongoDB databases updated to Green Praxis successfully!")
+    except Exception as db_err:
+        print(f"Error migrating MongoDB records: {db_err}")
 
 # Helper to serialize MongoDB documents to JSON
 def serialize_doc(doc):
