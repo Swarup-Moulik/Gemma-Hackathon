@@ -64,7 +64,13 @@ function Report() {
 
         // Sections
         "Disaster Field Checker": "आपदा क्षेत्र समीक्षक (Disaster Field Checker)",
-        "Plant Health Checker": "पौधा स्वास्थ्य रक्षक (Plant Health Checker)"
+        "Plant Health Checker": "पौधा स्वास्थ्य रक्षक (Plant Health Checker)",
+
+        // Timeline periods
+        "Day 1-3": "दिन 1-3",
+        "Day 4-7": "दिन 4-7",
+        "Week 2": "सप्ताह 2",
+        "Week 3-4": "सप्ताह 3-4"
       },
       es: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -89,7 +95,13 @@ function Report() {
         "Highly Contaminated": "Altamente Contaminado",
         "Safe for Immediate Planting": "Seguro para Siembra Inmediata",
         "Disaster Field Checker": "Verificador de Campo en Desastres",
-        "Plant Health Checker": "Verificador de Salud de Plantas"
+        "Plant Health Checker": "Verificador de Salud de Plantas",
+
+        // Timeline periods
+        "Day 1-3": "Día 1-3",
+        "Day 4-7": "Día 4-7",
+        "Week 2": "Semana 2",
+        "Week 3-4": "Semana 3-4"
       },
       fr: {
         "Tomato (Solanum lycopersicum)": "Tomate (Solanum lycopersicum)",
@@ -99,7 +111,7 @@ function Report() {
         "Early Blight (Alternaria solani)": "Alternariose (Alternaria solani)",
         "Blister Blight (Exobasidium vexans)": "Maladie des Cloques (Exobasidium vexans)",
         "Powdery Mildew (Uncinula necator)": "Oïdium (Uncinula necator)",
-        "Post-Disaster Field Contamination": "Contamination du Champ Après Sinistre",
+        "Post-Disaster Field Contamination": "Contaminación du Champ Après Sinistre",
         "Mild": "Léger",
         "Moderate": "Modéré",
         "Severe": "Grave",
@@ -114,7 +126,13 @@ function Report() {
         "Highly Contaminated": "Hautement Contaminé",
         "Safe for Immediate Planting": "Sûr pour Plantation Immédiate",
         "Disaster Field Checker": "Contrôleur de Champ Post-Catastrophe",
-        "Plant Health Checker": "Vérificateur de Santé des Plantes"
+        "Plant Health Checker": "Vérificateur de Santé des Plantes",
+
+        // Timeline periods
+        "Day 1-3": "Jour 1-3",
+        "Day 4-7": "Jour 4-7",
+        "Week 2": "Semaine 2",
+        "Week 3-4": "Semaine 3-4"
       },
       te: {
         "Tomato (Solanum lycopersicum)": "టమోటా (Solanum lycopersicum)",
@@ -139,7 +157,13 @@ function Report() {
         "Highly Contaminated": "ఎక్కువగా కలుషితమైనది",
         "Safe for Immediate Planting": "వెంటనే నాటడానికి సురక్షితం",
         "Disaster Field Checker": "విపత్తు పొల పరిశీలకుడు (Disaster Field Checker)",
-        "Plant Health Checker": "మొక్కల ఆరోగ్య పరీక్షకారి (Plant Health Checker)"
+        "Plant Health Checker": "మొక్కల ఆరోగ్య పరీక్షకారి (Plant Health Checker)",
+
+        // Timeline periods
+        "Day 1-3": "1-3 రోజులు",
+        "Day 4-7": "4-7 రోజులు",
+        "Week 2": "2వ వారం",
+        "Week 3-4": "3-4 వారాలు"
       }
     };
 
@@ -486,6 +510,34 @@ function Report() {
                 ))}
               </ol>
             </div>
+
+            {/* AI Crop Recovery Planner (High Impact ⭐⭐⭐⭐⭐) */}
+            {analysis.crop_recovery_planner && (
+              <div className="frosted-glass border border-white/10 rounded-xl p-5 space-y-4 shadow-md">
+                <h3 className="text-sm font-semibold text-white flex items-center gap-1.5">
+                  <Sparkles className="w-4 h-4 text-emerald-400" />
+                  Gemma 4 AI Crop Recovery Planner (30-Day Roadmap)
+                </h3>
+                
+                <div className="relative pl-4 border-l border-white/15 ml-2 space-y-4">
+                  {analysis.crop_recovery_planner.map((phase, idx) => (
+                    <div key={idx} className="relative">
+                      {/* Timeline Node Dot */}
+                      <span className="absolute -left-[21px] top-1.5 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-slate-950"></span>
+                      
+                      <div className="space-y-1">
+                        <span className="inline-block px-2 py-0.5 rounded-full text-[9px] font-bold bg-white/5 border border-white/10 text-emerald-300 uppercase">
+                          {translateKey(phase.period)}
+                        </span>
+                        <p className="text-xs text-slate-300 leading-relaxed font-light">
+                          {translateKey(phase.action)}
+                        </p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {/* Disaster Field Checker Soil agents (only visible if drone scanned) */}
             {isDrone && analysis.reclamation_steps && (
