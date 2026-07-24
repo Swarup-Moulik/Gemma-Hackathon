@@ -27,14 +27,25 @@ function Navbar() {
           </span>
 
           <Link
-            to="/dashboard"
-            className={`text-sm font-medium transition-colors ${
-              location.pathname === '/dashboard'
-                ? 'text-primary font-semibold'
-                : 'text-muted-foreground hover:text-foreground'
+            to="/scan"
+            className={`text-sm font-semibold transition-colors ${
+              location.pathname === '/scan'
+                ? 'text-white'
+                : 'text-slate-400 hover:text-white'
             }`}
           >
-            Dashboard
+            Inspect Console
+          </Link>
+
+          <Link
+            to="/dashboard"
+            className={`text-sm font-semibold transition-colors ${
+              location.pathname === '/dashboard'
+                ? 'text-white'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            History Timeline
           </Link>
 
           {/* Theme Toggle Button */}
