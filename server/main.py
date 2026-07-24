@@ -58,10 +58,8 @@ MOCK_CROP_RESPONSES = [
             "Prune and safely destroy infected lower leaves immediately.",
             "Avoid overhead sprinkler irrigation; apply water directly at root level."
         ],
-        "organic_options": [
-            "Apply copper-based organic fungicide or neem oil solution every 7 days.",
-            "Spray liquid compost tea to introduce beneficial microbes."
-        ],
+        "organic_treatments": ["Neem oil", "Baking soda", "Compost tea"],
+        "chemical_treatments": ["Mancozeb", "Copper oxychloride"],
         "tourist_safety": {
             "hazard_detected": False,
             "message": "No immediate hazards detected near guest walking paths."
@@ -98,10 +96,8 @@ MOCK_CROP_RESPONSES = [
             "Carry out emergency light pruning to detach infected crop shoots.",
             "Drain mudbeds immediately to dry out surrounding topsoil layers."
         ],
-        "organic_options": [
-            "Spray organic-approved copper hydroxide solution.",
-            "Apply garlic-barrier extract to repel fungal spore replication."
-        ],
+        "organic_treatments": ["Garlic barrier extract", "Neem oil", "Compost tea"],
+        "chemical_treatments": ["Copper hydroxide", "Hexaconazole"],
         "tourist_safety": {
             "hazard_detected": True,
             "message": "Severe fungal spread detected near Guest Trail Sector 1. Advise tourists to avoid plucking leaves or walking through damp field corridors without boots."
@@ -138,10 +134,8 @@ MOCK_CROP_RESPONSES = [
             "Selectively pluck leaves blocking sun contact with grape clusters.",
             "Prune non-bearing shoots to improve internal cluster ventilation."
         ],
-        "organic_options": [
-            "Spray diluted milk-water solution (1:9 ratio) under bright sunlight.",
-            "Apply horticultural oils or organic sulfur powder."
-        ],
+        "organic_treatments": ["Diluted milk foliar spray", "Horticultural oil", "Sulfur powder"],
+        "chemical_treatments": ["Myclobutanil", "Mancozeb"],
         "tourist_safety": {
             "hazard_detected": False,
             "message": "No safety concerns. Safe for guest vineyard walks."
@@ -268,10 +262,8 @@ async def analyze_field(
                 "Excavate emergency field channels to route standing runoff water away.",
                 "Apply agricultural lime compounds to raise soil pH and neutralize toxicity."
             ],
-            "organic_options": [
-                "Apply raw compost mulch to introduce organic carbon.",
-                "Sow cover crops (e.g., clover) to extract residual heavy metals."
-            ],
+            "organic_treatments": ["Compost tea spray", "Biochar soil enrichment", "Trichoderma inoculation"],
+            "chemical_treatments": ["Agricultural lime neutralizer", "Gypsum soil conditioner"],
             "tourist_safety": {
                 "hazard_detected": True,
                 "message": "CAUTION: Field is highly contaminated with acidic silt and collapsed fencing debris. Restrict guest access entirely."
