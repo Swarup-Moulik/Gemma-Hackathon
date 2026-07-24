@@ -76,4 +76,37 @@ function Landing() {
                 </div>
               </div>
             </div>
-            
+             {/* Right Column: Three Core Pillars (Cause, AI, Event) */}
+            <div className="md:col-span-2 space-y-6 md:pl-4">
+              <div className="space-y-1.5">
+                <h3 className="text-sm font-bold text-emerald-300 uppercase tracking-widest flex items-center gap-2">
+                  <HelpCircle className="w-4 h-4 text-emerald-400" />
+                  01. The Cause
+                </h3>
+                <p className="text-xs text-slate-300 leading-relaxed font-light">
+                  Remote agritourism estates, organic farms, and boutique vineyards are highly susceptible to crop damage. When blights or flooding strike, there is typically no internet connectivity and no agricultural expert nearby. AgriRescue AI solves this urgent problem by letting farm operators run expert diagnoses and verify terrain safety immediately, even without cellular networks.
+                </p>
+              </div>
+
+              <div className="space-y-1.5 border-t border-white/5 pt-4">
+                <h3 className="text-sm font-bold text-emerald-300 uppercase tracking-widest flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-emerald-400" />
+                  02. The AI Architecture
+                </h3>
+                <p className="text-xs text-slate-300 leading-relaxed font-light">
+                  Leveraging Google's **Gemma 4** multimodal models, the app runs entirely at the edge. By processing leaf images (Plant Health Checker) or drone flight frames (Disaster Field Checker), Gemma 4 diagnoses crop illnesses, estimates soil reclamation roadmaps, and checks coordinates to generate guest hazard alerts.
+                </p>
+              </div>
+
+              <div className="space-y-1.5 border-t border-white/5 pt-4">
+                <h3 className="text-sm font-bold text-emerald-300 uppercase tracking-widest flex items-center gap-2">
+                  <Compass className="w-4 h-4 text-emerald-400" />
+                  03. The Event Focus
+                </h3>
+                <p className="text-xs text-slate-300 leading-relaxed font-light">
+                  Designed for the **Google Build with Gemma Hackathon**, this project demonstrates the powerful application of lightweight, edge-compatible generative models in real-world scenarios. By removing dependencies on external servers or heavy cloud infrastructures, it brings critical tools to underserved agricultural communities.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
