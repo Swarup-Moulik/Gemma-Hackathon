@@ -41,6 +41,7 @@ def serialize_doc(doc):
     return doc
 
 # High-fidelity Mock Responses for Gemma 4 Analysis (Offline fallback)
+# High-fidelity Mock Responses for Gemma 4 Analysis (Offline fallback)
 MOCK_CROP_RESPONSES = [
     {
         "crop": "Tomato (Solanum lycopersicum)",
@@ -78,7 +79,12 @@ MOCK_CROP_RESPONSES = [
                 {"name": "Chickpea", "reason": "Adapts well to current soil pH and naturally re-nitrogenates beds."},
                 {"name": "Spinach", "reason": "Short 30-day growth cycle to produce yield before damaged soil conditions worsen."}
             ]
-        }
+        },
+        "similar_diseases": [
+            {"name": "Late Blight", "percentage": 82},
+            {"name": "Septoria", "percentage": 61},
+            {"name": "Leaf Spot", "percentage": 54}
+        ]
     },
     {
         "crop": "Tea Plantation (Camellia sinensis)",
@@ -116,7 +122,12 @@ MOCK_CROP_RESPONSES = [
                 {"name": "Chickpea", "reason": "Corrects soil nitrogen loss and balances pH in acidic clay tracts."},
                 {"name": "Spinach", "reason": "Shallow root depth bypasses high moisture layers that trigger blister blight."}
             ]
-        }
+        },
+        "similar_diseases": [
+            {"name": "Algal Leaf Spot", "percentage": 78},
+            {"name": "Bird's Eye Spot", "percentage": 64},
+            {"name": "Black Rot", "percentage": 49}
+        ]
     },
     {
         "crop": "Grapes / Vineyards (Vitis vinifera)",
@@ -154,7 +165,12 @@ MOCK_CROP_RESPONSES = [
                 {"name": "Chickpea", "reason": "High salt tolerance makes it ideal for vineyard margins."},
                 {"name": "Spinach", "reason": "Short cycle prevents exposure to long-lasting mildew spores."}
             ]
-        }
+        },
+        "similar_diseases": [
+            {"name": "Downy Mildew", "percentage": 85},
+            {"name": "Black Rot", "percentage": 58},
+            {"name": "Anthracnose", "percentage": 42}
+        ]
     }
 ]
 
@@ -233,6 +249,11 @@ async def analyze_field(
                     {"name": "Spinach", "reason": "Short growth cycle to bypass current damaged fertility layers."}
                 ]
             },
+            "similar_diseases": [
+                {"name": "Dam Failure Breach", "percentage": 89},
+                {"name": "Severe Soil Liquefaction", "percentage": 73},
+                {"name": "Fencing Debris Damage", "percentage": 52}
+            ],
             "emergency_rescue": {
                 "flood_severity": "High",
                 "safe_areas": ["North field pasture", "Main farmhouse ridge"],
@@ -357,7 +378,12 @@ async def analyze_field(
                     {"name": "Chickpea", "reason": "Thrives in current soil pH, fixing nitrogen into depleted tracts."},
                     {"name": "Spinach", "reason": "Short growth cycle to bypass current damaged fertility layers."}
                 ]
-            }
+            },
+            "similar_diseases": [
+                {"name": "Industrial Chemical Runoff", "percentage": 79},
+                {"name": "Standing Irrigation Leakage", "percentage": 68},
+                {"name": "Soil Nutrient Depletion", "percentage": 50}
+            ]
         }
 
     # Create MongoDB report document
@@ -403,6 +429,93 @@ async def delete_report(report_id: str):
         return {"status": "success", "message": "Report deleted"}
     except Exception:
         raise HTTPException(status_code=400, detail="Invalid report ID format")
+
+class ChatRequest(BaseModel):
+    query: str
+    language: str = "en"
+
+@app.post("/api/chat")
+def agricultural_chat(req: ChatRequest):
+    q = req.query.lower()
+    lang = req.language
+    
+    # English QA
+    qa_en = {
+        "powdery mildew": "Powdery mildew is a fungal disease that creates a white, powdery layer on leaves. Treat it organically using diluted milk sprays or sulfur powder. Avoid overhead watering.",
+        "irrigate": "Irrigate during early morning (4 AM to 8 AM). This minimizes evaporation and allows leaves to dry during the day, preventing fungal growth. Avoid night watering.",
+        "leaves curling": "Leaf curling is usually a defense mechanism against water stress, excessive heat, or sap-sucking pests like aphids. Inspect leaf undersides and check soil moisture.",
+        "early blight": "Early blight is a fungal infection (Alternaria solani) that causes concentric target-like rings on tomato leaves. Prune lower leaves and treat within 48 hours.",
+        "gypsum": "Gypsum (Calcium Sulfate) helps aerate compacted clay soil, counters toxic sodium crusts left by floods, and improves water infiltration without changing soil pH.",
+        "flood": "Post-flood soils suffer from compaction and silt contamination. Rotate crops to low-moisture options like Mustard, Chickpeas, or Spinach to bypass damaged layers.",
+        "trichoderma": "Trichoderma is a beneficial bio-fungicide that colonizes plant roots, protecting them from aggressive waterborne pathogens like root rot.",
+        "silt": "Toxic silt layers seal soil pores and cause root suffocation. Till the soil to aerate it and add compost or agricultural lime to rebalance fertility."
+    }
+
+    # Hindi QA
+    qa_hi = {
+        "powdery mildew": "पाउडरी मिल्ड्यू (चूर्णिल आसिता) एक फंगल बीमारी है जो पत्तियों पर सफेद पाउडर जैसा धब्बा बनाती है। इसके उपचार के लिए नीम के तेल या सल्फर पाउडर का छिड़काव करें।",
+        "irrigate": "सिंचाई सुबह के समय (सुबह 4 से 8 बजे) करें। इससे पानी का वाष्पीकरण कम होता है और पत्तियां दिन में सूख जाती हैं, जिससे फंगस नहीं फैलता।",
+        "leaves curling": "पत्तियों का मुड़ना आमतौर पर पानी की कमी, अत्यधिक गर्मी या एफिड्स जैसे कीड़ों के कारण होता है। पत्तियों के निचले हिस्से की जांच करें।",
+        "early blight": "अगेती झुलसा (Early Blight) टमाटर की पत्तियों पर गोल छल्लेदार धब्बे बनाता है। निचली पत्तियों को काटें और 48 घंटे के भीतर कवकनाशी का छिड़काव करें।",
+        "gypsum": "जिप्सम मिट्टी की जकड़न को कम करता है, बाढ़ के बाद जमा हुए खारेपन को दूर करता है, और पीएच बदले बिना जल अवशोषण में सुधार करता है।",
+        "flood": "बाढ़ के बाद मिट्टी में हवा की कमी हो जाती है। उपजाऊ क्षमता सुधारने के लिए सरसों, चना या पालक जैसी कम पानी वाली फसलें उगाएं।"
+    }
+
+    # Spanish QA
+    qa_es = {
+        "powdery mildew": "El mildiú polvoriento es un hongo que crea una capa blanca en las hojas. Trátelo con spray de leche diluida o azufre en polvo.",
+        "irrigate": "Riegue temprano en la mañana (4 AM a 8 AM) para evitar la evaporación rápida y prevenir la proliferación de hongos en las hojas.",
+        "leaves curling": "El enrollamiento de las hojas se debe al estrés por falta de agua, calor extremo o plagas como pulgones. Revise el envés de las hojas.",
+        "early blight": "El tizón temprano causa manchas concéntricas en las hojas de tomate. Pode las hojas inferiores infectadas y aplique fungicida.",
+        "gypsum": "El yeso agrícola ayuda a aflojar el suelo arcilloso compactado y elimina la acumulación de sodio dañino sin alterar el pH del suelo.",
+        "flood": "Tras una inundación, el suelo queda compactado. Se recomienda rotar a cultivos de bajo consumo de agua como mostaza, garbanzo o espinaca."
+    }
+
+    # French QA
+    qa_fr = {
+        "powdery mildew": "L'oïdium est une maladie fongique qui crée un feutrage blanc sur les feuilles. Traitez avec du soufre ou un spray de lait dilué.",
+        "irrigate": "Arrosez tôt le matin (de 4h à 8h) pour limiter l'évaporation et permettre aux feuilles de sécher, évitant ainsi les moisissures.",
+        "leaves curling": "L'enroulement des feuilles indique souvent un manque d'eau, une chaleur excessive ou des pucerons. Inspectez le dessous des feuilles.",
+        "early blight": "L'alternariose provoque des taches concentriques cernées de jaune sur les tomates. Taillez les feuilles basses et traitez sous 48h.",
+        "gypsum": "Le gypse améliore la structure des sols argileux tassés par les crues et aide à drainer le sodium sans modifier le pH.",
+        "flood": "Après une crue, le sol étouffe. Alternez avec des cultures à cycle court comme la moutarde, le pois chiche ou les épinards."
+    }
+
+    # Telugu QA
+    qa_te = {
+        "powdery mildew": "బూడిద తెగులు అనేది ఆకులపై తెల్లటి పొడిని ఏర్పరిచే ఒక శిలీంద్ర తెగులు. దీని నివారణకు వేప నూనె లేదా సల్ఫర్ పొడిని వాడండి.",
+        "irrigate": "ఉదయం వేళల్లో (ఉదయం 4 నుండి 8 గంటల మధ్య) నీరు పెట్టండి. ఇది ఆకులు త్వరగా ఆరిపోయేలా చేసి శిలీంద్రాల వ్యాప్తిని అడ్డుకుంటుంది.",
+        "leaves curling": "ఆకులు ముడుచుకుపోవడం అనేది నీటి ఎద్దడి, అధిక వేడి లేదా పేనుబంక వంటి కీటకాల వల్ల జరుగుతుంది. ఆకుల వెనుక భాగం పరిశీలించండి.",
+        "early blight": "అల్టర్నేరియా ఆకుమచ్చ తెగులు టమోటా ఆకులపై గుండ్రటి మచ్చలను ఏర్పరుస్తుంది. సోకిన ఆకులను కత్తిరించి 48 గంటల్లో చికిత్స చేయండి.",
+        "gypsum": "జిప్సమ్ చవిటి నేలల బిగువును సడలిస్తుంది, వరద వల్ల పేరుకుపోయిన ఉప్పును తొలగిస్తుంది మరియు నేల పిహెచ్ మారకుండా నీటి నిల్వను పెంచుతుంది.",
+        "flood": "ఆకుల రంగు మారడం లేదా రాలడం వరద నష్టం వల్ల కావచ్చు. రికవరీ కోసం ఆవాలు, శెనగలు లేదా పాలకూర వంటి పంటలు వేయండి."
+    }
+
+    # Select dictionary
+    qa = qa_en
+    if lang == "hi":
+        qa = qa_hi
+    elif lang == "es":
+        qa = qa_es
+    elif lang == "fr":
+        qa = qa_fr
+    elif lang == "te":
+        qa = qa_te
+
+    # Find match
+    for key, val in qa.items():
+        if key in q:
+            return {"reply": val}
+            
+    # Default local fallbacks
+    defaults = {
+        "en": "I am Gemma, your offline agricultural consultant. Ask me about powdery mildew, leaf curling, irrigation schedules, or post-flood soil recovery.",
+        "hi": "मैं जेम्मा हूँ, आपकी ऑफलाइन कृषि सलाहकार। मुझसे चूर्णिल आसिता (powdery mildew), पत्तियों का मुड़ना, सिंचाई का समय, या मिट्टी सुधार के बारे में पूछें।",
+        "es": "Soy Gemma, tu consultora agrícola offline. Pregúntame sobre el mildiú polvoriento, enrollamiento de hojas, riego o recuperación del suelo.",
+        "fr": "Je suis Gemma, votre conseillère agricole hors ligne. Posez-moi des questions sur l'oïdium, l'enroulement des feuilles, l'irrigation ou le sol.",
+        "te": "నేను జెమ్మా, మీ ఆఫ్లైన్ వ్యవసాయ సహాయకురాలిని. నన్ను బూడిద తెగులు, ఆకులు ముడుచుకోవడం, నీటి పారుదల లేదా నేల రికవరీ గురించి అడగండి."
+    }
+    return {"reply": defaults.get(lang, defaults["en"])}
 
 if __name__ == "__main__":
     import uvicorn
