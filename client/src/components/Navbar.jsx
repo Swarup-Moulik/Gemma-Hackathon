@@ -38,6 +38,17 @@ function Navbar() {
           </Link>
 
           <Link
+            to="/chat"
+            className={`text-sm font-semibold transition-colors ${
+              location.pathname === '/chat'
+                ? 'text-white'
+                : 'text-slate-400 hover:text-white'
+            }`}
+          >
+            Ask Gemma
+          </Link>
+
+          <Link
             to="/dashboard"
             className={`text-sm font-semibold transition-colors ${
               location.pathname === "/dashboard"
