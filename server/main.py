@@ -63,7 +63,13 @@ MOCK_CROP_RESPONSES = [
             "hazard_detected": False,
             "message": "No immediate hazards detected near guest walking paths."
         },
-        "expert_advice": "If symptoms spread to more than 40% of foliage within 48 hours, contact local agriculture extension officer."
+        "expert_advice": "If symptoms spread to more than 40% of foliage within 48 hours, contact local agriculture extension officer.",
+        "crop_recovery_planner": [
+            {"period": "Day 1-3", "action": "Prune and destroy infected lower foliage and clear fallen leaves from mudbeds."},
+            {"period": "Day 4-7", "action": "Foliar spray copper hydroxide or organic neem oil every 7 days to halt spore spread."},
+            {"period": "Week 2", "action": "Incorporate liquid compost tea to reintroduce healthy root and leaf microbiomes."},
+            {"period": "Week 3-4", "action": "Resume sub-surface drip irrigation and check new foliage shoots for green growth."}
+        ]
     },
     {
         "crop": "Tea Plantation (Camellia sinensis)",
@@ -86,7 +92,13 @@ MOCK_CROP_RESPONSES = [
             "hazard_detected": True,
             "message": "Severe fungal spread detected near Guest Trail Sector 1. Advise tourists to avoid plucking leaves or walking through damp field corridors without boots."
         },
-        "expert_advice": "Consult local tea cooperative specialists if black spores cover more than 20% of pluckable shoots."
+        "expert_advice": "Consult local tea cooperative specialists if black spores cover more than 20% of pluckable shoots.",
+        "crop_recovery_planner": [
+            {"period": "Day 1-3", "action": "Carry out emergency light pruning to detach and discard blister-spotted shoots."},
+            {"period": "Day 4-7", "action": "Apply garlic-barrier extract or organic copper spray under direct sunlight hours."},
+            {"period": "Week 2", "action": "Clear mudbed boundary drainage channels to prevent root rot and dry topsoil layers."},
+            {"period": "Week 3-4", "action": "Verify guest pathway fences to ensure safety, and resume light organic spraying."}
+        ]
     },
     {
         "crop": "Grapes / Vineyards (Vitis vinifera)",
@@ -109,7 +121,13 @@ MOCK_CROP_RESPONSES = [
             "hazard_detected": False,
             "message": "No safety concerns. Safe for guest vineyard walks."
         },
-        "expert_advice": "Keep inspections bi-weekly. Organic spray is highly effective at this early stage."
+        "expert_advice": "Keep inspections bi-weekly. Organic spray is highly effective at this early stage.",
+        "crop_recovery_planner": [
+            {"period": "Day 1-3", "action": "Prune excess non-bearing leaf layers around trellises to increase sunlight access."},
+            {"period": "Day 4-7", "action": "Apply a light water-milk foliar spray or sulfur powder to leaf undersides."},
+            {"period": "Week 2", "action": "Test cluster air circulation rates and monitor for early fuzzy powdery spots."},
+            {"period": "Week 3-4", "action": "Conduct visual cluster counts and verify crop health logs."}
+        ]
     }
 ]
 
@@ -216,7 +234,13 @@ async def analyze_field(
                 "Prevent guests from walking near grid cell F2 and F5.",
                 "Wear protective boots when clearing silt beds."
             ],
-            "soil_rebalancing_agent": "Agricultural Gypsum + Calcium Carbonate"
+            "soil_rebalancing_agent": "Agricultural Gypsum + Calcium Carbonate",
+            "crop_recovery_planner": [
+                {"period": "Day 1-3", "action": "Siphon and drain standing surface water using dynamic grid trenches."},
+                {"period": "Day 4-7", "action": "Apply agricultural gypsum (calcium sulfate) to counter silt crusting and flush sodium."},
+                {"period": "Week 2", "action": "Blend raw compost, mulch, and biochar into topsoil to restore organic carbon."},
+                {"period": "Week 3-4", "action": "Sow nitrogen-fixing cover crops (clover, alfalfa) to aerate soil and resume drip irrigation."}
+            ]
         }
 
     # Create MongoDB report document
