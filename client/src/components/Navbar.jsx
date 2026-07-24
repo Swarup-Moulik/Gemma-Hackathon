@@ -48,7 +48,7 @@ function Navbar() {
         <div className="flex items-center gap-4">
           <span className="hidden lg:inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium bg-secondary text-secondary-foreground border border-border">
             <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-            Offline Gemma Engine Active
+            Gemma AI Engine Online
           </span>
 
           <button
