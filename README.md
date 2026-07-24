@@ -43,31 +43,31 @@ The platform enables:
 ┌─────────────────────────────────────────────────────────────────┐
 │                     GREEN PRAXIS PLATFORM                       │
 │                                                                 │
-│  ┌─────────────┐    HTTP/REST    ┌────────────────────────┐    │
-│  │  React 18   │ ◄────────────► │   FastAPI Backend      │    │
-│  │  Vite 5.x   │                │   (Python 3.11+)       │    │
-│  │  TailwindCSS│                │                        │    │
-│  └─────────────┘                │  ┌──────────────────┐  │    │
-│         │                       │  │  AI Layer        │  │    │
-│         │ Routes                │  │  Google Gemma    │  │    │
-│         ▼                       │  └──────────────────┘  │    │
-│  ┌─────────────┐                │                        │    │
-│  │ / Landing   │                │  ┌──────────────────┐  │    │
-│  │ /scan       │                │  │  MongoDB Atlas   │  │    │
-│  │ /report     │                │  │  db: greenpraxis │  │    │
-│  │ /chat       │                │  └──────────────────┘  │    │
-│  │ /dashboard  │                │                        │    │
-│  └─────────────┘                │  ┌──────────────────┐  │    │
-│                                 │  │  Static /uploads │  │    │
-│  ┌─────────────┐                │  └──────────────────┘  │    │
-│  │ Web Speech  │                └────────────────────────┘    │
-│  │ API (Voice) │                                               │
-│  └─────────────┘                                               │
+│  ┌─────────────┐    HTTP/REST   ┌────────────────────────┐      │
+│  │  React 18   │ ◄────────────► │   FastAPI Backend      │      │
+│  │  Vite 5.x   │                │   (Python 3.11+)       │      │
+│  │  TailwindCSS│                │                        │      │
+│  └─────────────┘                │  ┌──────────────────┐  │      │
+│         │                       │  │  AI Layer        │  │      │
+│         │ Routes                │  │  Google Gemma    │  │      │
+│         ▼                       │  └──────────────────┘  │      │
+│  ┌─────────────┐                │                        │      │
+│  │ / Landing   │                │  ┌──────────────────┐  │      │
+│  │ /scan       │                │  │  MongoDB Atlas   │  │      │
+│  │ /report     │                │  │  db: greenpraxis │  │      │
+│  │ /chat       │                │  └──────────────────┘  │      │
+│  │ /dashboard  │                │                        │      │
+│  └─────────────┘                │  ┌──────────────────┐  │      │
+│                                 │  │  Static /uploads │  │      │
+│  ┌─────────────┐                │  └──────────────────┘  │      │
+│  │ Web Speech  │                └────────────────────────┘      │
+│  │ API (Voice) │                                                │
+│  └─────────────┘                                                │
 │                                                                 │
-│  ┌─────────────┐                                               │
-│  │  QR Code    │                                               │
-│  │  Generator  │                                               │
-│  └─────────────┘                                               │
+│  ┌─────────────┐                                                │
+│  │  QR Code    │                                                │
+│  │  Generator  │                                                │
+│  └─────────────┘                                                │
 └─────────────────────────────────────────────────────────────────┘
 ```
 
@@ -179,6 +179,7 @@ window.speechSynthesis.speak(utterance);
 **Languages:** English · Hindi (हिंदी) · Spanish (Español) · French (Français) · Telugu (తెలుగు)
 
 \---
+
 ### 5\. 🧠 Explainable AI (XAI) Transparency
 
 Every diagnosis includes Gemma's own reasoning:
@@ -201,11 +202,13 @@ Look-alike diseases ruled out:
 This transparency demonstrates that the AI understands agriculture, not just pattern-matches images — critical for hackathon evaluation.
 
 \---
+
 ### 6\. 📱 QR Code Report Sharing
 
 Each report generates a dynamic QR code pointing to its URL. Any device on the same network can scan it to access the full diagnosis without any manual link sharing.
 
 \---
+
 ### 7\. 📂 MongoDB Season Ledger
 
 Full document schema:
@@ -234,6 +237,7 @@ Full document schema:
 ```
 
 \---
+
 ## 🛠️ Technical Stack
 
 |Layer|Technology|Purpose|
@@ -251,6 +255,7 @@ Full document schema:
 |Fonts|Google Fonts|Fraunces · IBM Plex Sans · IBM Plex Mono|
 
 \---
+
 ## 📡 API Reference
 
 ### `POST /api/analyze`
@@ -281,6 +286,7 @@ Deletes a report by MongoDB `\\\_id`.
 Returns `{ "status": "Green Praxis backend online" }`.
 
 \---
+
 ## 📄 Page Structure
 
 ```
@@ -291,11 +297,13 @@ Returns `{ "status": "Green Praxis backend online" }`.
 ├── Site Ledger — 4-page flow list with route links
 ├── About \\\& Team — brand vision + contributor roles
 └── Footer
+
 /scan (Home)
 ├── GPS input (manual or auto-detect)
 ├── Scan mode toggle (Mobile / Drone)
 ├── Drag-and-drop image upload
 └── Submit → redirects to /report
+
 /report (Report)
 ├── Diagnosis overview card
 ├── Animated SVG recovery ring
@@ -315,6 +323,7 @@ Returns `{ "status": "Green Praxis backend online" }`.
 ├── Mic button (STT)
 ├── Language selector
 └── TTS spoken response
+
 /dashboard (Dashboard)
 ├── Historical scan cards
 ├── Crop type filter
@@ -494,6 +503,7 @@ npm install
 cd ../server
 pip install fastapi uvicorn motor python-multipart aiofiles
 ```
+
 ### 2\. Start Backend
 
 ```bash
@@ -502,6 +512,7 @@ python main.py
 # → http://localhost:8000
 # → Swagger UI: http://localhost:8000/docs
 ```
+
 ### 3\. Start Frontend
 
 ```bash
@@ -509,6 +520,7 @@ cd client
 npm run dev
 # → http://localhost:5173
 ```
+
 ### 4\. Environment Variables
 
 Create `client/.env`:
@@ -524,6 +536,7 @@ MONGO\\\_URI=mongodb://localhost:27017  # default
 ```
 
 \---
+
 ## 🗂️ Project Structure
 
 ```
@@ -554,7 +567,7 @@ Gemma-Hackathon\\\_buildathon\\\_3/
 └── README.md
 ```
 
-\--
+\---
 
 ## 👥 Team
 
