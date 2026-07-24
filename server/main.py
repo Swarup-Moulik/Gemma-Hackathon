@@ -219,3 +219,12 @@ async def analyze_field(
             "soil_rebalancing_agent": "Agricultural Gypsum + Calcium Carbonate"
         }
 
+ # Create MongoDB report document
+    report_data = {
+        "type": scanMode,
+        "image_url": image_url,
+        "coordinates": {"latitude": latitude, "longitude": longitude},
+        "analysis": analysis,
+        "created_at": datetime.utcnow().isoformat()
+    }
+
