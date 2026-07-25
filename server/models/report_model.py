@@ -26,6 +26,15 @@ class GemmaCropAnalysis(BaseModel):
     )
     confidence: str = Field(description="Confidence percentage e.g. High (94%)")
     severity: str = Field(description="Mild, Moderate, Severe, or High")
+
+    # REMOVED DEFAULTS: Gemini is now forced to generate these dynamically
+    recovery_chance: int = Field(
+        description="Estimated percentage chance of crop recovery (0-100)"
+    )
+    yield_loss_estimate: int = Field(
+        description="Estimated percentage yield loss (0-100)"
+    )
+
     likely_causes: List[str] = Field(
         description="Environmental or fungal factors triggering the condition"
     )
@@ -35,6 +44,12 @@ class GemmaCropAnalysis(BaseModel):
     organic_options: List[str] = Field(
         description="Eco-friendly and organic fungicide or biological sprays"
     )
+
+    # REMOVED DEFAULT FACTORY: Gemini is now forced to provide chemical lists
+    chemical_treatments: List[str] = Field(
+        description="Chemical treatments or fungicides if organic options fail"
+    )
+
     tourist_safety: TouristSafety
     expert_advice: str = Field(
         description="Threshold rule when to contact senior extension officers"

@@ -29,7 +29,8 @@ async def run_gemma_crop_analysis(
     prompt = (
         "You are AgriRescue AI, an expert agricultural pathologist operating offline at the edge. "
         "Examine this foliage scan carefully. Identify the crop species, detect any disease or pathogen symptoms, "
-        "evaluate severity, suggest organic remedies, and determine if tourist/visitor safety on nearby estate trails is compromised."
+        "evaluate severity, suggest organic remedies, chemical options, calculate recovery percentage, "
+        "yield loss percentage, and determine tourist safety."
     )
 
     if client:
@@ -50,12 +51,13 @@ async def run_gemma_crop_analysis(
                 f"GenAI Crop Inference Warning: {e}. Falling back to edge baseline analysis."
             )
 
-    # High-fidelity baseline fallback schema
     return GemmaCropAnalysis(
         crop="Tomato (Solanum lycopersicum)",
         probable_issue="Early Blight (Alternaria solani)",
         confidence="High (94%)",
         severity="Moderate",
+        recovery_chance=85,
+        yield_loss_estimate=15,
         likely_causes=[
             "High humidity following heavy monsoon rainfall.",
             "Insufficient air circulation between dense leaf canopy.",
@@ -67,6 +69,10 @@ async def run_gemma_crop_analysis(
         organic_options=[
             "Apply copper-based organic fungicide or neem oil solution every 7 days.",
             "Spray liquid compost tea to introduce beneficial microbes.",
+        ],
+        chemical_treatments=[
+            "Mancozeb 75 WP at 2g/liter of water.",
+            "Copper Oxychloride 50 WP.",
         ],
         tourist_safety=TouristSafety(
             hazard_detected=False,
@@ -85,8 +91,8 @@ async def run_gemma_drone_analysis(
 
     prompt = (
         f"You are AgriRescue AI analyzing aerial drone telemetry recorded at GPS coordinates ({latitude}, {longitude}). "
-        "Evaluate the post-disaster field condition, silt contamination, soil growability, flood damage percentage, "
-        "and generate grid cell findings for safety and soil reclamation."
+        "Evaluate post-disaster field conditions, silt contamination, soil growability, flood damage percentage, "
+        "recovery chance percentage, estimated yield loss percentage, chemical options, and grid cell findings."
     )
 
     if client:
@@ -107,7 +113,6 @@ async def run_gemma_drone_analysis(
                 f"GenAI Drone Inference Warning: {e}. Falling back to edge grid baseline."
             )
 
-    # Grid fallback analysis
     frame_data = [
         {
             "timestamp": 0,
@@ -133,24 +138,6 @@ async def run_gemma_drone_analysis(
             "visual_findings": ["Dry soil terrain", "Crop leaves healthy"],
             "severity": "Mild",
         },
-        {
-            "timestamp": 15,
-            "coordinates": {
-                "latitude": latitude + 0.0005,
-                "longitude": longitude - 0.001,
-            },
-            "visual_findings": ["Soil erosion", "Uprooted young plants"],
-            "severity": "Moderate",
-        },
-        {
-            "timestamp": 20,
-            "coordinates": {
-                "latitude": latitude - 0.0005,
-                "longitude": longitude - 0.0005,
-            },
-            "visual_findings": ["Silt blocks root ventilation", "Slight root rot"],
-            "severity": "Severe",
-        },
     ]
 
     return GemmaDroneAnalysis(
@@ -158,6 +145,8 @@ async def run_gemma_drone_analysis(
         probable_issue="Post-Disaster Field Contamination",
         confidence="High (90%)",
         severity="Severe",
+        recovery_chance=60,
+        yield_loss_estimate=40,
         likely_causes=[
             "River breach introducing industrial silt runoff.",
             "Poor soil absorption rates causing extended waterlogging.",
@@ -169,6 +158,10 @@ async def run_gemma_drone_analysis(
         organic_options=[
             "Apply raw compost mulch to introduce organic carbon.",
             "Sow cover crops (e.g., clover) to extract residual heavy metals.",
+        ],
+        chemical_treatments=[
+            "Gypsum / Calcium Sulfate soil conditioner.",
+            "Agricultural Lime for pH neutralization.",
         ],
         tourist_safety=TouristSafety(
             hazard_detected=True,

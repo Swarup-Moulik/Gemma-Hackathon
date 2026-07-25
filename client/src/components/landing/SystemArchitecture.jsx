@@ -40,14 +40,6 @@ export default function SystemArchitecture() {
             </div>
           ))}
         </div>
-
-        <div className="hackathon-card reveal" id="hackathon">
-          <div className="hackathon-left">
-            Submission · Web Agri-Tech Track
-            <strong>Build with Gemma — 2026</strong>
-          </div>
-          <div className="stamp select-none">Entered</div>
-        </div>
       </div>
     </section>
   );
