@@ -43,7 +43,7 @@ async def shutdown_event():
 def root():
     return {
         "status": "OK",
-        "message": "Green Praxis API Engine is live on Vercel!",
+        "message": "Green Praxis API Engine is live on Render!",
         "health": "/api/health",
     }
 
